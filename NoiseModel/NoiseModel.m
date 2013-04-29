@@ -1,5 +1,6 @@
 classdef NoiseModel < handle
     %NoiseModel holds a hierarchical collection of noises.
+    %
     %   Each component noise is a struct or object that defines fields 'f'
     %   (frequency vector), 'asd' (amplitude spectral density data), and
     %   'name' (label used for plotting). Note that a NoiseModel itself can

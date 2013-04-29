@@ -1,9 +1,18 @@
 classdef NoisePlotter < handle
-    
+    %NoisePlotter is a configurable plotting engine for NoiseModel
+    %
+    %   It maintains structures figureProperties, axesProperties, etc. for
+    %   configuring the settings of each graphics object in the plot. The
+    %   plot can be further customized by applying prolog and epilog
+    %   functions. Individual model traces and the sum trace can be
+    %   selectively included or omitted.
+    %
+    %   NoisePlotter objects are typically created using a PlotterFactory
+    %   object.
     properties
-        prolog
-        epilog
-        handles
+        prolog % cell array of function handles that are called before the plot is drawn
+        epilog % cell array of function handles that are called after the plot is drawn
+        handles % struct of graphics handles for each component of the plot
         figureProperties
         axesProperties
         linesProperties
@@ -11,12 +20,15 @@ classdef NoisePlotter < handle
         titleProperties
         xlabelProperties
         ylabelProperties
-        skipModelNoises
-        skipSumNoise
+        skipModelNoises % boolean array specifying whether to plot each model noise trace
+        skipSumNoise % boolean specifying whether to plot the sum noise trace
     end
     
     methods
         function self = NoisePlotter(noiseModel)
+            %NoisePlotter object constructor
+            %
+            %   NoisePlotter(noiseModel) prepares to plot a NoiseModel.
             self.prolog = {@NoisePlotter.skipNegligibleNoises @NoisePlotter.setYLim @NoisePlotter.setLinesProperties};
             self.epilog = {};
             self.handles = struct();
@@ -44,6 +56,7 @@ classdef NoisePlotter < handle
         end
         
         function process(self, noiseModel)
+            %process plots the NoiseModel
             for n = 1:numel(self.prolog)
                 feval(self.prolog{n}, self, noiseModel);
             end
@@ -59,6 +72,7 @@ classdef NoisePlotter < handle
         end
         
         function output = noisefun(self, functionHandle, noiseModel, varargin)
+            %noisefun is a cellfun implementation that respects the skipModelNoises property
             output = cellfun(functionHandle, noiseModel.referenceNoises, varargin{:});
             if ~self.skipSumNoise
                 output = [output cellfun(functionHandle, {noiseModel.sumNoise}, varargin{:})];
@@ -70,6 +84,7 @@ classdef NoisePlotter < handle
         end
         
         function buildPlot(self, plotArgs, legendArgs)
+            %buildPlot generates the plot components
             fg = figure();
             self.handles.fg = fg;
             set(fg, self.figureProperties);
@@ -108,6 +123,7 @@ classdef NoisePlotter < handle
     
     methods (Static)
         function skipNegligibleNoises(self, noiseModel)
+            %skipNegligibleNoises is a prolog function that omits noises contributing less than 10% to the sum everywhere
             for n = 1:numel(noiseModel.modelNoises)
                 if ~ismethod(noiseModel.modelNoises{n}, 'drilldown') && all(noiseModel.modelNoises{n}.asd < 0.1*noiseModel.sumNoise.asd)
                     self.skipModelNoises(n) = true;
@@ -116,6 +132,7 @@ classdef NoisePlotter < handle
         end
         
         function setYLim(self, noiseModel)
+            %setYLim is a prolog function that sets the y-axis limits to a sane default
             function [maxNoise, minNoise] = maxminNoise(noise)
                 asd = noise.asd;
                 maxNoise = max(asd(isfinite(asd)));
@@ -134,6 +151,7 @@ classdef NoisePlotter < handle
         end
         
         function setLinesProperties(self, noiseModel)
+            %setLinesProperties is a prolog function that styles the reference and sum traces
             countReferences = numel(noiseModel.referenceNoises);
             countSum = ~self.skipSumNoise;
             countLines = countReferences + countSum + sum(~self.skipModelNoises);
