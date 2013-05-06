@@ -35,6 +35,7 @@ classdef NoisePlotter < handle
             self.figureProperties = struct();
             self.figureProperties.DefaultTextInterpreter = 'none';
             self.axesProperties = struct();
+            self.axesProperties.Box = 'on';
             self.axesProperties.XGrid = 'on';
             self.axesProperties.YGrid = 'on';
             self.axesProperties.XScale = 'log';
