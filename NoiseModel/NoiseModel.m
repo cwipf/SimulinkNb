@@ -36,6 +36,12 @@ classdef NoiseModel < handle
             %
             %   NoiseModel(modelNoises) sets the modelNoises property.
             %   NoiseModel(modelNoises, referenceNoises) sets the referenceNoises property as well.
+            
+            % input sanity check
+            if ~iscell(modelNoises)
+                error('First argument to NoiseModel must be a cell array of noises');
+            end
+            
             self.modelNoises = modelNoises;
             self.referenceNoises = {};
             self.getNoise = @(self) self.sumNoise;
