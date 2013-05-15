@@ -10,7 +10,8 @@ classdef NameHook
         end
         
         function newNoise = hook(self, noise)
-            newNoise = noise;
+            newNoise.f = noise.f;
+            newNoise.asd = noise.asd;
             newNoise.name = self.name;
         end
     end

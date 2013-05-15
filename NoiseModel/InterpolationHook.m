@@ -10,7 +10,7 @@ classdef InterpolationHook
         end
         
         function newNoise = hook(self, noise)
-            newNoise = noise;
+            newNoise.name = noise.name;
             newNoise.f = self.f;
             newNoise.asd = interp1(noise.f, noise.asd, newNoise.f);
         end

@@ -10,7 +10,8 @@ classdef LinkHook
         end
         
         function newNoise = hook(self, noise)
-            newNoise = noise;
+            newNoise.f = noise.f;
+            newNoise.asd = noise.asd;
             if strfind(self.target, 'internal:')
                 newNoise.name = ['\hyperlink{' self.target '}{' noise.name '}'];
             else

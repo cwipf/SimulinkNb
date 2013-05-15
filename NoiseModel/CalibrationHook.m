@@ -10,8 +10,9 @@ classdef CalibrationHook
         end
         
         function newNoise = hook(self, noise)
-            newNoise = noise;
-            newNoise.asd = newNoise.asd .* abs(self.tf.tf);
+            newNoise.f = noise.f;
+            newNoise.name = noise.name;
+            newNoise.asd = noise.asd .* abs(self.tf.tf);
         end
     end
     
