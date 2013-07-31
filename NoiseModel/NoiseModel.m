@@ -39,8 +39,16 @@ classdef NoiseModel < handle
             
             % input sanity check
             if ~iscell(modelNoises)
-                error('First argument to NoiseModel must be a cell array of noises');
+                error('First argument to NoiseModel should be a 1xN cell array of noises');
             end
+            sz = size(modelNoises);
+            if length(sz) ~= 2 || min(sz) > 1
+                error('First argument to NoiseModel should be a 1xN cell array of noises');
+            elseif sz(1) ~= 1
+                warning('First argument to NoiseModel should be a 1xN cell array of noises');
+                modelNoises = modelNoises';
+            end
+            
             
             self.modelNoises = modelNoises;
             self.referenceNoises = {};
