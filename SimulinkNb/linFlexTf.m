@@ -15,8 +15,8 @@ function [sys, flexTfs] = linFlexTf(varargin)
 %
 %   LINFLEXTFFOLD can be used to recombine the Simulink linearization and
 %   the FlexTf models returned by LINFLEXTF (analogous to LINLFTFOLD).
-%   Note that it can be advantageous to call PRESCALE to improve the
-%   numerical accuracy before invoking LINFLEXTFFOLD.
+%   It can be advantageous to call PRESCALE to improve the numerical
+%   accuracy before invoking LINFLEXTFFOLD.
 %
 %   See also LINFLEXTFFOLD, LINLFT, LINLFTFOLD, PRESCALE, FRD.
 
@@ -38,15 +38,32 @@ end
 
 %% Extract and evaluate each FlexTf block's expression
 
-% Must compile in order to access the CompiledPortWidth property
-feval(mdl, [], [], [], 'lincompile');
-cleanup = onCleanup(@() feval(mdl, [], [], [], 'term'));
-
 for n = 1:numel(flexTfBlocks)
     blk = flexTfBlocks{n};
     expr = get_param(blk, 'Description');
-    % Check number of inputs/outputs to each block
-    % (this is tricky because some ports carry vector signals)
+    expr = strtrim(expr(length('FlexTf:')+1:end));
+    disp(['    ' blk ' :: ' expr]);
+    % Note: evaluation is done in the base workspace
+    % Variables from the model workspace (if any) are ignored
+    flexTfs{n} = evalin('base', expr);
+end
+
+%% Check that each FlexTf has the same I/O count as its corresponding block
+% Note: this code can be omitted if it's too slow or causes problems.
+% It's a useful debugging aid, but not required for the linearization.
+
+disp(['Compiling model ' strtrim(evalc('disp(mdl)')) ' to check for I/O port mismatch']);
+% A compile is needed in order to use the CompiledPortWidth block property.
+% But compiling puts the model in a weird state where it cannot be closed
+% by the user!  The onCleanup routine is meant to ensure that the model
+% is never left in that state.
+feval(mdl, [], [], [], 'lincompile');
+cleanup = onCleanup(@() feval(mdl, [], [], [], 'term'));
+for n = 1:numel(flexTfBlocks)
+    % Count the inputs and outputs to each block.  This is tricky!  If the
+    % I/O consists of scalars and vectors, it should be fine, but if the
+    % block uses buses/matrices/etc, watch out!
+    blk = flexTfBlocks{n};
     blkPorts = get_param(blk, 'PortHandles');
     [blkInputs, blkOutputs] = deal(0);
     for j = 1:numel(blkPorts.Inport)
@@ -54,19 +71,16 @@ for n = 1:numel(flexTfBlocks)
         blkOutputs = blkOutputs + get_param(blkPorts.Outport(j), 'CompiledPortWidth');
     end
     blkSize = [blkOutputs, blkInputs];
-    expr = strtrim(expr(length('FlexTf:')+1:end));
-    disp(['    ' blk ' :: ' expr]);
-    % Note: evaluation is done in the base workspace (any variables set in
-    % the model workspace are ignored)
-    flexTfs{n} = evalin('base', expr);
+
+    % Counting the FlexTf's inputs and outputs is much easier
     flexTfSize = size(flexTfs{n});
-    % Confirm that the block has the same number of inputs/outputs as the FlexTf
+
     if ~isequal(flexTfSize, blkSize)
         clear cleanup;
         close_system(mdl);
-        error(['I/O ports do not match: block ' blk ' has (' ... 
-            strtrim(evalc('disp(blkSize)')) ') but FlexTf ' expr ...
-            ' has (' strtrim(evalc('disp(flexTfSize)')) ')']);
+        error(['I/O port mismatch between block "' blk '" and FlexTf "' expr '"' char(10) ...
+            'Block''s dimensions are (' strtrim(evalc('disp(blkSize)')) ') ' ...
+            'and FlexTf''s dimensions are (' strtrim(evalc('disp(flexTfSize)')) ')']);
     end
 end
 clear cleanup;
@@ -74,6 +88,7 @@ close_system(mdl);
 
 %% Linearize the model with the FlexTf blocks factored out
 
+disp(['Linearizing model ' strtrim(evalc('disp(mdl)'))]);
 flexTfs = append(flexTfs{:});
 varargin{end+1} = flexTfBlocks;
 sys = linlft(varargin{:});

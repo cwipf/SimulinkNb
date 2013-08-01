@@ -21,10 +21,9 @@ end
 
 %% Extract and evaluate each NbNoiseSource block's expression, and set up calibration TFs
 
+noises = num2cell(struct('name', nbNoiseSources, 'f', freq, 'asd', []))';
 % Set numerator for calibration TFs, and open the loop
 io(1) = linio(nbNoiseSinks{1}, 1, 'out', 'on');
-
-noises = num2cell(struct('name', nbNoiseSources, 'f', freq, 'asd', []))';
 for n = 1:numel(nbNoiseSources)
     blk = nbNoiseSources{n};
     expr = get_param(blk, 'Description');
@@ -44,7 +43,7 @@ close_system(mdl);
 sys = prescale(sys, {2*pi*min(freq), 2*pi*max(freq)}); % attempt to improve numerical accuracy
 sys = linFlexTfFold(sys, flexTfs);
 
-%% Apply a calibration TF to each NbNoiseSource's spectrum
+%% Apply calibration TF to each NbNoiseSource's spectrum
 
 for n = 1:numel(nbNoiseSources)
     noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n), 2*pi*freq)))';
