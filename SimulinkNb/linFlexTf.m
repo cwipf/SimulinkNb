@@ -24,28 +24,52 @@ function [sys, flexTfs] = linFlexTf(varargin)
 
 mdl = varargin{1};
 load_system(mdl);
+
 flexTfBlocks = find_system(mdl, 'RegExp', 'on', 'Description', '^[Ff]lex[Tt][Ff]:');
 flexTfs = cell(size(flexTfBlocks));
 disp([num2str(numel(flexTfBlocks)) ' FlexTf blocks found in model ' strtrim(evalc('disp(mdl)'))]);
 
 if numel(flexTfBlocks) < 1
-    close_system(mdl);
     warning('No FlexTf blocks found: standard linearization will be performed');
+    close_system(mdl);
     sys = linearize(varargin{:});
     return;
 end
 
 %% Extract and evaluate each FlexTf block's expression
 
+% Must compile in order to access the CompiledPortWidth property
+feval(mdl, [], [], [], 'lincompile');
+cleanup = onCleanup(@() feval(mdl, [], [], [], 'term'));
+
 for n = 1:numel(flexTfBlocks)
     blk = flexTfBlocks{n};
     expr = get_param(blk, 'Description');
+    % Check number of inputs/outputs to each block
+    % (this is tricky because some ports carry vector signals)
+    blkPorts = get_param(blk, 'PortHandles');
+    [blkInputs, blkOutputs] = deal(0);
+    for j = 1:numel(blkPorts.Inport)
+        blkInputs = blkInputs + get_param(blkPorts.Inport(j), 'CompiledPortWidth');
+        blkOutputs = blkOutputs + get_param(blkPorts.Outport(j), 'CompiledPortWidth');
+    end
+    blkSize = [blkOutputs, blkInputs];
     expr = strtrim(expr(length('FlexTf:')+1:end));
     disp(['    ' blk ' :: ' expr]);
     % Note: evaluation is done in the base workspace (any variables set in
     % the model workspace are ignored)
     flexTfs{n} = evalin('base', expr);
+    flexTfSize = size(flexTfs{n});
+    % Confirm that the block has the same number of inputs/outputs as the FlexTf
+    if ~isequal(flexTfSize, blkSize)
+        clear cleanup;
+        close_system(mdl);
+        error(['I/O ports do not match: block ' blk ' has (' ... 
+            strtrim(evalc('disp(blkSize)')) ') but FlexTf ' expr ...
+            ' has (' strtrim(evalc('disp(flexTfSize)')) ')']);
+    end
 end
+clear cleanup;
 close_system(mdl);
 
 %% Linearize the model with the FlexTf blocks factored out

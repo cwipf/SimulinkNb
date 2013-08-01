@@ -9,7 +9,7 @@ function DARMParams
 %% Common Parameters
 ifoParams.paramsFileName = mfilename('fullpath');
 ifoParams.name = 'L1';
-ifoParams.freq = logspace(log10(5),log10(8000),1000);
+ifoParams.freq = logspace(log10(5),log10(7000),1000);
 
 svnDir.sus = '/ligo/svncommon/SusSVN/sus/trunk/';
 svnDir.anb = '/ligo/svncommon/40mSVN/trunk/NB/aLIGO/';
@@ -61,6 +61,8 @@ end
 hierDesign = load(fileName.darmFilters);
 
 % LOCK Filters
+% Using FRD TFs to work around backward compatibility issues with the state
+% space models.
 % M0 (no low frequency offload)
 ifoParams.act.M0.lockGain = 1; 
 for iFilterModule = 1:10
@@ -70,20 +72,28 @@ end
 % UIM (10 Low Pass + Plant Inv)
 ifoParams.act.L1.lockGain = 1; % Gain built into the filters
 ifoParams.act.L1.lock(1).ss = hierDesign.plantInv(2).dof(1).filter.ss;
+ifoParams.act.L1.lock(1).frd = interp(frd(hierDesign.plantInv(2).dof(1).filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L1.lock(2).ss = hierDesign.blend(2).dof(1).lp.model.ss;
+ifoParams.act.L1.lock(2).frd = interp(frd(hierDesign.blend(2).dof(1).lp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L1.lock(3).ss = ss(zpk([],[],1)); % dummy
 
 % PUM (10-50 Hz Band pass + Plant Inv)
 ifoParams.act.L2.lockGain = 1; % Gain built into the filters
 ifoParams.act.L2.lock(1).ss = hierDesign.plantInv(3).dof(1).filter.ss;
+ifoParams.act.L2.lock(1).frd = interp(frd(hierDesign.plantInv(3).dof(1).filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L2.lock(2).ss = hierDesign.blend(3).dof(1).hp.model.ss;
+ifoParams.act.L2.lock(2).frd = interp(frd(hierDesign.blend(3).dof(1).hp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L2.lock(3).ss = hierDesign.blend(3).dof(1).lp.model.ss;
+ifoParams.act.L2.lock(3).frd = interp(frd(hierDesign.blend(3).dof(1).lp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 
 % TST (50 Hz High Pass + [dummy] Plant Inv)
 ifoParams.act.L3.lockGain = 1; % Gain built into the filters
 ifoParams.act.L3.lock(1).ss = hierDesign.plantInv(4).dof(1).filter.ss;
+ifoParams.act.L3.lock(1).frd = interp(frd(hierDesign.plantInv(4).dof(1).filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L3.lock(2).ss = hierDesign.blend(3).dof(1).hp.model.ss;
+ifoParams.act.L3.lock(2).frd = interp(frd(hierDesign.blend(3).dof(1).hp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L3.lock(3).ss = hierDesign.blend(4).dof(1).hp.model.ss;
+ifoParams.act.L3.lock(3).frd = interp(frd(hierDesign.blend(4).dof(1).hp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 
 for iFilterModule = 4:10
     ifoParams.act.L1.lock(iFilterModule).ss = ss(zpk([],[],1));
@@ -169,10 +179,12 @@ cd(currentDir);
 
 %%
 %tmp = load(fileName.quadModel);
-% Loading the state space model from the .mat file doesn't seem to work in
-% all versions of Matlab, so we'll generate a fresh one instead
+% Due to backward compatibility issues with the saved quadModel .mat file,
+% generate a fresh model instead.
 cd(quadModelProductionDir);
+currentFontSize = get(0, 'DefaultAxesFontSize'); % prevent model generator from messing with the font size
 tmp.quadModel = generate_QUAD_Model_Production(ifoParams.freq, 'fiber');
+set(0, 'DefaultAxesFontSize', currentFontSize);
 cd(currentDir);
 ifoParams.act.quadModel.ss = prescale(tmp.quadModel.ss, {2*pi*min(ifoParams.freq), 2*pi*max(ifoParams.freq)});
 ifoParams.act.quadModel.frd = frd(ifoParams.act.quadModel.ss, ifoParams.freq, 'Units', 'Hz');

@@ -38,7 +38,7 @@ Model {
       Name		      "Delta L [m]"
     }
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.127"
+    ComputedModelVersion    "1.128"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -62,7 +62,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-7.0, 24.0, 904.0, 904.0]
+      Location		      [14.0, 42.0, 920.0, 842.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -86,7 +86,7 @@ Model {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[852.0, 721.0]
+	Extents			[868.0, 659.0]
 	ZoomFactor		[1.0]
 	Offset			[0.0, -78.975682705640793]
       }
@@ -98,9 +98,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Jul 31 16:08:48 2013"
-  RTWModifiedTimeStamp	  297187705
-  ModelVersionFormat	  "1.%<AutoIncrement:127>"
+  LastModifiedDate	  "Wed Jul 31 23:49:19 2013"
+  RTWModifiedTimeStamp	  297215355
+  ModelVersionFormat	  "1.%<AutoIncrement:128>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -963,7 +963,7 @@ Model {
   }
   System {
     Name		    "DARM"
-    Location		    [-7, 24, 897, 928]
+    Location		    [14, 42, 934, 884]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -1029,7 +1029,7 @@ Model {
       MaskHideContents	      off
       System {
 	Name			"Actuation Function"
-	Location		[-7, 24, 865, 856]
+	Location		[14, 42, 934, 884]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1069,7 +1069,7 @@ Model {
 	  MaskHideContents	  off
 	  System {
 	    Name		    "ETMX"
-	    Location		    [-4, 24, 868, 951]
+	    Location		    [-7, 24, 913, 964]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -1918,7 +1918,7 @@ Model {
 	      MaskHideContents	      off
 	      System {
 		Name			"Hierarchy Loops"
-		Location		[-7, 24, 865, 856]
+		Location		[14, 42, 934, 884]
 		Open			off
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -5345,7 +5345,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "L1 LOCK"
-		    Location		    [399, 130, 1473, 542]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -5371,9 +5371,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM1"
 		    SID			    "4082"
+		    Description		    "FlexTf: ifoParams.act.L1.lock(1).frd"
 		    Ports		    [1, 1]
 		    Position		    [145, 25, 225, 75]
 		    ZOrder		    -2
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5397,9 +5399,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM2"
 		    SID			    "4084"
+		    Description		    "FlexTf: ifoParams.act.L1.lock(2).frd"
 		    Ports		    [1, 1]
 		    Position		    [245, 25, 325, 75]
 		    ZOrder		    -4
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5611,7 +5615,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "L2 LOCK"
-		    Location		    [399, 108, 1473, 520]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -5637,9 +5641,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM1"
 		    SID			    "4110"
+		    Description		    "FlexTf: ifoParams.act.L2.lock(1).frd"
 		    Ports		    [1, 1]
 		    Position		    [145, 25, 225, 75]
 		    ZOrder		    -2
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5663,9 +5669,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM2"
 		    SID			    "4112"
+		    Description		    "FlexTf: ifoParams.act.L2.lock(2).frd"
 		    Ports		    [1, 1]
 		    Position		    [245, 25, 325, 75]
 		    ZOrder		    -4
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5676,9 +5684,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM3"
 		    SID			    "4113"
+		    Description		    "FlexTf: ifoParams.act.L2.lock(3).frd"
 		    Ports		    [1, 1]
 		    Position		    [345, 25, 425, 75]
 		    ZOrder		    -5
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5877,7 +5887,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "L3 LOCK"
-		    Location		    [399, 152, 1473, 564]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -5903,9 +5913,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM1"
 		    SID			    "4096"
+		    Description		    "FlexTf: ifoParams.act.L3.lock(1).frd"
 		    Ports		    [1, 1]
 		    Position		    [145, 25, 225, 75]
 		    ZOrder		    -2
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5929,9 +5941,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM2"
 		    SID			    "4098"
+		    Description		    "FlexTf: ifoParams.act.L3.lock(2).frd"
 		    Ports		    [1, 1]
 		    Position		    [245, 25, 325, 75]
 		    ZOrder		    -4
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -5942,9 +5956,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM3"
 		    SID			    "4099"
+		    Description		    "FlexTf: ifoParams.act.L3.lock(3).frd"
 		    Ports		    [1, 1]
 		    Position		    [345, 25, 425, 75]
 		    ZOrder		    -5
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -6409,7 +6425,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "M0 LOCK"
-		    Location		    [399, 130, 1473, 542]
+		    Location		    [-7, 24, 913, 964]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -8856,7 +8872,7 @@ Model {
 	  MaskHideContents	  off
 	  System {
 	    Name		    "ETMY"
-	    Location		    [-7, 24, 865, 856]
+	    Location		    [14, 42, 934, 884]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -9705,7 +9721,7 @@ Model {
 	      MaskHideContents	      off
 	      System {
 		Name			"Hierarchy Loops"
-		Location		[-7, 24, 865, 856]
+		Location		[14, 42, 934, 884]
 		Open			off
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -13031,7 +13047,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "L1 LOCK"
-		    Location		    [399, 130, 1473, 542]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -13057,9 +13073,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM1"
 		    SID			    "5205"
+		    Description		    "FlexTf: ifoParams.act.L1.lock(1).frd"
 		    Ports		    [1, 1]
 		    Position		    [145, 25, 225, 75]
 		    ZOrder		    -2
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13083,9 +13101,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM2"
 		    SID			    "5207"
+		    Description		    "FlexTf: ifoParams.act.L1.lock(2).frd"
 		    Ports		    [1, 1]
 		    Position		    [245, 25, 325, 75]
 		    ZOrder		    -4
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13297,7 +13317,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "L2 LOCK"
-		    Location		    [399, 108, 1473, 520]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -13323,9 +13343,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM1"
 		    SID			    "5219"
+		    Description		    "FlexTf: ifoParams.act.L2.lock(1).frd"
 		    Ports		    [1, 1]
 		    Position		    [145, 25, 225, 75]
 		    ZOrder		    -2
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13349,9 +13371,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM2"
 		    SID			    "5221"
+		    Description		    "FlexTf: ifoParams.act.L2.lock(2).frd"
 		    Ports		    [1, 1]
 		    Position		    [245, 25, 325, 75]
 		    ZOrder		    -4
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13362,9 +13386,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM3"
 		    SID			    "5222"
+		    Description		    "FlexTf: ifoParams.act.L2.lock(3).frd"
 		    Ports		    [1, 1]
 		    Position		    [345, 25, 425, 75]
 		    ZOrder		    -5
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13563,7 +13589,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "L3 LOCK"
-		    Location		    [399, 152, 1473, 564]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -13589,9 +13615,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM1"
 		    SID			    "5233"
+		    Description		    "FlexTf: ifoParams.act.L3.lock(1).frd"
 		    Ports		    [1, 1]
 		    Position		    [145, 25, 225, 75]
 		    ZOrder		    -2
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13615,9 +13643,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM2"
 		    SID			    "5235"
+		    Description		    "FlexTf: ifoParams.act.L3.lock(2).frd"
 		    Ports		    [1, 1]
 		    Position		    [245, 25, 325, 75]
 		    ZOrder		    -4
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -13628,9 +13658,11 @@ Model {
 		    BlockType		    Reference
 		    Name		    "FM3"
 		    SID			    "5236"
+		    Description		    "FlexTf: ifoParams.act.L3.lock(3).frd"
 		    Ports		    [1, 1]
 		    Position		    [345, 25, 425, 75]
 		    ZOrder		    -5
+		    AttributesFormatString  "%<Description>"
 		    LibraryVersion	    "1.108"
 		    SourceBlock		    "cstblocks/LTI System"
 		    SourceType		    "LTI Block"
@@ -14095,7 +14127,7 @@ Model {
 		  MaskHideContents	  off
 		  System {
 		    Name		    "M0 LOCK"
-		    Location		    [399, 108, 1473, 520]
+		    Location		    [14, 42, 934, 884]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
