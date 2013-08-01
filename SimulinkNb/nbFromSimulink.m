@@ -47,7 +47,7 @@ sys = linFlexTfFold(sys, flexTfs);
 %% Apply a calibration TF to each NbNoiseSource's spectrum
 
 for n = 1:numel(nbNoiseSources)
-    noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n), freq, 'Hz')))';
+    noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n), 2*pi*freq)))';
 end
 
 end

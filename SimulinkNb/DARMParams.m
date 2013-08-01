@@ -71,28 +71,36 @@ end
 
 % UIM (10 Low Pass + Plant Inv)
 ifoParams.act.L1.lockGain = 1; % Gain built into the filters
-ifoParams.act.L1.lock(1).ss = hierDesign.plantInv(2).dof(1).filter.ss;
+%ifoParams.act.L1.lock(1).ss = hierDesign.plantInv(2).dof(1).filter.ss;
+ifoParams.act.L1.lock(1).ss = ss(zpk([],[],1));
 ifoParams.act.L1.lock(1).frd = interp(frd(hierDesign.plantInv(2).dof(1).filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
-ifoParams.act.L1.lock(2).ss = hierDesign.blend(2).dof(1).lp.model.ss;
+%ifoParams.act.L1.lock(2).ss = hierDesign.blend(2).dof(1).lp.model.ss;
+ifoParams.act.L1.lock(2).ss = ss(zpk([],[],1));
 ifoParams.act.L1.lock(2).frd = interp(frd(hierDesign.blend(2).dof(1).lp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 ifoParams.act.L1.lock(3).ss = ss(zpk([],[],1)); % dummy
 
 % PUM (10-50 Hz Band pass + Plant Inv)
 ifoParams.act.L2.lockGain = 1; % Gain built into the filters
-ifoParams.act.L2.lock(1).ss = hierDesign.plantInv(3).dof(1).filter.ss;
+%ifoParams.act.L2.lock(1).ss = hierDesign.plantInv(3).dof(1).filter.ss;
+ifoParams.act.L2.lock(1).ss = ss(zpk([],[],1));
 ifoParams.act.L2.lock(1).frd = interp(frd(hierDesign.plantInv(3).dof(1).filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
-ifoParams.act.L2.lock(2).ss = hierDesign.blend(3).dof(1).hp.model.ss;
+%ifoParams.act.L2.lock(2).ss = hierDesign.blend(3).dof(1).hp.model.ss;
+ifoParams.act.L2.lock(2).ss = ss(zpk([],[],1));
 ifoParams.act.L2.lock(2).frd = interp(frd(hierDesign.blend(3).dof(1).hp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
-ifoParams.act.L2.lock(3).ss = hierDesign.blend(3).dof(1).lp.model.ss;
+%ifoParams.act.L2.lock(3).ss = hierDesign.blend(3).dof(1).lp.model.ss;
+ifoParams.act.L2.lock(3).ss = ss(zpk([],[],1));
 ifoParams.act.L2.lock(3).frd = interp(frd(hierDesign.blend(3).dof(1).lp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 
 % TST (50 Hz High Pass + [dummy] Plant Inv)
 ifoParams.act.L3.lockGain = 1; % Gain built into the filters
-ifoParams.act.L3.lock(1).ss = hierDesign.plantInv(4).dof(1).filter.ss;
+%ifoParams.act.L3.lock(1).ss = hierDesign.plantInv(4).dof(1).filter.ss;
+ifoParams.act.L3.lock(1).ss = ss(zpk([],[],1));
 ifoParams.act.L3.lock(1).frd = interp(frd(hierDesign.plantInv(4).dof(1).filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
-ifoParams.act.L3.lock(2).ss = hierDesign.blend(3).dof(1).hp.model.ss;
+%ifoParams.act.L3.lock(2).ss = hierDesign.blend(3).dof(1).hp.model.ss;
+ifoParams.act.L3.lock(2).ss = ss(zpk([],[],1));
 ifoParams.act.L3.lock(2).frd = interp(frd(hierDesign.blend(3).dof(1).hp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
-ifoParams.act.L3.lock(3).ss = hierDesign.blend(4).dof(1).hp.model.ss;
+%ifoParams.act.L3.lock(3).ss = hierDesign.blend(4).dof(1).hp.model.ss;
+ifoParams.act.L3.lock(3).ss = ss(zpk([],[],1));
 ifoParams.act.L3.lock(3).frd = interp(frd(hierDesign.blend(4).dof(1).hp.model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 
 for iFilterModule = 4:10
@@ -263,9 +271,15 @@ ifoParams.sens.armTimeDelay.sec = ifoParams.armLightTransitTime;
 ifoParams.sens.armTimeDelay.f   = exp(-2*pi*1i*ifoParams.freq(:)*ifoParams.sens.armTimeDelay.sec);
 
 %% DIGITAL FILTER
+% Using FRD TFs to work around backward compatibility issues with the state
+% space models.
 ifoParams.dig.darmGain = 1; % Gain built into filters
-ifoParams.dig.darm(1).ss = hierDesign.darm.filter.ss;
-ifoParams.dig.darm(2).ss = hierDesign.iscinf.dof(1).model.ss;
+%ifoParams.dig.darm(1).ss = hierDesign.darm.filter.ss;
+ifoParams.dig.darm(1).ss = ss(zpk([],[],1));
+ifoParams.dig.darm(1).frd = interp(frd(hierDesign.darm.filter.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
+%ifoParams.dig.darm(2).ss = hierDesign.iscinf.dof(1).model.ss;
+ifoParams.dig.darm(2).ss = ss(zpk([],[],1));
+ifoParams.dig.darm(2).frd = interp(frd(hierDesign.iscinf.dof(1).model.fd, logspace(-2, log10(7000), 1000), 'Units', 'Hz'), ifoParams.freq);
 
 for iFilterModule=3:10
     ifoParams.dig.darm(iFilterModule).ss = ss(zpk([],[],1));
