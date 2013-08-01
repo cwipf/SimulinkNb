@@ -2,14 +2,15 @@ This directory contains a prototype Simulink-based noise budget
 toolkit, and a demo that's based on the DARM Simulink model from the
 aligocalibration SVN repository.
 
-To run the demo, use the run_DARM_NB script.  It should conclude by
-popping up a noise plot of suspension electronics terms in the DARM
-noise budget.  (It makes use of the data found under the
-Dev/SusElectronics/ directory of the repository.)
+To run the demo, use the run_DARM_NB script.  For it to work, you'll
+need a recent checkout of the directories listed at the top of
+DARMParams.m (edit the paths there as needed).  The script should
+conclude by popping up a noise plot of suspension electronics terms in
+the DARM noise budget.
 
-Note: the DARM model included here has not received much vetting, and
-is certainly not correct in all its particulars.  It's supplied only
-as an example to illustrate how the various tools can be used.
+Note: the DARM model included here has not been vetted and is
+certainly not correct in all its particulars.  It's supplied only as
+an example to illustrate how the various tools can be used.
 
 == File overview ==
 
