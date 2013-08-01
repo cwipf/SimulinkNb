@@ -7,6 +7,6 @@ fclose(fileID);
 
 data = cell2mat(data);
 
-tf = frd(10.^(data(:,2)/20).*exp(1i*pi*data(:,3)/180), data(:,1), 'FrequencyUnit', 'Hz');
+tf = frd(10.^(data(:,2)/20).*exp(1i*pi*data(:,3)/180), data(:,1), 'Units', 'Hz');
 
 end

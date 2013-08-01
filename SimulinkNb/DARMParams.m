@@ -168,8 +168,9 @@ cd(currentDir);
 
 %%
 tmp = load(fileName.quadModel);
+ifoParams.act.quadModel.ss = prescale(tmp.quadModel.ss);
 ifoParams.act.quadModel.ss = prescale(tmp.quadModel.ss, {2*pi*min(ifoParams.freq), 2*pi*max(ifoParams.freq)});
-ifoParams.act.quadModel.frd = frd(ifoParams.act.quadModel.ss, ifoParams.freq, 'FrequencyUnit', 'Hz');
+ifoParams.act.quadModel.frd = frd(ifoParams.act.quadModel.ss, ifoParams.freq, 'Units', 'Hz');
 %%
 tmp = load(fileName.dampFilters);
 ifoParams.act.damp(1).ss = tmp.calibFilter.L.ss;
