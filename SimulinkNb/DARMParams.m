@@ -16,6 +16,7 @@ svnDir.anb = '/ligo/svncommon/40mSVN/trunk/NB/aLIGO/';
 svnDir.cds = '/opt/rtcds/userapps/release/';
 svnDir.cal = '/ligo/svncommon/CalSVN/aligocalibration/trunk/Runs/S7/';
 quadModelDir = [svnDir.sus 'Common/SusModelTags/Matlab/'];
+quadModelProductionDir = [svnDir.sus 'QUAD/Common/MatlabTools/QuadModel_Production'];
 quadFilterDir = [svnDir.sus 'QUAD/Common/FilterDesign/'];
 calToolsDir = [svnDir.cal 'Common/MatlabTools/'];
 noiseModelDir = [svnDir.anb 'Dev/MatlabTools/DrillDownNB'];
@@ -167,8 +168,12 @@ ifoParams.act.drivers.pum.selfNoise = interp1(tmp.f, tmp.asd, ifoParams.freq)/sq
 cd(currentDir);
 
 %%
-tmp = load(fileName.quadModel);
-ifoParams.act.quadModel.ss = prescale(tmp.quadModel.ss);
+%tmp = load(fileName.quadModel);
+% Loading the state space model from the .mat file doesn't seem to work in
+% all versions of Matlab, so we'll generate a fresh one instead
+cd(quadModelProductionDir);
+tmp.quadModel = generate_QUAD_Model_Production(ifoParams.freq, 'fiber');
+cd(currentDir);
 ifoParams.act.quadModel.ss = prescale(tmp.quadModel.ss, {2*pi*min(ifoParams.freq), 2*pi*max(ifoParams.freq)});
 ifoParams.act.quadModel.frd = frd(ifoParams.act.quadModel.ss, ifoParams.freq, 'Units', 'Hz');
 %%
