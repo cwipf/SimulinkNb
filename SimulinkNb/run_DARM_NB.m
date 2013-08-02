@@ -9,7 +9,6 @@ addpath(genpath([svnDir.anb 'Dev/MatlabTools']));
 
 disp('Loading parameters for the DARM Simulink model')
 DARMParams;
-disp('Linearizing and extracting noise terms')
 [noises, sys] = nbFromSimulink('DARM', ifoParams.freq);
 
 %% Make a quick NB plot
