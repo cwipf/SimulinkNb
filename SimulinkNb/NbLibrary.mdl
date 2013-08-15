@@ -1,6 +1,6 @@
 Library {
   Name			  "NbLibrary"
-  Version		  7.5
+  Version		  8.1
   MdlSubVersion		  0
   SavedCharacterEncoding  "UTF-8"
   LibraryType		  "BlockLibrary"
@@ -8,16 +8,56 @@ Library {
   ScopeRefreshTime	  0.035000
   OverrideScopeRefreshTime on
   DisableAllScopes	  off
+  FPTRunName		  "Run 1"
   MaxMDLFileLineLength	  120
+  Object {
+    $PropName		    "BdWindowsInfo"
+    $ObjectID		    1
+    $ClassName		    "Simulink.BDWindowsInfo"
+    Object {
+      $PropName		      "WindowsInfo"
+      $ObjectID		      2
+      $ClassName	      "Simulink.WindowInfo"
+      IsActive		      [1]
+      Location		      [21.0, 45.0, 1192.0, 736.0]
+      Object {
+	$PropName		"ModelBrowserInfo"
+	$ObjectID		3
+	$ClassName		"Simulink.ModelBrowserInfo"
+	Visible			[1]
+	DockPosition		"Left"
+	Width			[50]
+	Height			[50]
+	Filter			[9]
+      }
+      Object {
+	$PropName		"ExplorerBarInfo"
+	$ObjectID		4
+	$ClassName		"Simulink.ExplorerBarInfo"
+	Visible			[1]
+      }
+      Object {
+	$PropName		"EditorsInfo"
+	$ObjectID		5
+	$ClassName		"Simulink.EditorInfo"
+	IsActive		[1]
+	ViewObjType		"SimulinkTopLevel"
+	LoadSaveID		"0"
+	Extents			[945.0, 559.0]
+	ZoomFactor		[1.0]
+	Offset			[0.0, 0.0]
+      }
+    }
+  }
   Created		  "Thu Jul 11 16:51:01 2013"
   Creator		  "ccw"
   UpdateHistory		  "UpdateHistoryNever"
   ModifiedByFormat	  "%<Auto>"
-  LastModifiedBy	  "controls"
+  LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Aug  1 12:06:31 2013"
-  RTWModifiedTimeStamp	  297259588
-  ModelVersionFormat	  "1.%<AutoIncrement:8>"
+  LastModifiedDate	  "Wed Aug 14 23:17:39 2013"
+  RTWModifiedTimeStamp	  298423047
+  ModelVersionFormat	  "1.%<AutoIncrement:11>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -25,6 +65,7 @@ Library {
   WideLines		  off
   ShowLineDimensions	  off
   ShowPortDataTypes	  off
+  ShowDesignRanges	  off
   ShowLoopsOnError	  on
   IgnoreBidirectionalLines off
   ShowStorageClass	  off
@@ -84,14 +125,14 @@ Library {
     Type		    "Handle"
     Dimension		    1
     Simulink.ConfigSet {
-      $ObjectID		      1
-      Version		      "1.10.0"
+      $ObjectID		      6
+      Version		      "1.13.0"
       Array {
 	Type			"Handle"
 	Dimension		8
 	Simulink.SolverCC {
-	  $ObjectID		  2
-	  Version		  "1.10.0"
+	  $ObjectID		  7
+	  Version		  "1.13.0"
 	  StartTime		  "0.0"
 	  StopTime		  "10.0"
 	  AbsTol		  "auto"
@@ -109,6 +150,8 @@ Library {
 	  MaxConsecutiveMinStep	  "1"
 	  RelTol		  "1e-3"
 	  SolverMode		  "Auto"
+	  EnableConcurrentExecution off
+	  ConcurrentTasks	  off
 	  Solver		  "ode45"
 	  SolverName		  "ode45"
 	  SolverJacobianMethodControl "auto"
@@ -123,8 +166,8 @@ Library {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  3
-	  Version		  "1.10.0"
+	  $ObjectID		  8
+	  Version		  "1.13.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
 	  FinalStateName	  "xFinal"
@@ -136,6 +179,7 @@ Library {
 	  SaveFinalState	  off
 	  SaveCompleteFinalSimState off
 	  SaveFormat		  "Array"
+	  SignalLoggingSaveFormat "ModelDataLogs"
 	  SaveOutput		  on
 	  SaveState		  off
 	  SignalLogging		  on
@@ -154,8 +198,8 @@ Library {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  4
-	  Version		  "1.10.0"
+	  $ObjectID		  9
+	  Version		  "1.13.0"
 	  Array {
 	    Type		    "Cell"
 	    Dimension		    8
@@ -174,12 +218,13 @@ Library {
 	  ConditionallyExecuteInputs on
 	  InlineParams		  off
 	  UseIntDivNetSlope	  off
+	  UseFloatMulNetSlope	  off
+	  UseSpecifiedMinMax	  off
 	  InlineInvariantSignals  off
 	  OptimizeBlockIOStorage  on
 	  BufferReuse		  on
 	  EnhancedBackFolding	  off
 	  StrengthReduction	  off
-	  EnforceIntegerDowncast  on
 	  ExpressionFolding	  on
 	  BooleansAsBitfields	  off
 	  BitfieldContainerType	  "uint_T"
@@ -206,10 +251,11 @@ Library {
 	  BufferReusableBoundary  on
 	  SimCompilerOptimization "Off"
 	  AccelVerboseBuild	  off
+	  ParallelExecutionInRapidAccelerator on
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  5
-	  Version		  "1.10.0"
+	  $ObjectID		  10
+	  Version		  "1.13.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
 	  ArrayBoundsChecking	  "none"
@@ -232,6 +278,8 @@ Library {
 	  MinStepSizeMsg	  "warning"
 	  TimeAdjustmentMsg	  "none"
 	  MaxConsecutiveZCsMsg	  "error"
+	  MaskedZcDiagnostic	  "warning"
+	  IgnoredZcDiagnostic	  "warning"
 	  SolverPrmCheckMsg	  "warning"
 	  InheritedTsInSrcMsg	  "warning"
 	  DiscreteInheritContinuousMsg "warning"
@@ -256,18 +304,20 @@ Library {
 	  UnnecessaryDatatypeConvMsg "none"
 	  VectorMatrixConversionMsg "none"
 	  InvalidFcnCallConnMsg	  "error"
-	  FcnCallInpInsideContextMsg "Use local settings"
+	  FcnCallInpInsideContextMsg "UseLocalSettings"
 	  SignalLabelMismatchMsg  "none"
 	  UnconnectedInputMsg	  "warning"
 	  UnconnectedOutputMsg	  "warning"
 	  UnconnectedLineMsg	  "warning"
 	  SFcnCompatibilityMsg	  "none"
+	  FrameProcessingCompatibilityMsg "warning"
 	  UniqueDataStoreMsg	  "none"
 	  BusObjectLabelMismatch  "warning"
 	  RootOutportRequireBusObject "warning"
 	  AssertControl		  "UseLocalSettings"
 	  EnableOverflowDetection off
 	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
 	  ModelReferenceVersionMismatchMessage "none"
 	  ModelReferenceIOMismatchMessage "none"
 	  ModelReferenceCSMismatchMessage "none"
@@ -277,29 +327,53 @@ Library {
 	  ModelReferenceExtraNoncontSigs "error"
 	  StateNameClashWarn	  "warning"
 	  SimStateInterfaceChecksumMismatchMsg "warning"
+	  SimStateOlderReleaseMsg "error"
+	  InitInArrayFormatMsg	  "warning"
 	  StrictBusMsg		  "ErrorLevel1"
 	  BusNameAdapt		  "WarnAndRepair"
 	  NonBusSignalsTreatedAsBus "none"
 	  LoggingUnavailableSignals "error"
 	  BlockIODiagnostic	  "none"
+	  SFUnusedDataAndEventsDiag "warning"
+	  SFUnexpectedBacktrackingDiag "warning"
+	  SFInvalidInputDataAccessInChartInitDiag "warning"
+	  SFNoUnconditionalDefaultTransitionDiag "warning"
+	  SFTransitionOutsideNaturalParentDiag "warning"
+	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUndirectedBroadcastEventsDiag "warning"
+	  SFTransitionActionBeforeConditionDiag	"warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  6
-	  Version		  "1.10.0"
+	  $ObjectID		  11
+	  Version		  "1.13.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
 	  ProdBitPerInt		  32
 	  ProdBitPerLong	  32
+	  ProdBitPerLongLong	  64
+	  ProdBitPerFloat	  32
+	  ProdBitPerDouble	  64
+	  ProdBitPerPointer	  32
+	  ProdLargestAtomicInteger "Char"
+	  ProdLargestAtomicFloat  "None"
 	  ProdIntDivRoundTo	  "Undefined"
 	  ProdEndianess		  "Unspecified"
 	  ProdWordSize		  32
 	  ProdShiftRightIntArith  on
+	  ProdLongLongMode	  off
 	  ProdHWDeviceType	  "32-bit Generic"
 	  TargetBitPerChar	  8
 	  TargetBitPerShort	  16
 	  TargetBitPerInt	  32
 	  TargetBitPerLong	  32
+	  TargetBitPerLongLong	  64
+	  TargetBitPerFloat	  32
+	  TargetBitPerDouble	  64
+	  TargetBitPerPointer	  32
+	  TargetLargestAtomicInteger "Char"
+	  TargetLargestAtomicFloat "None"
 	  TargetShiftRightIntArith on
+	  TargetLongLongMode	  off
 	  TargetIntDivRoundTo	  "Undefined"
 	  TargetEndianess	  "Unspecified"
 	  TargetWordSize	  32
@@ -311,11 +385,12 @@ Library {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  7
-	  Version		  "1.10.0"
+	  $ObjectID		  12
+	  Version		  "1.13.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
 	  EnableParallelModelReferenceBuilds off
+	  ParallelModelReferenceErrorOnInvalidPool on
 	  ParallelModelReferenceMATLABWorkerInit "None"
 	  ModelReferenceNumInstancesAllowed "Multi"
 	  PropagateVarSize	  "Infer from blocks in model"
@@ -325,8 +400,8 @@ Library {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  8
-	  Version		  "1.10.0"
+	  $ObjectID		  13
+	  Version		  "1.13.0"
 	  SFSimEnableDebug	  on
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -335,12 +410,13 @@ Library {
 	  SimExtrinsic		  on
 	  SimIntegrity		  on
 	  SimUseLocalCustomCode	  off
+	  SimParseCustomCode	  on
 	  SimBuildMode		  "sf_incremental_build"
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  9
-	  Version		  "1.10.0"
+	  $ObjectID		  14
+	  Version		  "1.13.0"
 	  Array {
 	    Type		    "Cell"
 	    Dimension		    15
@@ -365,6 +441,7 @@ Library {
 	  GenCodeOnly		  off
 	  MakeCommand		  "make_rtw"
 	  GenerateMakefile	  on
+	  PackageGeneratedCodeAndArtifacts off
 	  TemplateMakefile	  "grt_default_tmf"
 	  GenerateReport	  off
 	  SaveLog		  off
@@ -381,6 +458,14 @@ Library {
 	  RTWUseSimCustomCode	  off
 	  IncludeHyperlinkInReport off
 	  LaunchReport		  off
+	  PortableWordSizes	  off
+	  GenerateErtSFunction	  off
+	  CreateSILPILBlock	  "None"
+	  CodeExecutionProfiling  off
+	  CodeExecutionProfileVariable "executionProfile"
+	  CodeProfilingSaveOptions "SummaryOnly"
+	  CodeProfilingInstrumentation off
+	  SILDebugging		  off
 	  TargetLang		  "C"
 	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
 	  IncludeERTFirstTime	  off
@@ -390,6 +475,9 @@ Library {
 	  GenerateTraceReportSf	  off
 	  GenerateTraceReportEml  off
 	  GenerateCodeInfo	  off
+	  GenerateWebview	  off
+	  GenerateCodeMetricsReport off
+	  GenerateCodeReplacementReport	off
 	  RTWCompilerOptimization "Off"
 	  CheckMdlBeforeBuild	  "Off"
 	  CustomRebuildMode	  "OnUpdate"
@@ -397,8 +485,8 @@ Library {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      10
-	      Version		      "1.10.0"
+	      $ObjectID		      15
+	      Version		      "1.13.0"
 	      Array {
 		Type			"Cell"
 		Dimension		22
@@ -435,9 +523,11 @@ Library {
 	      PreserveName	      off
 	      PreserveNameWithParent  off
 	      ShowEliminatedStatement off
+	      OperatorAnnotations     off
 	      IncAutoGenComments      off
 	      SimulinkDataObjDesc     off
 	      SFDataObjDesc	      off
+	      MATLABFcnDesc	      off
 	      IncDataTypeInIds	      off
 	      MangleLength	      1
 	      CustomSymbolStrGlobalVar "$R$N$M"
@@ -452,16 +542,19 @@ Library {
 	      ParamNamingRule	      "None"
 	      SignalNamingRule	      "None"
 	      InsertBlockDesc	      off
+	      InsertPolySpaceComments off
 	      SimulinkBlockComments   on
+	      MATLABSourceComments    off
 	      EnableCustomComments    off
+	      InternalIdentifier      "Shortened"
 	      InlinedPrmAccess	      "Literals"
 	      ReqsInCode	      off
 	      UseSimReservedNames     off
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      11
-	      Version		      "1.10.0"
+	      $ObjectID		      16
+	      Version		      "1.13.0"
 	      Array {
 		Type			"Cell"
 		Dimension		15
@@ -485,10 +578,9 @@ Library {
 	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
 	      TargetLibSuffix	      ""
 	      TargetPreCompLibLocation ""
-	      TargetFunctionLibrary   "ANSI_C"
+	      CodeReplacementLibrary  "ANSI_C"
 	      UtilityFuncGeneration   "Auto"
 	      ERTMultiwordTypeDef     "System defined"
-	      ERTCodeCoverageTool     "None"
 	      ERTMultiwordLength      256
 	      MultiwordLength	      2048
 	      GenerateFullHeader      on
@@ -498,9 +590,11 @@ Library {
 	      ModelReferenceCompliant on
 	      ParMdlRefBuildCompliant on
 	      CompOptLevelCompliant   on
+	      ConcurrentExecutionCompliant on
 	      IncludeMdlTerminateFcn  on
 	      GeneratePreprocessorConditionals "Disable all"
-	      CombineOutputUpdateFcns on
+	      CombineOutputUpdateFcns off
+	      CombineSignalStateStructs	off
 	      SuppressErrorStatus     off
 	      ERTFirstTimeCompliant   off
 	      IncludeFileDelimiter    "Auto"
@@ -517,10 +611,12 @@ Library {
 	      SupportVariableSizeSignals off
 	      EnableShiftOperators    on
 	      ParenthesesLevel	      "Nominal"
-	      PortableWordSizes	      off
+	      MATLABClassNameForMDSCustomization "Simulink.SoftwareTarget.GRTCustomization"
 	      ModelStepFunctionPrototypeControlCompliant off
 	      CPPClassGenCompliant    off
 	      AutosarCompliant	      off
+	      GRTInterface	      on
+	      GenerateAllocFcn	      off
 	      UseMalloc		      off
 	      ExtMode		      off
 	      ExtModeStaticAlloc      off
@@ -532,6 +628,7 @@ Library {
 	      RTWCAPISignals	      off
 	      RTWCAPIParams	      off
 	      RTWCAPIStates	      off
+	      RTWCAPIRootIO	      off
 	      GenerateASAP2	      off
 	    }
 	    PropName		    "Components"
@@ -541,10 +638,11 @@ Library {
       }
       Name		      "Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition    " [ 280, 135, 1160, 765 ] "
+      ConfigPrmDlgPosition     [ 280, 135, 1160, 765 ] 
     }
     PropName		    "ConfigurationSets"
   }
+  ExplicitPartitioning	  off
   BlockDefaults {
     ForegroundColor	    "black"
     BackgroundColor	    "white"
@@ -576,26 +674,56 @@ Library {
     FontWeight		    "normal"
     FontAngle		    "normal"
   }
+  MaskDefaults {
+    SelfModifiable	    "off"
+    IconFrame		    "on"
+    IconOpaque		    "on"
+    RunInitForIconRedraw    "off"
+    IconRotate		    "none"
+    PortRotate		    "default"
+    IconUnits		    "autoscale"
+  }
+  MaskParameterDefaults {
+    Evaluate		    "on"
+    Tunable		    "on"
+    NeverSave		    "off"
+    Internal		    "off"
+    ReadOnly		    "off"
+    Enabled		    "on"
+    Visible		    "on"
+    ToolTip		    "on"
+  }
   BlockParameterDefaults {
+    Block {
+      BlockType		      Gain
+      Gain		      "1"
+      Multiplication	      "Element-wise(K.*u)"
+      ParamMin		      "[]"
+      ParamMax		      "[]"
+      ParamDataTypeStr	      "Inherit: Same as input"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
     Block {
       BlockType		      Ground
     }
     Block {
       BlockType		      Inport
       Port		      "1"
-      UseBusObject	      off
-      BusObject		      "BusObject"
+      OutputFunctionCall      off
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
       BusOutputAsStruct	      off
       PortDimensions	      "-1"
       VarSizeSig	      "Inherit"
       SampleTime	      "-1"
-      OutMin		      "[]"
-      OutMax		      "[]"
-      DataType		      "auto"
-      OutDataType	      "fixdt(1,16,0)"
-      OutScaling	      "[]"
-      OutDataTypeStr	      "Inherit: auto"
-      LockScale		      off
       SignalType	      "auto"
       SamplingMode	      "auto"
       LatchByDelayingOutsideSignal off
@@ -605,19 +733,14 @@ Library {
     Block {
       BlockType		      Outport
       Port		      "1"
-      UseBusObject	      off
-      BusObject		      "BusObject"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
       BusOutputAsStruct	      off
       PortDimensions	      "-1"
       VarSizeSig	      "Inherit"
       SampleTime	      "-1"
-      OutMin		      "[]"
-      OutMax		      "[]"
-      DataType		      "auto"
-      OutDataType	      "fixdt(1,16,0)"
-      OutScaling	      "[]"
-      OutDataTypeStr	      "Inherit: auto"
-      LockScale		      off
       SignalType	      "auto"
       SamplingMode	      "auto"
       SourceOfInitialOutputValue "Dialog"
@@ -634,6 +757,7 @@ Library {
       SystemSampleTime	      "-1"
       RTWFcnNameOpts	      "Auto"
       RTWFileNameOpts	      "Auto"
+      FunctionInterfaceSpec   "void_void"
       RTWMemSecFuncInitTerm   "Inherit from model"
       RTWMemSecFuncExecute    "Inherit from model"
       RTWMemSecDataConstants  "Inherit from model"
@@ -641,12 +765,16 @@ Library {
       RTWMemSecDataParameters "Inherit from model"
       SimViewingDevice	      off
       DataTypeOverride	      "UseLocalSettings"
+      DataTypeOverrideAppliesTo	"AllNumericTypes"
       MinMaxOverflowLogging   "UseLocalSettings"
+      SFBlockType	      "NONE"
+      Variant		      off
+      GeneratePreprocessorConditionals off
     }
   }
   System {
     Name		    "NbLibrary"
-    Location		    [55, 80, 887, 674]
+    Location		    [21, 45, 1213, 781]
     Open		    on
     ModelBrowserVisibility  on
     ModelBrowserWidth	    200
@@ -660,16 +788,15 @@ Library {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    10
+    SIDHighWatermark	    "24"
     Block {
       BlockType		      SubSystem
-      Name		      "NbNoiseSink"
-      SID		      5
-      Description	      "NbNoiseSink: EDIT BLOCK DESCRIPTION TO CONFIGURE"
+      Name		      "Filter Module"
+      SID		      "11"
       Ports		      [1, 1]
-      Position		      [150, 87, 175, 103]
-      BackgroundColor	      "orange"
-      AttributesFormatString  "%<Description>"
+      Position		      [105, 162, 225, 198]
+      ZOrder		      1
+      BackgroundColor	      "[0.000000, 0.400000, 1.000000]"
       MinAlgLoopOccurrences   off
       PropExecContextOutsideSubsystem off
       RTWSystemCode	      "Auto"
@@ -677,9 +804,455 @@ Library {
       Opaque		      off
       RequestExecContextInheritance off
       MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		17
+	$ClassName		"Simulink.Mask"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  11
+	  Object {
+	    $ObjectID		    18
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM1/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm1"
+	    Prompt		    "FM1 filter"
+	    Value		    "fm1"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    19
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM2/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm2"
+	    Prompt		    "FM2 filter"
+	    Value		    "fm2"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    20
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM3/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm3"
+	    Prompt		    "FM3 filter"
+	    Value		    "fm3"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    21
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM4/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm4"
+	    Prompt		    "FM4 filter"
+	    Value		    "fm4"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    22
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM5/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm5"
+	    Prompt		    "FM5 filter"
+	    Value		    "fm5"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    23
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM6/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm6"
+	    Prompt		    "FM6 filter"
+	    Value		    "fm6"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    24
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM7/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm7"
+	    Prompt		    "FM7 filter"
+	    Value		    "fm7"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    25
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM8/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm8"
+	    Prompt		    "FM8 filter"
+	    Value		    "fm8"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    26
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM9/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm9"
+	    Prompt		    "FM9 filter"
+	    Value		    "fm9"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    27
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "FM10/sys"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "fm10"
+	    Prompt		    "FM10 filter"
+	    Value		    "fm10"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    28
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "Gain2/Gain"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "gain"
+	    Prompt		    "gain"
+	    Value		    "gain"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Filter Module"
+	Location		[21, 45, 1213, 781]
+	Open			off
+	ModelBrowserVisibility	on
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "IN"
+	  SID			  "12"
+	  Position		  [60, 43, 90, 57]
+	  ZOrder		  -1
+	  BackgroundColor	  "yellow"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM1"
+	  SID			  "13"
+	  Ports			  [1, 1]
+	  Position		  [145, 25, 225, 75]
+	  ZOrder		  -2
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm1"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM10"
+	  SID			  "14"
+	  Ports			  [1, 1]
+	  Position		  [545, 115, 625, 165]
+	  ZOrder		  -3
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm10"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM2"
+	  SID			  "15"
+	  Ports			  [1, 1]
+	  Position		  [245, 25, 325, 75]
+	  ZOrder		  -4
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm2"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM3"
+	  SID			  "16"
+	  Ports			  [1, 1]
+	  Position		  [345, 25, 425, 75]
+	  ZOrder		  -5
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm3"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM4"
+	  SID			  "17"
+	  Ports			  [1, 1]
+	  Position		  [445, 25, 525, 75]
+	  ZOrder		  -6
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm4"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM5"
+	  SID			  "18"
+	  Ports			  [1, 1]
+	  Position		  [545, 25, 625, 75]
+	  ZOrder		  -7
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm5"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM6"
+	  SID			  "19"
+	  Ports			  [1, 1]
+	  Position		  [145, 115, 225, 165]
+	  ZOrder		  -8
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm6"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM7"
+	  SID			  "20"
+	  Ports			  [1, 1]
+	  Position		  [245, 115, 325, 165]
+	  ZOrder		  -9
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm7"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM8"
+	  SID			  "21"
+	  Ports			  [1, 1]
+	  Position		  [345, 115, 425, 165]
+	  ZOrder		  -10
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm8"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM9"
+	  SID			  "22"
+	  Ports			  [1, 1]
+	  Position		  [445, 115, 525, 165]
+	  ZOrder		  -11
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fm9"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain2"
+	  SID			  "23"
+	  Position		  [660, 102, 820, 178]
+	  ZOrder		  -12
+	  ShowName		  off
+	  Gain			  "gain"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "OUT"
+	  SID			  "24"
+	  Position		  [875, 133, 905, 147]
+	  ZOrder		  -13
+	  BackgroundColor	  "orange"
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "FM1"
+	  SrcPort		  1
+	  DstBlock		  "FM2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM2"
+	  SrcPort		  1
+	  DstBlock		  "FM3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM3"
+	  SrcPort		  1
+	  DstBlock		  "FM4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM4"
+	  SrcPort		  1
+	  DstBlock		  "FM5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM6"
+	  SrcPort		  1
+	  DstBlock		  "FM7"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM7"
+	  SrcPort		  1
+	  DstBlock		  "FM8"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM8"
+	  SrcPort		  1
+	  DstBlock		  "FM9"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM9"
+	  SrcPort		  1
+	  DstBlock		  "FM10"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "IN"
+	  SrcPort		  1
+	  DstBlock		  "FM1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM10"
+	  SrcPort		  1
+	  DstBlock		  "Gain2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain2"
+	  SrcPort		  1
+	  DstBlock		  "OUT"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM5"
+	  SrcPort		  1
+	  Points		  [0, 55; -500, 0]
+	  DstBlock		  "FM6"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "NbNoiseSink"
+      SID		      "5"
+      Tag		      "NbNoiseSink"
+      Ports		      [1, 1]
+      Position		      [150, 87, 175, 103]
+      ZOrder		      -1
+      BackgroundColor	      "orange"
+      AttributesFormatString  "%<Tag>"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		29
+	$ClassName		"Simulink.Mask"
+	Object {
+	  $PropName		  "Parameters"
+	  $ObjectID		  30
+	  $ClassName		  "Simulink.MaskParameter"
+	  Type			  "edit"
+	  Name			  "dof"
+	  Prompt		  "dof"
+	  Value			  "'DOF'"
+	  Evaluate		  "off"
+	  Tunable		  "off"
+	}
+      }
       System {
 	Name			"NbNoiseSink"
-	Location		[71, 133, 871, 655]
+	Location		[12, 45, 908, 1037]
 	Open			off
 	ModelBrowserVisibility	on
 	ModelBrowserWidth	200
@@ -695,15 +1268,17 @@ Library {
 	Block {
 	  BlockType		  Inport
 	  Name			  " "
-	  SID			  9
+	  SID			  "9"
 	  Position		  [20, 23, 50, 37]
+	  ZOrder		  -1
 	  IconDisplay		  "Port number"
 	}
 	Block {
 	  BlockType		  Outport
 	  Name			  "  "
-	  SID			  10
+	  SID			  "10"
 	  Position		  [125, 23, 155, 37]
+	  ZOrder		  -2
 	  IconDisplay		  "Port number"
 	}
 	Line {
@@ -718,12 +1293,13 @@ Library {
     Block {
       BlockType		      SubSystem
       Name		      "NbNoiseSource"
-      SID		      3
-      Description	      "NbNoiseSource: EDIT BLOCK DESCRIPTION TO CONFIGURE"
+      SID		      "3"
+      Tag		      "NbNoiseSource"
       Ports		      [0, 1]
       Position		      [150, 17, 175, 33]
+      ZOrder		      -2
       BackgroundColor	      "orange"
-      AttributesFormatString  "%<Description>"
+      AttributesFormatString  "%<Tag>"
       MinAlgLoopOccurrences   off
       PropExecContextOutsideSubsystem off
       RTWSystemCode	      "Auto"
@@ -731,9 +1307,25 @@ Library {
       Opaque		      off
       RequestExecContextInheritance off
       MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		31
+	$ClassName		"Simulink.Mask"
+	Object {
+	  $PropName		  "Parameters"
+	  $ObjectID		  32
+	  $ClassName		  "Simulink.MaskParameter"
+	  Type			  "edit"
+	  Name			  "asd"
+	  Prompt		  "amplitude spectral density"
+	  Value			  "asd"
+	  Evaluate		  "off"
+	  Tunable		  "off"
+	}
+      }
       System {
 	Name			"NbNoiseSource"
-	Location		[55, 77, 887, 671]
+	Location		[12, 45, 940, 1109]
 	Open			off
 	ModelBrowserVisibility	on
 	ModelBrowserWidth	200
@@ -749,15 +1341,17 @@ Library {
 	Block {
 	  BlockType		  Ground
 	  Name			  "Ground"
-	  SID			  1
+	  SID			  "1"
 	  Position		  [20, 20, 40, 40]
+	  ZOrder		  -1
 	  ShowName		  off
 	}
 	Block {
 	  BlockType		  Outport
 	  Name			  " "
-	  SID			  4
+	  SID			  "4"
 	  Position		  [105, 23, 135, 37]
+	  ZOrder		  -2
 	  IconDisplay		  "Port number"
 	}
 	Line {

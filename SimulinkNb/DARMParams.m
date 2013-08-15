@@ -185,6 +185,9 @@ tmp = incoherentSum(lisoNoises([quadLisoDir 'PUM/D070483-05-K_LISO' ...
 ifoParams.act.drivers.pum.selfNoise = interp1(tmp.f, tmp.asd, ifoParams.freq)/sqrt(4);
 cd(currentDir);
 
+ifoParams.act.squeezedFilmDampingNoise = 1.53e-14; % N/rtHz (T0900582, 5 mm gap)
+%ifoParams.act.squeezedFilmDampingNoise = 5.9e-15; % N/rtHz (T0900582, 2 cm gap)
+
 %%
 %tmp = load(fileName.quadModel);
 % Due to backward compatibility issues with the saved quadModel .mat file,

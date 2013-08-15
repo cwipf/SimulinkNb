@@ -18,7 +18,7 @@ used.
 == File overview ==
 
 * run_DARM_NB.m
-Main script and a helper function used for the demo.
+Main script used for the demo.
 
 * linFlexTf.m, linFlexTfFold.m
 Functions for incorporating frequency response data into Simulink
