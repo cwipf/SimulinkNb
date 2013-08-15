@@ -38,6 +38,46 @@ if numel(flexTfBlocks) < 1
     return;
 end
 
+%% Check for nested FlexTfs
+% Each FlexTf block 'shadows' any FlexTf blocks it contains.  Shadowed
+% blocks are disregarded.
+
+notShadowedAnywhere = true(size(flexTfBlocks));
+for n = 1:numel(flexTfBlocks)
+    blk = flexTfBlocks{n};
+    shadowed = strncmp([blk '/'], flexTfBlocks, length(blk)+1);
+    if any(shadowed)
+        shadowedBlocks = flexTfBlocks(shadowed);
+        warning(['FlexTf block ' blk ' shadows other FlexTf blocks: ' ...
+            sprintf('%s, ', shadowedBlocks{1:end-1}) shadowedBlocks{end}]);
+        notShadowedAnywhere = notShadowedAnywhere & ~shadowed;
+    end
+end
+
+% Remove shadowed blocks from the list
+flexTfBlocks = flexTfBlocks(notShadowedAnywhere);
+
+%% Check for linearization I/O points inside FlexTf blocks
+% I/O points may be passed as arguments to this function.  If one of them
+% is located inside a FlexTf block, this should be flagged as an error.
+
+for n = 1:numel(varargin)
+    io = varargin{n};
+    if ~isa(io, 'linearize.IOPoint')
+        continue;
+    end
+    ioBlocks = {io.Block};
+
+    for j = 1:numel(flexTfBlocks)
+        blk = flexTfBlocks{j};
+        inFlexTf = strncmp([blk '/'], ioBlocks, length(blk)+1);
+        if any(inFlexTf)
+            error(['One of the requested linearization I/O points is ' ...
+                'contained in the FlexTf block ' blk]);
+        end
+    end
+end
+
 %% Extract and evaluate each FlexTf block's expression
 
 for n = 1:numel(flexTfBlocks)
