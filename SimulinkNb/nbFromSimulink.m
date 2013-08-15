@@ -42,9 +42,9 @@ disp([num2str(numel(nbNoiseSinks)) ' NbNoiseSink blocks found in model ' strtrim
 
 for n = 1:numel(nbNoiseSinks)
     blk = nbNoiseSinks{n};
-    msk = Simulink.Mask.get(blk);
-    expr = msk.getParameter('dof');
-    expr = expr.Value;
+    maskNames = get_param(blk, 'MaskNames');
+    maskVals = get_param(blk, 'MaskValues');
+    expr = maskVals{strcmp('dof', maskNames)};
     disp(['    ' blk ' :: ' expr]);
 end
 
@@ -67,9 +67,9 @@ noises = num2cell(struct('name', nbNoiseSources, 'f', freq, 'asd', []))';
 io(1) = linio(nbNoiseSinks{1}, 1, 'out', 'on');
 for n = 1:numel(nbNoiseSources)
     blk = nbNoiseSources{n};
-    msk = Simulink.Mask.get(blk);
-    expr = msk.getParameter('asd');
-    expr = expr.Value;
+    maskNames = get_param(blk, 'MaskNames');
+    maskVals = get_param(blk, 'MaskValues');
+    expr = maskVals{strcmp('asd', maskNames)};
     disp(['    ' blk ' :: ' expr]);
     % Note: evaluation is done in the base workspace (any variables set in
     % the model workspace are ignored).  The NbNoiseSource block mask is
