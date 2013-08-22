@@ -1,10 +1,9 @@
-function DARMParams
+function darmParams
 %DARMPARAMS  Defines parameters for the DARM.mdl Simulink model
 %
 % It outputs to a variable called "ifoParams" in the matlab workspace.
 % 
-% J. Kissel, April 2013
-% C. Wipf, July 2013
+% based on the DARM calibration model by J. Kissel, April 2013
 
 %% Common Parameters
 ifoParams.paramsFileName = mfilename('fullpath');
@@ -19,13 +18,12 @@ quadModelDir = [svnDir.sus 'Common/SusModelTags/Matlab/'];
 quadModelProductionDir = [svnDir.sus 'QUAD/Common/MatlabTools/QuadModel_Production'];
 quadFilterDir = [svnDir.sus 'QUAD/Common/FilterDesign/'];
 calToolsDir = [svnDir.cal 'Common/MatlabTools/'];
-noiseModelDir = [svnDir.anb 'Dev/MatlabTools/DrillDownNB'];
 quadLisoDir = [svnDir.anb 'Dev/SusElectronics/LISO/QUAD/'];
 
 currentDir = pwd;
 
 fileName.quadModel  = [quadModelDir 'quadmodelproduction-rev3767_ssmake4pv2eMB5f_fiber-rev3601_fiber-rev3602_released-2013-01-31.mat'];
-fileName.dampFilters = [quadFilterDir 'MatFiles/dampingfilters_QUAD_20121121.mat'];
+fileName.dampFilters = [quadFilterDir 'MatFiles/dampingfilters_QUAD_2013-05-01.mat'];
 fileName.darmFilters = [quadFilterDir 'HierarchicalControl/2013-01-08_DARMQUAD_HierDesign.mat'];
 
 ifoParams.filterDir.sus = [svnDir.cds 'sus/' ifoParams.name '/filterfiles/'];
@@ -156,48 +154,16 @@ tmp = lisoFrd([quadLisoDir 'PUM/D070483-05-K_LISO' ...
     '_IOUTPUT.out']);
 ifoParams.act.drivers.pum.frd = interp(tmp, ifoParams.freq);
 
-% Noise spectra
-% Note: each length actuator consists of multiple coils (TOP coil count = 2
-% and UIM/PUM coil count = 4).  Simulink TFs assume that the coils add
-% coherently.  But the coil noise spectra should be summed incoherently,
-% and so they are rescaled here by the sqrt of the coil count.
-ifoParams.act.drivers.top.dacNoise = 100e-9/sqrt(2);
-ifoParams.act.drivers.uim.dacNoise = 100e-9/sqrt(4);
-ifoParams.act.drivers.pum.dacNoise = 100e-9/sqrt(4);
-
-cd(noiseModelDir);
-tmp = incoherentSum(lisoNoises([quadLisoDir 'TOP/D0902747-v9_LISO' ...
-    '_SWLP-' num2str(ifoParams.act.drivers.top.state.lp) ...
-    '_NoiseIcoil.out']));
-ifoParams.act.drivers.top.selfNoise = interp1(tmp.f, tmp.asd, ifoParams.freq)/sqrt(2);
-
-tmp = incoherentSum(lisoNoises([quadLisoDir 'UIM/D070481-04-K_LISO' ...
-    '_SWLP3-' num2str(ifoParams.act.drivers.uim.state.lp3) ...
-    '_SWLP2-' num2str(ifoParams.act.drivers.uim.state.lp2) ...
-    '_SWLP1-' num2str(ifoParams.act.drivers.uim.state.lp1) ...
-    '_NoiseIcoil.out']));
-ifoParams.act.drivers.uim.selfNoise = interp1(tmp.f, tmp.asd, ifoParams.freq)/sqrt(4);
-
-tmp = incoherentSum(lisoNoises([quadLisoDir 'PUM/D070483-05-K_LISO' ...
-    '_SWLP-' num2str(ifoParams.act.drivers.pum.state.lp) ...
-    '_SWACQ-' num2str(ifoParams.act.drivers.pum.state.acq) ...
-    '_NoiseIcoil.out']));
-ifoParams.act.drivers.pum.selfNoise = interp1(tmp.f, tmp.asd, ifoParams.freq)/sqrt(4);
-cd(currentDir);
-
-ifoParams.act.squeezedFilmDampingNoise = 1.53e-14; % N/rtHz (T0900582, 5 mm gap)
-%ifoParams.act.squeezedFilmDampingNoise = 5.9e-15; % N/rtHz (T0900582, 2 cm gap)
-
 %%
 %tmp = load(fileName.quadModel);
 % Due to backward compatibility issues with the saved quadModel .mat file,
 % generate a fresh model instead.
 cd(quadModelProductionDir);
 currentFontSize = get(0, 'DefaultAxesFontSize'); % prevent model generator from messing with the font size
-tmp.quadModel = generate_QUAD_Model_Production(ifoParams.freq, 'fiber');
+quadModel = generate_QUAD_Model_Production(ifoParams.freq, 'fiber');
 set(0, 'DefaultAxesFontSize', currentFontSize);
 cd(currentDir);
-ifoParams.act.quadModel.ss = prescale(tmp.quadModel.ss, {2*pi*min(ifoParams.freq), 2*pi*max(ifoParams.freq)});
+ifoParams.act.quadModel.ss = prescale(quadModel.ss, {2*pi*min(ifoParams.freq), 2*pi*max(ifoParams.freq)});
 ifoParams.act.quadModel.frd = frd(ifoParams.act.quadModel.ss, ifoParams.freq, 'Units', 'Hz');
 %%
 tmp = load(fileName.dampFilters);
@@ -207,7 +173,6 @@ ifoParams.act.damp(3).ss = tmp.calibFilter.V.ss;
 ifoParams.act.damp(4).ss = tmp.calibFilter.R.ss;
 ifoParams.act.damp(5).ss = tmp.calibFilter.P.ss;
 ifoParams.act.damp(6).ss = tmp.calibFilter.Y.ss;
-
 
 ifoParams.act.esdBias_ct = 1000;
 
@@ -228,7 +193,7 @@ ifoParams.sens.preamp.zswitch.state = 1; % 1 corresponds to energized, 400 Ohms
 
 ifoParams.sens.iscinf(1).ss = ss(zpk([],[],1));                                         
                                          
-ifoParams.sens.whitening.stage1.state = 1; % 1 bypasses whitening
+ifoParams.sens.whitening.stage1.state = 0; % 1 bypasses whitening
 ifoParams.sens.whitening.stage2.state = 0; % 1 bypasses whitening
 
 ifoParams.sens.ifo2pd1 = 0.5;
@@ -249,7 +214,7 @@ if isfield(ifoParams.sens.cavityPole,'avgFreq')
     % Would love to use the full Fabry-Perot response, but can't figure out
     % how to make an LTI without tons of poles and zeros to represent the
     % FSR resonances. For now, just go back to using a cavity pole.
-    % (This should be replaced by a FlexTf)
+    % (FlexTf can be used instead, see below)
     cavityResponse = ss(zpk([], -2*pi*poleFreq, 2*pi*poleFreq));
     cavityResponse = ifoParams.sens.laserPower * ...
                      ifoParams.sens.ifoResponse.opticalGain_1W * ...
@@ -262,13 +227,33 @@ else
     % Would love to use the full Fabry-Perot response, but can't figure out
     % how to make an LTI without tons of poles and zeros to represent the
     % FSR resonances. For now, just go back to using a cavity pole.
-    % (This should be replaced by a FlexTf)
+    % (FlexTf can be used instead, see below)
     cavityResponse = ss((zpk([], -2*pi*xPoleFreq, 2*pi*xPoleFreq)+zpk([], -2*pi*yPoleFreq, 2*pi*yPoleFreq))/2) ;
     cavityResponse = ifoParams.sens.laserPower * ...
                      ifoParams.sens.ifoResponse.opticalGain_1W * ...
                      cavityResponse;
 end
 ifoParams.sens.ifoResponse.ss = cavityResponse;
+
+% Cavity response FRD from Lentickle (25 W input)
+% Note: Lentickle model assumes 25 W input.  The model must be re-run to
+% update radiation pressure effects and quantum noise if the input power
+% changes.
+
+if (ifoParams.sens.laserPower ~= 25)
+    warning('ifoParams.sens.laserPower is not consistent with the Lentickle model');
+end
+
+currentWarnState = warning('off','MATLAB:unknownElementsNowStruc');
+tickleData = load('DarmLentickle.mat'); % from running LentickleAligo/FullIFO model
+warning(currentWarnState);
+
+sensNames = tickleData.cucumber.sensNames;
+dofNames = tickleData.cucumber.dofNames;
+omcSensing = squeeze(tickleData.results.mirrSens(strcmp('OMC_DC', sensNames),:,:))';
+omcSensing = omcSensing *ifoParams.sens.laserPower/25;
+sensingFromDARM = omcSensing * tickleData.cucumber.dofMirr(:,strcmp('DARM', dofNames));
+ifoParams.sens.ifoResponse.frd = interp(frd(sensingFromDARM, tickleData.results.f, 'Units', 'Hz'), ifoParams.freq);
 
 ifoParams.sens.armTimeDelay.sec = ifoParams.armLightTransitTime;
 ifoParams.sens.armTimeDelay.f   = exp(-2*pi*1i*ifoParams.freq(:)*ifoParams.sens.armTimeDelay.sec);
