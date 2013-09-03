@@ -16,6 +16,6 @@ darmNbParams;
 %% Make a quick NB plot
 
 disp('Plotting noises')
-nb = nbGroupNoises('DARM', noises);
+nb = nbGroupNoises('DARM', noises, sys);
 nb.sortModel();
 matlabNoisePlot(nb);
