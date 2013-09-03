@@ -160,9 +160,8 @@ sys = prescale(sys, {2*pi*min(freq), 2*pi*max(freq)}); % attempt to improve nume
 sys = linFlexTfFold(sys, flexTfs);
 
 % Set sys input/output names to meaningful values
+sys.InputName = [{nbNoiseCal} nbNoiseSources'];
 sys.OutputName = nbNoiseSink;
-sys(1).InputName = nbNoiseCal;
-sys(2:end).InputName = nbNoiseSources;
 
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 

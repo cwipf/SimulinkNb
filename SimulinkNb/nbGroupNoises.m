@@ -16,8 +16,6 @@ if ~ischar(mdl)
     error('The model name is not a string');
 elseif ~iscell(noises)
     error('The noises are not a cell array');
-elseif ~isprop(sys, 'InputName')
-    error('The sys object is not a sys object');
 elseif size(sys, 2) ~= numel(noises) + 1
     error('The noises and the sys object have mismatched dimensions')
 end
