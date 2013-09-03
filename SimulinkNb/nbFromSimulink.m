@@ -40,10 +40,6 @@ function [noises, sys] = nbFromSimulink(mdl, freq, varargin)
 %   case more than one DOF has been defined in the model.  (Any other DOFs
 %   that may be present are simply ignored.)
 %
-%   'closeModelWindow' -- if false, the function will not attempt to close
-%   the Simulink model's window.  The default is true, since the
-%   linearization is slower with the window open.
-%
 %   Output arguments:
 %
 %   NOISES -- contains the calibrated noise terms.  Each is stored in a
@@ -66,15 +62,9 @@ end
 
 % Parse parameter-value pairs in varargin
 parser = inputParser();
-parser.addParamValue('closeModelWindow', true, @islogical);
 parser.addParamValue('dof', '', @ischar);
 parser.parse(varargin{:});
 opt = parser.Results;
-
-if opt.closeModelWindow
-    load_system(mdl);
-    close_system(mdl);
-end
 
 %% Gather all NbNoiseSink and NbNoiseCal blocks
 
