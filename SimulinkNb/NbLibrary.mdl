@@ -15,9 +15,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "controls"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Aug 21 22:50:13 2013"
-  RTWModifiedTimeStamp	  299026185
-  ModelVersionFormat	  "1.%<AutoIncrement:21>"
+  LastModifiedDate	  "Tue Sep  3 16:00:49 2013"
+  RTWModifiedTimeStamp	  300124843
+  ModelVersionFormat	  "1.%<AutoIncrement:25>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -811,20 +811,25 @@ Library {
       Opaque		      off
       RequestExecContextInheritance off
       MaskHideContents	      off
-      MaskPromptString	      "Group|Amplitude spectral density"
-      MaskStyleString	      "edit,edit"
-      MaskTunableValueString  "off,off"
-      MaskCallbackString      "|"
-      MaskEnableString	      "on,on"
-      MaskVisibilityString    "on,on"
-      MaskToolTipString	      "on,on"
-      MaskVariables	      "group=&1;asd=&2;"
+      MaskPromptString	      "Amplitude spectral density|Group nesting depth|Group|Sub-group|Sub-sub-group|Sub-sub-sub"
+      "-group"
+      MaskStyleString	      "edit,popup(1|2|3|4),edit,edit,edit,edit"
+      MaskTunableValueString  "off,off,off,off,off,off"
+      MaskCallbackString      "|maskNames = get_param(gcb, 'MaskNames');\nmaskVis = get_param(gcb, 'MaskVisibilities')"
+      ";\ngroupNest = str2double(get_param(gcb, 'groupNest'));\ngroupNames = maskNames(cellfun(@(str) ~isempty(regexp(s"
+      "tr, '^(sub)*group$')), maskNames));\nfor n = 1:groupNest\n    maskVis{strcmp(maskNames, groupNames{n})} = 'on';\n"
+      "end\nfor n = groupNest+1:numel(groupNames)\n    maskVis{strcmp(maskNames, groupNames{n})} = 'off';\n    set_para"
+      "m(gcb, groupNames{n}, '''''');\nend\nset_param(gcb, 'MaskVisibilities', maskVis);||||"
+      MaskEnableString	      "on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,off,off,off"
+      MaskToolTipString	      "on,on,on,on,on,on"
+      MaskVariables	      "asd=&1;groupNest=&2;group=&3;subgroup=&4;subsubgroup=&5;subsubsubgroup=&6;"
       MaskIconFrame	      on
       MaskIconOpaque	      on
       MaskIconRotate	      "none"
       MaskPortRotate	      "default"
       MaskIconUnits	      "autoscale"
-      MaskValueString	      "''|unspecifiedAsd"
+      MaskValueString	      "unspecifiedAsd|1|''|''|''|''"
       System {
 	Name			"NbNoiseSource"
 	Location		[12, 80, 1036, 952]

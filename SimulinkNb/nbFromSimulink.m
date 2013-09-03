@@ -60,9 +60,7 @@ function [noises, sys] = nbFromSimulink(mdl, freq, varargin)
 % Validate required arguments
 if ~ischar(mdl)
     error('The model name is not a string');
-end
-
-if ~isreal(freq)
+elseif ~isreal(freq)
     error('The frequency vector is not real-valued');
 end
 
@@ -74,112 +72,63 @@ parser.parse(varargin{:});
 opt = parser.Results;
 
 if opt.closeModelWindow
-    optionally_close_system = @(mdl) close_system(mdl);
-else
-    optionally_close_system = @(mdl) deal(); % no-op
+    load_system(mdl);
+    close_system(mdl);
 end
 
-%% Find all NbNoiseSource, NbNoiseSink, and NbNoiseCal blocks within the model
+%% Gather all NbNoiseSink and NbNoiseCal blocks
 
 load_system(mdl);
-nbNoiseSources = find_system(mdl, 'Tag', 'NbNoiseSource');
-nbNoiseSinks = find_system(mdl, 'Tag', 'NbNoiseSink');
-nbNoiseCals = find_system(mdl, 'Tag', 'NbNoiseCal');
+% getBlocksByDof() is a local function defined below
+nbNoiseSinksByDof = getBlocksByDof(mdl, 'NbNoiseSink');
+nbNoiseCalsByDof = getBlocksByDof(mdl, 'NbNoiseCal');
 
-%% Group the NbNoiseSink and NbNoiseCal blocks by DOF
-
-% Gather all NbNoiseSink blocks into a hashtable, indexed by the DOF name 
-nbNoiseSinksByDof = containers.Map();
-disp([num2str(numel(nbNoiseSinks)) ' NbNoiseSink block(s) found in model ' mdl]);
-if numel(nbNoiseSinks) < 1
-    optionally_close_system(mdl);
-    error('The model must contain at least one NbNoiseSink block');
-end
-for n = 1:numel(nbNoiseSinks)
-    blk = nbNoiseSinks{n};
-    maskVars = containers.Map(get_param(blk, 'MaskNames'), get_param(blk, 'MaskValues'));
-    disp(['    ' blk ' :: ' maskVars('dof')]);
-    dof = evalin('base', maskVars('dof'));
-    if ~ischar(dof)
-        optionally_close_system(mdl);
-        error(['The block''s DOF name (' maskVars('dof') ') must be a string']);
-    end
-    if ~nbNoiseSinksByDof.isKey(dof)
-        nbNoiseSinksByDof(dof) = blk;
-    else
-        optionally_close_system(mdl);
-        error(['The block''s DOF name (' maskVars('dof') ') is already in use by another NbNoiseSink block: ' nbNoiseSinksByDof(dof)]);
-    end
-end
-
-% Gather all NbNoiseCal blocks into a hashtable, indexed by the DOF name
-nbNoiseCalsByDof = containers.Map();
-disp([num2str(numel(nbNoiseCals)) ' NbNoiseCal block(s) found in model ' mdl]);
-if numel(nbNoiseCals) < 1
-    optionally_close_system(mdl);
-    error('The model must contain at least one NbNoiseCal block');
-end
-for n = 1:numel(nbNoiseCals)
-    blk = nbNoiseCals{n};
-    maskVars = containers.Map(get_param(blk, 'MaskNames'), get_param(blk, 'MaskValues'));
-    disp(['    ' blk ' :: ' maskVars('dof')]);
-    dof = evalin('base', maskVars('dof'));
-    if ~ischar(dof)
-        optionally_close_system(mdl);
-        error(['The block''s DOF name (' maskVars('dof') ') must be a string']);
-    end
-    if ~nbNoiseCalsByDof.isKey(dof)
-        nbNoiseCalsByDof(dof) = blk;
-    else
-        optionally_close_system(mdl);
-        error(['The block''s DOF name (' maskvars('dof') ') is already in use by another NbNoiseCal block: ' nbNoiseCalsByDof(dof)]);
-    end
-end
-
-% Check for one-to-one correspondence between the NbNoiseSink and
-% NbNoiseCal blocks
+% Check for one-to-one correspondence between the NbNoiseSink and NbNoiseCal blocks
 mismatchedDofs = setxor(nbNoiseSinksByDof.keys(), nbNoiseCalsByDof.keys());
 if ~isempty(mismatchedDofs)
-    if nbNoiseSinksByDof.isKey(mismatchedDofs{1})
-        optionally_close_system(mdl);
-        error(['Missing NbNoiseCal block for DOF name ' mismatchedDofs{1}]);
-    else
-        optionally_close_system(mdl);
+    if ~nbNoiseSinksByDof.isKey(mismatchedDofs{1})
         error(['Missing NbNoiseSink block for DOF name ' mismatchedDofs{1}]);
+    else
+        error(['Missing NbNoiseCal block for DOF name ' mismatchedDofs{1}]);
     end
+end
+
+% Make sure at least one DOF is defined
+availableDofs = nbNoiseSinksByDof.keys();
+if numel(availableDofs) < 1
+    error('The model must contain at least one NbNoiseSink block and at least one NbNoiseCal block');
 end
 
 %% Choose a NbNoiseSink/Cal pair according to the requested DOF
 
 if isempty(opt.dof)
-    % No DOF was requested in the input arguments.  If exactly one DOF was
-    % defined, then go ahead and use it.
-    if numel(nbNoiseSinks) == 1 && numel(nbNoiseCals) == 1
-        nbNoiseSink = nbNoiseSinks{1};
-        nbNoiseCal = nbNoiseCals{1};
+    % No DOF name was given.  If exactly one DOF was defined in the model,
+    % then use it.  Otherwise, give up.
+    if numel(availableDofs) == 1
+        opt.dof = availableDofs{1};
     else
-        optionally_close_system(mdl);
-        error('The model defines multiple DOFs, so a DOF name must be passed as an argument to this function');
-    end
-else
-    % A DOF was requested.
-    if nbNoiseSinksByDof.isKey(opt.dof) && nbNoiseCalsByDof.isKey(opt.dof)
-        nbNoiseSink = nbNoiseSinksByDof(opt.dof);
-        nbNoiseCal = nbNoiseCalsByDof(opt.dof);
-        disp(['Multiple DOFs defined -- using the requested DOF (' opt.dof ')']);
-    else
-        optionally_close_system(mdl);
-        error(['The requested DOF name (' opt.dof ') is not defined in the model']);
+        error(['Since the model defines multiple DOFs, you must pick one' ...
+            ' and specify it in the input arguments of this function']);
     end
 end
 
-%% Evaluate each NbNoiseSource block's asd, and set up noise/calibration TFs
+if nbNoiseSinksByDof.isKey(opt.dof) && nbNoiseCalsByDof.isKey(opt.dof)
+    nbNoiseSink = nbNoiseSinksByDof(opt.dof);
+    nbNoiseCal = nbNoiseCalsByDof(opt.dof);
+    disp([num2str(numel(availableDofs)) ' DOFs found; DOF ' opt.dof ' is selected']);
+else
+    error(['The requested DOF name (' opt.dof ') is not defined in the model']);
+end
 
-disp([num2str(numel(nbNoiseSources)) ' NbNoiseSource block(s) found in model ' mdl]);
+%% Find the NbNoiseSource blocks
+
+nbNoiseSources = find_system(mdl, 'Tag', 'NbNoiseSource');
+disp([num2str(numel(nbNoiseSources)) ' NbNoiseSource blocks found']);
 if numel(nbNoiseSources) < 1
-    optionally_close_system(mdl);
     error('The model must contain at least one NbNoiseSource block');
 end
+
+%% Evaluate each NbNoiseSource block's ASD, and set up noise/calibration TFs
 
 noises = num2cell(struct('name', nbNoiseSources, 'f', freq, 'asd', []))';
 % Set numerator for noise/calibration TFs, and open the loop
@@ -191,27 +140,27 @@ for n = 1:numel(nbNoiseSources)
     % Set denominator for noise TF (source to sink)
     ioSource(n) = linio(blk, 1, 'in'); %#ok<AGROW>
     % Evaluate the noise ASD
-    maskVars = containers.Map(get_param(blk, 'MaskNames'), get_param(blk, 'MaskValues'));
-    disp(['    ' blk ' :: ' maskVars('asd')]);
     % Note: evaluation is done in the base workspace (any variables set in
     % the model workspace are ignored).  The NbNoiseSource block mask is
     % set to NOT evaluate anything automatically.  This way, the noise
     % budget spectra don't have to be defined when the model is used for
     % purposes other than making a noise budget.
-    noises{n}.asd = evalin('base', maskVars('asd'));
+    disp(['    ' blk ' :: ' get_param(blk, 'asd')]);
+    noises{n}.asd = evalin('base', get_param(blk, 'asd'));
     % Sanity checks on the ASD
-    if numel(noises{n}.asd) ~= 1 && numel(noises{n}.asd) ~= numel(freq)
-        optionally_close_system(mdl);
-        error(['The length of the block''s ASD (' maskVars('asd') ') doesn''t match the frequency vector' char(10) ...
-            'ASD''s length is ' num2str(numel(noises{n}.asd)) ...
-            ' and frequency vector''s length is ' num2str(numel(freq))]);
+    if ~isreal(noises{n}.asd) || min(size(noises{n}.asd)) > 1
+        error(['Invalid NbNoiseSource block ' blk char(10) ...
+            'The ASD (' get_param(blk, 'asd') ') is not a real-valued 1D array']);
+    elseif numel(noises{n}.asd) ~= 1 && numel(noises{n}.asd) ~= numel(freq)
+        error(['Invalid NbNoiseSource block ' blk char(10) ...
+            'The length of the ASD (' get_param(blk, 'asd') ') doesn''t match the frequency vector' char(10) ...
+            '(ASD''s length is ' num2str(numel(noises{n}.asd)) ...
+            ' and frequency vector''s length is ' num2str(numel(freq)) ')']);
     end
-    if ~isreal(noises{n}.asd)
-        optionally_close_system(mdl);
-        error(['The block''s spectrum (' maskVars('asd') ') is not real-valued']);
+    if size(noises{n}.asd, 1) ~= 1
+        noises{n}.asd = noises{n}.asd';
     end
 end
-optionally_close_system(mdl);
 io = [ioSink ioCal ioSource];
 
 %% Perform the linearization using FlexTf functions
@@ -220,11 +169,44 @@ io = [ioSink ioCal ioSource];
 sys = prescale(sys, {2*pi*min(freq), 2*pi*max(freq)}); % attempt to improve numerical accuracy
 sys = linFlexTfFold(sys, flexTfs);
 
+% Set sys input/output names to meaningful values
+sys.OutputName = nbNoiseSink;
+sys(1).InputName = nbNoiseCal;
+sys(2:end).InputName = nbNoiseSources;
+
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
 cal = 1/sys(1);
 for n = 1:numel(nbNoiseSources)
     noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n+1)*cal, 2*pi*freq)))';
+end
+
+end
+
+function [ blockTable ] = getBlocksByDof(mdl, tag)
+%% Locate the blocks with the requested tag
+
+blks = find_system(mdl, 'Tag', tag);
+disp([num2str(numel(blks)) ' ' tag ' blocks found']);
+
+%% Organize them in a hashtable (containers.Map object), indexed by the DOF name
+
+blockTable = containers.Map();
+for n = 1:numel(blks)
+    blk = blks{n};
+    % Evaluate the DOF
+    disp(['    ' blk ' :: ' get_param(blk, 'dof')]);
+    val = evalin('base', get_param(blk, 'dof'));
+    if ~ischar(val)
+        error(['Invalid ' tag ' block ' blk char(10) ...
+            'The DOF name (' get_param(blk, param) ') must be a string']);
+    end
+    if ~blockTable.isKey(val)
+        blockTable(val) = blk;
+    else
+        error(['The DOF name cannot be shared by multiple ' tag ' blocks' char(10) ...
+            'Blocks ' blk ' and ' blockTable(val) ' both have dof=' val]);
+    end
 end
 
 end
