@@ -9,6 +9,10 @@ make sure to include at least the paths listed at the top of
 darmParams.m.  Also, edit the paths there, and at the top of
 run_DARM_NB, if your SVN directories are in a different location.)
 
+SVN repository URLs:
+SUS -- https://redoubt.ligo-wa.caltech.edu/svn/sus
+aligocalibration -- https://svn.ligo.caltech.edu/svn/aligocalibration
+
 The script should conclude by popping up a series of noise budget and
 sub-budget plots.  The following noise terms are modeled:
 * ADC Noise
