@@ -33,7 +33,6 @@ disp([num2str(numel(flexTfBlocks)) ' FlexTf blocks found in model ' strtrim(eval
 
 if numel(flexTfBlocks) < 1
     warning('No FlexTf blocks found: standard linearization will be performed');
-    close_system(mdl);
     sys = linearize(varargin{:});
     return;
 end
@@ -119,14 +118,12 @@ for n = 1:numel(flexTfBlocks)
 
     if ~isequal(flexTfSize, blkSize)
         clear cleanup;
-        close_system(mdl);
         error(['I/O port mismatch between block "' blk '" and FlexTf "' expr '"' char(10) ...
             'Block''s dimensions are (' strtrim(evalc('disp(blkSize)')) ') ' ...
             'and FlexTf''s dimensions are (' strtrim(evalc('disp(flexTfSize)')) ')']);
     end
 end
 clear cleanup;
-close_system(mdl);
 
 %% Linearize the model with the FlexTf blocks factored out
 
