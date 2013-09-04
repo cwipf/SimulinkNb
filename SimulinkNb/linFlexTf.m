@@ -84,6 +84,9 @@ for n = 1:numel(flexTfBlocks)
     expr = get_param(blk, 'Description');
     expr = strtrim(expr(length('FlexTf:')+1:end));
     disp(['    ' blk ' :: ' expr]);
+    % Update the current block.  This is to allow clever FlexTf functions
+    % to use gcb to figure out which block invoked them.
+    scb(blk);
     % Note: evaluation is done in the base workspace
     % Variables from the model workspace (if any) are ignored
     flexTfs{n} = evalin('base', expr);

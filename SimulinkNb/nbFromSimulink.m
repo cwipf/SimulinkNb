@@ -129,13 +129,16 @@ for n = 1:numel(nbNoiseSources)
     blk = nbNoiseSources{n};
     % Set denominator for noise TF (source to sink)
     ioSource(n) = linio(blk, 1, 'in'); %#ok<AGROW>
+    disp(['    ' blk ' :: ' get_param(blk, 'asd')]);
+    % Update the current block.  This is to allow clever ASD functions
+    % to use gcb to figure out which block invoked them.
+    scb(blk);
     % Evaluate the noise ASD
     % Note: evaluation is done in the base workspace (any variables set in
     % the model workspace are ignored).  The NbNoiseSource block mask is
     % set to NOT evaluate anything automatically.  This way, the noise
     % budget spectra don't have to be defined when the model is used for
     % purposes other than making a noise budget.
-    disp(['    ' blk ' :: ' get_param(blk, 'asd')]);
     noises{n}.asd = evalin('base', get_param(blk, 'asd'));
     % Sanity checks on the ASD
     if ~isreal(noises{n}.asd) || min(size(noises{n}.asd)) > 1
