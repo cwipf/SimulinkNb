@@ -112,6 +112,8 @@ for n = 1:numel(flexTfBlocks)
     [blkInputs, blkOutputs] = deal(0);
     for j = 1:numel(blkPorts.Inport)
         blkInputs = blkInputs + get_param(blkPorts.Inport(j), 'CompiledPortWidth');
+    end
+    for j = 1:numel(blkPorts.Outport)
         blkOutputs = blkOutputs + get_param(blkPorts.Outport(j), 'CompiledPortWidth');
     end
     blkSize = [blkOutputs, blkInputs];

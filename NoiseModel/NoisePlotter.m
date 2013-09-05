@@ -148,6 +148,13 @@ classdef NoisePlotter < handle
             minY = min([min(modelMax) sumMin]);
             maxY = max([max(modelMin) sumMax]);
             
+            %%% FIXMEEE
+            if minY==0 && maxY==0
+                minY = .1;
+                maxY = 1;
+                warning('NoisePlotter:plottingzero','You are plotting zero')
+            end
+            
             self.axesProperties.YLim = [10^floor(log10(minY)) 10^ceil(log10(maxY))];
         end
         
