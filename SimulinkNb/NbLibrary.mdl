@@ -15,9 +15,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "controls"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Sep  3 16:00:49 2013"
-  RTWModifiedTimeStamp	  300124843
-  ModelVersionFormat	  "1.%<AutoIncrement:25>"
+  LastModifiedDate	  "Wed Sep  4 23:01:50 2013"
+  RTWModifiedTimeStamp	  300236486
+  ModelVersionFormat	  "1.%<AutoIncrement:26>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -815,11 +815,13 @@ Library {
       "-group"
       MaskStyleString	      "edit,popup(1|2|3|4),edit,edit,edit,edit"
       MaskTunableValueString  "off,off,off,off,off,off"
-      MaskCallbackString      "|maskNames = get_param(gcb, 'MaskNames');\nmaskVis = get_param(gcb, 'MaskVisibilities')"
-      ";\ngroupNest = str2double(get_param(gcb, 'groupNest'));\ngroupNames = maskNames(cellfun(@(str) ~isempty(regexp(s"
-      "tr, '^(sub)*group$')), maskNames));\nfor n = 1:groupNest\n    maskVis{strcmp(maskNames, groupNames{n})} = 'on';\n"
-      "end\nfor n = groupNest+1:numel(groupNames)\n    maskVis{strcmp(maskNames, groupNames{n})} = 'off';\n    set_para"
-      "m(gcb, groupNames{n}, '''''');\nend\nset_param(gcb, 'MaskVisibilities', maskVis);||||"
+      MaskCallbackString      "|switch get_param(gcb, 'groupNest')\n    case '1'\n        set_param(gcb, 'MaskVisibili"
+      "ties', {'on', 'on', 'on', 'off', 'off', 'off'})\n        set_param(gcb, 'subgroup', '''''');\n        set_param("
+      "gcb, 'subsubgroup', '''''');\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '2'\n        set_param"
+      "(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'off', 'off'})\n        set_param(gcb, 'subsubgroup', '''''')"
+      ";\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '3'\n        set_param(gcb, 'MaskVisibilities', {"
+      "'on', 'on', 'on', 'on', 'on', 'off'})\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '4'\n        "
+      "set_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'on'});\nend||||"
       MaskEnableString	      "on,on,on,on,on,on"
       MaskVisibilityString    "on,on,on,off,off,off"
       MaskToolTipString	      "on,on,on,on,on,on"
