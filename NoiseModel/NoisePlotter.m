@@ -94,19 +94,28 @@ classdef NoisePlotter < handle
             self.handles.ax = ax;
             set(ax, self.axesProperties);
 
-            ln = plot(ax, plotArgs{:});
-            self.handles.ln = ln;
-            if numel(self.linesProperties) == 1
-                set(ln, self.linesProperties);
-            else
-                for n = 1:numel(ln)
-                    set(ln(n), self.linesProperties{n});
+            if ~isempty(plotArgs)
+                ln = plot(ax, plotArgs{:});
+                self.handles.ln = ln;
+                if ~iscell(self.linesProperties)
+                    set(ln, self.linesProperties);
+                else
+                    for n = 1:numel(ln)
+                        set(ln(n), self.linesProperties{n});
+                    end
                 end
+            else
+                warning('NoisePlotter:emptyplot', 'There are no noises available to plot');
+                self.handles.ln = [];
             end
-
-            lg = legend(ln, legendArgs{:});
-            self.handles.lg = lg;
-            set(lg, self.legendProperties);
+            
+            if ~isempty(legendArgs)
+                lg = legend(ln, legendArgs{:});
+                self.handles.lg = lg;
+                set(lg, self.legendProperties);
+            else
+                self.handles.lg = [];
+            end
             
             ti = title(ax, '');
             self.handles.ti = ti;
@@ -134,27 +143,36 @@ classdef NoisePlotter < handle
         
         function setYLim(self, noiseModel)
             %setYLim is a prolog function that sets the y-axis limits to a sane default
+
+            % Sanity check on the noises
+            nonFinite = cellfun(@(noise) ~any(isfinite(noise.asd)), noiseModel.modelNoises);
+            if any(nonFinite(~self.skipModelNoises))
+                warning('NoisePlotter:nonfinitenoises', 'Model noises whose ASD is nonfinite everywhere are being skipped');
+                self.skipModelNoises = self.skipModelNoises | nonFinite;
+            end
+            allZero = cellfun(@(noise) all(noise.asd==0), noiseModel.modelNoises);
+            if any(allZero(~self.skipModelNoises))
+                warning('NoisePlotter:identicallyzeronoises', 'Model noises whose ASD is zero everywhere are being skipped');
+                self.skipModelNoises = self.skipModelNoises | allZero;
+            end
+            if sum(~self.skipModelNoises) == 0
+                return
+            end
+            
             function [maxNoise, minNoise] = maxminNoise(noise)
                 asd = noise.asd;
                 maxNoise = max(asd(isfinite(asd)));
                 minNoise = min(asd(isfinite(asd)));
             end
             [modelMax, modelMin] = cellfun(@maxminNoise, noiseModel.modelNoises(~self.skipModelNoises));
-            
+
             sumData = noiseModel.sumNoise.asd;
             sumMax = max(sumData(isfinite(sumData)));
             sumMin = min(sumData(isfinite(sumData)));
             
             minY = min([min(modelMax) sumMin]);
             maxY = max([max(modelMin) sumMax]);
-            
-            %%% FIXMEEE
-            if minY==0 && maxY==0
-                minY = .1;
-                maxY = 1;
-                warning('NoisePlotter:plottingzero','You are plotting zero')
-            end
-            
+                        
             self.axesProperties.YLim = [10^floor(log10(minY)) 10^ceil(log10(maxY))];
         end
         
@@ -164,7 +182,7 @@ classdef NoisePlotter < handle
             countSum = ~self.skipSumNoise;
             countLines = countReferences + countSum + sum(~self.skipModelNoises);
             
-            if numel(self.linesProperties) == 1
+            if ~iscell(self.linesProperties)
                 self.linesProperties = num2cell(repmat(self.linesProperties, countLines, 1));
             end
             
