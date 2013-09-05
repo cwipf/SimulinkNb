@@ -23,7 +23,7 @@
 % 
 % As requested by Anamaria, an example which gets all of the damping
 % filters for MC2
-% data = read_FilterBank('L1','L1SUSMC2','...
+% data = read_FilterBank('L1','L1SUSMC2',...
 %       {MC2_M1_DAMP_L,MC2_M1_DAMP_T,MC2_M1_DAMP_V,...
 %        MC2_M1_DAMP_P,MC2_M1_DAMP_R,MC2_M1_DAMP_Y},...
 %       {SUS-MC2_M1_DAMP_L,SUS-MC2_M1_DAMP_T,SUS-MC2_M1_DAMP_V,...
@@ -69,25 +69,19 @@ for ii = 1:length(filters)
 
     temp.flnm = [ifo ':' chan '_'];
 
-    data.(filter).file.chans = {...
-        [temp.flnm 'SW1R'],...
-        [temp.flnm 'SW2R'],...
-        [temp.flnm 'GAIN'],...
-        [temp.flnm 'OFFSET']};
-
-    %Get Data from Server
-    temp.data = get_data(data.(filter).file.chans,'raw',gps('now')-10*60,0.1);
     
-    %Store Gain and Offset
-    data.(filter).gain = temp.data(3).data(1);
-    data.(filter).offset.value = temp.data(4).data(1);
-
-
+    % Get Gain
+    [~, b] = system(['caget -t ' temp.flnm 'GAIN']);
+    data.(filter).gain = str2double(b);
+    
+    % Get Offset
+    [~, b] = system(['caget -t ' temp.flnm 'OFFSET']);
+    data.(filter).offset.value = str2double(b);
 
 
     %% Parse Filter Switches
-
-    loop.sbit = temp.data(1).data(1);
+    [~, b] = system(['caget -t ' temp.flnm 'SW1R']);
+    loop.sbit = str2double(b);
 
     data.(filter).inon = ~0 & bitand(2^2,loop.sbit);
     data.(filter).offset.on =  ~0 & bitand(2^3,loop.sbit);
@@ -96,7 +90,9 @@ for ii = 1:length(filters)
         data.(filter).filts(j).on = ~0 & bitand(loop.bit,loop.sbit);
     end
 
-    loop.sbit = temp.data(2).data(1);
+    [~, b] = system(['caget -t ' temp.flnm 'SW2R']);
+    loop.sbit = str2double(b);
+    
     %Output Switch
     data.(filter).outon = ~0 & bitand(2^10,loop.sbit);
     for j=7:10
