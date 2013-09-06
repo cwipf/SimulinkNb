@@ -46,5 +46,5 @@ function frdOut = optickleFrd(opt,f,varargin)
     driveIndex = cellfun(@(drive) getDriveNum(opt,drive),drives);
     probeIndex = cellfun(@(probe) getProbeNum(opt,probe),probes);
     
-    frdOut = frd(sigAC(probeIndex,driveIndex,:),f,'FrequencyUnit','Hz');
+    frdOut = frd(sigAC(probeIndex,driveIndex,:),f,'Units','Hz');
 end
