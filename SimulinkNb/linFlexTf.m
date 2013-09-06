@@ -15,6 +15,11 @@ function [sys, flexTfs] = linFlexTf(varargin)
 %   frequency response data), which can be substituted in place of the
 %   block in question.
 %
+%   Note: although the contents of a FlexTf-tagged subsystem are
+%   overridden, it is necessary that all inputs are connected inside the
+%   subsystem to the outputs that they affect.  Otherwise the linearization
+%   may give incorrect results.
+%
 %   LINFLEXTFFOLD (analogous to LINLFTFOLD) can be used to recombine the
 %   Simulink linearization and FlexTf models that are the output arguments
 %   of LINFLEXTF.  It may be advantageous to call PRESCALE to improve the

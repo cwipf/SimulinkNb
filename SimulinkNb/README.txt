@@ -2,6 +2,12 @@ This directory contains a Simulink-based noise budget toolkit, and an
 example based on the DARM Simulink model from the aligocalibration SVN
 repository.
 
+
+
+==============================
+Getting started: example model
+==============================
+
 To run the example, go to the example/ subdirectory and use the
 run_DARM_NB script.  You'll need Matlab R2010a or newer, and a recent
 checkout of the SUS and aligocalibration repositories.  (The SUS SVN
@@ -38,7 +44,73 @@ been gone over with a fine toothed comb, and is certainly not correct
 in all particulars.  Most of the input spectra are just placeholders.
 There is absolutely no warranty on the output of this example.
 
-== File overview ==
+
+
+===============================
+Getting started: your own model
+===============================
+
+To substitute frequency response data for a Simulink block in your
+model:
+
+1. Right-click the block and open its Properties.
+
+2. Type a FlexTf configuration line at the top of the block
+description field in the General tab of the Block Properties window.
+This is similar to how certain CDS parts are configured in the aLIGO
+RCG.  The FlexTf line should start with the identifier string
+"FlexTf:".  After the ":", type a Matlab expression (variable name or
+function call).  This expression, when evaluated, should yield a frd
+object containing frequency response data to substitute for the block.
+
+3. To make the substitution more obvious, it's helpful to display the
+block's description as an annotation under its name.  To do this, go
+the Block Annotation tab, choose the %<Description> token from the
+list, and add it to the displayed annotations.
+
+4. Use the linFlexTf function (in place of linmod or linmod2) to
+linearize the model.  Note that linFlexTf has two outputs, a
+linearized system with extra I/O ports for the FlexTf blocks, and a
+cell array of frd objects describing the FlexTf blocks.
+
+5. Use the linFlexTfFold function to combine the two outputs of
+linFlexTf.  The output is a frd object containing the frequency
+response of the linearized system.
+
+
+To graphically configure a noise budget for your model:
+
+1. Open NbLibrary.mdl and copy in a NbNoiseSink block.  Connect it in
+series with the signal that you actually measure (for example,
+digitized photodetector output).  Double-click the block to set the
+name of the DOF you are measuring (a string).
+
+2. Copy in a NbNoiseCal block.  Sum it in to the signal that you
+"want" to measure and budget the noise of (for example, test mass
+displacement calibrated in meters).  Double-click the block and set
+the DOF name string (which must correspond with the Sink block) and
+the unit string (for example, 'displacement [m/rtHz]').
+
+3. Copy in one or more NbNoiseSource blocks.  Sum them in throughout
+the model wherever noise couples.  Double-click each block and set the
+ASD of the noise source (which can be a constant or a vector).  If
+desired, set one or more group strings, to name the noise source
+and/or form sub-budgets.
+
+4. Use the nbFromSimulink function to obtain the individual noise
+terms and calibration TFs.
+
+5. Use the nbGroupNoises function to organize the noise terms into a
+hierarchical noise budget (NoiseModel object).
+
+6. A NoiseModel object can be plotted using a function such as
+matlabNoisePlot or fragNoisePlot from the NoiseModel distribution.
+
+
+
+=============
+File overview
+=============
 
 * linFlexTf.m, linFlexTfFold.m
 linFlexTf and linFlexTfFold are functions for incorporating frequency
@@ -72,14 +144,6 @@ Demo Simulink model for DARM, and functions to define its parameters
 FlexTf and NbNoiseSource blocks can be seen in the Simulink model by
 drilling down into the subsystems, such as: DARM.mdl/Actuation
 Function/ETMX/Hierarchy Loops/Driver Electronics
-
-Note: It's meant to be easy to add such blocks to an existing model.
-The NbNoiseSource/Sink/Cal blocks can be copied in from NbLibrary.mdl.
-And to convert any existing block into a FlexTf block, you right-click
-on it, open its parameters, and type the FlexTf configuration line
-into the block description field.  (aLIGO RCG users may be familiar
-with this, as it's the same way we configure CDS parts in the front
-end models.)
 
 * example/DarmLentickle.mat
 Lentickle model results used to supply the cavity response as a
