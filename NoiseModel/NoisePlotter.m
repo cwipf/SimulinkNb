@@ -160,7 +160,7 @@ classdef NoisePlotter < handle
             end
             
             function [maxNoise, minNoise] = maxminNoise(noise)
-                asd = noise.asd;
+                asd = double(noise.asd);
                 maxNoise = max(asd(isfinite(asd)));
                 minNoise = min(asd(isfinite(asd)));
             end
