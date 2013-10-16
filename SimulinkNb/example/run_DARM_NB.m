@@ -3,7 +3,7 @@
 %% Path setup
 
 svnDir.anb = '/ligo/svncommon/40mSVN/trunk/NB/aLIGO/';
-addpath(genpath([svnDir.anb 'Dev/MatlabTools']));
+addpath(genpath([svnDir.anb 'Common/Utils']));
 clear svnDir
 
 %% Load parameters, linearize the model, and extract noise terms

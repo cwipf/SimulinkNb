@@ -11,7 +11,7 @@ ifoParams.darmNb.meta.paramsFileName = mfilename('fullpath');
 ifoParams.darmNb.meta.name = 'L1';
 
 svnDir.anb = '/ligo/svncommon/40mSVN/trunk/NB/aLIGO/';
-noiseModelDir = [svnDir.anb 'Dev/MatlabTools/DrillDownNB'];
+noiseModelDir = [svnDir.anb 'Common/Utils/NoiseModel'];
 quadLisoDir = [svnDir.anb 'Dev/SusElectronics/LISO/QUAD/'];
 currentDir = pwd;
 
