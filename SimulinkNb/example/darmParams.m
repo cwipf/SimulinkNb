@@ -10,15 +10,18 @@ ifoParams.paramsFileName = mfilename('fullpath');
 ifoParams.name = 'L1';
 ifoParams.freq = logspace(log10(5),log10(7000),1000);
 
+if exist('NbSVNroot.m', 'file') ~= 2
+    error('Please add the NbSVN''s Common/Utils folder to your MATLAB path');
+end
+
 svnDir.sus = '/ligo/svncommon/SusSVN/sus/trunk/';
-svnDir.anb = '/ligo/svncommon/40mSVN/trunk/NB/aLIGO/';
 svnDir.cds = '/opt/rtcds/userapps/release/';
 svnDir.cal = '/ligo/svncommon/CalSVN/aligocalibration/trunk/Runs/S7/';
 quadModelDir = [svnDir.sus 'Common/SusModelTags/Matlab/'];
 quadModelProductionDir = [svnDir.sus 'QUAD/Common/MatlabTools/QuadModel_Production'];
 quadFilterDir = [svnDir.sus 'QUAD/Common/FilterDesign/'];
 calToolsDir = [svnDir.cal 'Common/MatlabTools/'];
-quadLisoDir = [svnDir.anb 'Dev/SusElectronics/LISO/QUAD/'];
+quadLisoDir = [NbSVNroot 'Dev/SusElectronics/LISO/QUAD/'];
 
 currentDir = pwd;
 

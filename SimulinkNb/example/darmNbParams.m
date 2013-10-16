@@ -10,9 +10,12 @@ ifoParams = evalin('base', 'ifoParams');
 ifoParams.darmNb.meta.paramsFileName = mfilename('fullpath');
 ifoParams.darmNb.meta.name = 'L1';
 
-svnDir.anb = '/ligo/svncommon/40mSVN/trunk/NB/aLIGO/';
-noiseModelDir = [svnDir.anb 'Common/Utils/NoiseModel'];
-quadLisoDir = [svnDir.anb 'Dev/SusElectronics/LISO/QUAD/'];
+if exist('NbSVNroot.m', 'file') ~= 2
+    error('Please add the NbSVN''s Common/Utils folder to your MATLAB path');
+end
+
+noiseModelDir = [NbSVNroot 'Common/Utils/NoiseModel'];
+quadLisoDir = [NbSVNroot 'Dev/SusElectronics/LISO/QUAD/'];
 currentDir = pwd;
 
 %% QUAD Actuator
