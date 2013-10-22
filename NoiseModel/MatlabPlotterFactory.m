@@ -24,7 +24,8 @@ classdef MatlabPlotterFactory < handle
                 str = get(textObjs(n), 'String');
                 % string with line breaks is returned as a 2D array
                 % convert such strings to 1D array for regexprep
-                str = strjoin(cellstr(str)', char(10));
+                strL = cellstr(str);
+                str = [sprintf('%s\n', strL{1:end-1}), strL{end}];
                 % strip hyperlink target (\hypertarget)
                 % assume target wraps the entire string, and may contain
                 % links inside the target text
