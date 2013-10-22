@@ -159,7 +159,12 @@ io = [ioSink ioCal ioSource];
 %% Perform the linearization using FlexTf functions
 
 [sys, flexTfs] = linFlexTf(mdl, io);
-sys = prescale(sys, {2*pi*min(freq), 2*pi*max(freq)}); % attempt to improve numerical accuracy
+% Attempt to improve numerical accuracy with prescale
+minPosFreq = min(freq(freq>0));
+maxPosFreq = max(freq(freq>0));
+if ~isempty(minPosFreq) && ~isempty(maxPosFreq)
+    sys = prescale(sys, {2*pi*minPosFreq, 2*pi*maxPosFreq});
+end
 sys = linFlexTfFold(sys, flexTfs);
 
 % Set sys input/output names to meaningful values
