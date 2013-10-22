@@ -2,9 +2,7 @@
 
 %% Path setup
 
-if exist('NbSVNroot.m', 'file') ~= 2
-    error('Please add the NbSVN''s Common/Utils folder to your MATLAB path');
-end
+findNbSVNroot;
 addpath(genpath([NbSVNroot 'Common/Utils']));
 
 %% Load parameters, linearize the model, and extract noise terms
