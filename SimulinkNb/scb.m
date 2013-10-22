@@ -14,7 +14,10 @@ catch
 end
 
 % Split Argument to System and Block-Name.
-[CurrentSystem,CurrentBlock] = fileparts(block);
+%[CurrentSystem,CurrentBlock] = fileparts(block);
+% fix for block names containing '/' --ccw
+CurrentSystem = get_param(block, 'Parent');
+CurrentBlock = get_param(block, 'Name');
 
 % Get the Stateflow Root object.
 root = sfroot;

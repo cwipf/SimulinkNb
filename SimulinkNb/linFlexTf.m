@@ -50,6 +50,8 @@ notShadowedAnywhere = true(size(flexTfBlocks));
 for n = 1:numel(flexTfBlocks)
     blk = flexTfBlocks{n};
     shadowed = strncmp([blk '/'], flexTfBlocks, length(blk)+1);
+    % don't be fooled by block names with '/'s in them
+    shadowed = shadowed & ~strncmp([blk '//'], flexTfBlocks, length(blk)+2);
     if any(shadowed)
         shadowedBlocks = flexTfBlocks(shadowed);
         warning(['FlexTf block ' blk ' shadows other FlexTf blocks: ' ...
@@ -75,6 +77,8 @@ for n = 1:numel(varargin)
     for j = 1:numel(flexTfBlocks)
         blk = flexTfBlocks{j};
         inFlexTf = strncmp([blk '/'], ioBlocks, length(blk)+1);
+        % don't be fooled by block names with '/'s in them
+        inFlexTf = inFlexTf & ~strncmp([blk '//'], ioBlocks, length(blk)+2);
         if any(inFlexTf)
             error(['One of the requested linearization I/O points is ' ...
                 'contained in the FlexTf block ' blk]);
