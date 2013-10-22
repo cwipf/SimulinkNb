@@ -22,6 +22,9 @@ classdef MatlabPlotterFactory < handle
             textObjs = findall(noisePlotter.handles.fg, 'Type', 'text');
             for n = 1:numel(textObjs)
                 str = get(textObjs(n), 'String');
+                % string with line breaks is returned as a 2D array
+                % convert such strings to 1D array for regexprep
+                str = strjoin(cellstr(str)', char(10));
                 % strip hyperlink target (\hypertarget)
                 % assume target wraps the entire string, and may contain
                 % links inside the target text
