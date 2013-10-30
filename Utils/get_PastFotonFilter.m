@@ -36,14 +36,10 @@ function FBstate = get_PastFotonFilter(ifo,model,filters,chans,gpsT)
 
 if ~iscell(filters)
     filters ={ filters};
-else warning('Your filter names are not cells')
-    return
 end
 
 if ~iscell(chans)
     chans = {chans};
-else warning('Your chan names are not cells')  
-    return
 end
 
 if ~ length(chans) == length(filters)
