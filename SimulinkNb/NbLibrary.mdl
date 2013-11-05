@@ -15,9 +15,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "christopher.wipf"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Nov  4 20:05:40 2013"
-  RTWModifiedTimeStamp	  305496308
-  ModelVersionFormat	  "1.%<AutoIncrement:27>"
+  LastModifiedDate	  "Tue Nov  5 16:58:39 2013"
+  RTWModifiedTimeStamp	  305571517
+  ModelVersionFormat	  "1.%<AutoIncrement:28>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -646,7 +646,7 @@ Library {
   }
   System {
     Name		    "NbLibrary"
-    Location		    [759, 644, 1085, 899]
+    Location		    [562, 644, 888, 899]
     Open		    on
     ModelBrowserVisibility  on
     ModelBrowserWidth	    200
@@ -744,19 +744,20 @@ Library {
       Opaque		      off
       RequestExecContextInheritance off
       MaskHideContents	      off
-      MaskPromptString	      "DOF name"
-      MaskStyleString	      "edit"
-      MaskTunableValueString  "off"
-      MaskEnableString	      "on"
-      MaskVisibilityString    "on"
-      MaskToolTipString	      "on"
-      MaskVariables	      "dof=&1;"
+      MaskPromptString	      "DOF name|DAQ channel"
+      MaskStyleString	      "edit,edit"
+      MaskTunableValueString  "off,off"
+      MaskCallbackString      "|"
+      MaskEnableString	      "on,on"
+      MaskVisibilityString    "on,on"
+      MaskToolTipString	      "on,on"
+      MaskVariables	      "dof=&1;chan=&2;"
       MaskIconFrame	      on
       MaskIconOpaque	      on
       MaskIconRotate	      "none"
       MaskPortRotate	      "default"
       MaskIconUnits	      "autoscale"
-      MaskValueString	      "'unspecified DOF'"
+      MaskValueString	      "'unspecified DOF'|''"
       System {
 	Name			"NbNoiseSink"
 	Location		[12, 80, 1004, 952]
