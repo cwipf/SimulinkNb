@@ -51,7 +51,8 @@ opt = parser.Results;
 %% Fetch data as requested by the NbNoiseSource blocks
 
 load_system(mdl);
-chanList = findChan(mdl, nb);
+% findChans() is a local function defined below
+chanList = findChans(mdl, nb, {});
 
 if isempty(chanList)
     return; % no channels requested, nothing to do
@@ -62,7 +63,7 @@ end
 % The java NDS2 library needs more development before we can adopt it
 % and get live data support
 % see e.g. bug 68: https://trac.ligo.caltech.edu/nds2/ticket/68
-% Fall back on good old mDV
+% Fall back on good old mDV instead
 data = get_data(chanList, 'raw', start, duration);
 
 %% Compute ASDs 
@@ -73,8 +74,9 @@ for n = 1:numel(data)
     noisesByChan(data.name) = asd;
 end
 
-%% Plug the new ASDs into the model
+%% Plug the new ASDs into the NoiseModel
 
+% updateNoises() is a local function defined below
 nb = updateNoises(nb, sys, noisesByChan);
 
 end
@@ -96,18 +98,13 @@ asd = interp1(f, sqrt(psd), freq, 'cubic', 0);
 
 end
 
-function chanList = findChan(mdl, nb, varargin)
-
-if numel(varargin) == 0
-    chanList = {};
-else
-    chanList = varargin{1};
-end
+function chanList = findChans(mdl, nb, chanList)
+%FINDCHANS recursively lists the DAQ channels that have been requested by a model
 
 for n = 1:numel(nb.modelNoises)
     noise = nb.modelNoises{n};
     if isprop(noise, 'modelNoises')
-        chanList = findChan(mdl, noise, chanList);
+        chanList = findChans(mdl, noise, chanList);
     else
         if isprop(noise, 'noiseData')
             noisePath = noise.noiseData.name;
@@ -116,9 +113,11 @@ for n = 1:numel(nb.modelNoises)
         end
         chan = get_param(noisePath, 'chan');
         chan = evalin('base', chan);
-        if ~isempty(chan) && ~any(strcmp(chan, chanList))
-            disp(['Found DAQ channel ' chan ' for source ' noisePath]);
-            chanList = [chanList {chan}]; %#ok<AGROW>
+        if ~isempty(chan)
+            disp(['NbNoiseSource ' noisePath ' requested DAQ channel ' chan]);
+            if ~any(strcmp(chan, chanList))
+                chanList = [chanList {chan}]; %#ok<AGROW>
+            end
         end
     end
 end
@@ -126,6 +125,7 @@ end
 end
 
 function nb = updateNoises(nb, sys, noisesByChan)
+%UPDATENOISES calibrates the freshly acquired noises and replaces them in the NoiseModel object
 
 cal = 1/sys(1);
 
@@ -142,7 +142,7 @@ for n = 1:numel(nb.modelNoises)
         chan = get_param(noisePath, 'chan');
         chan = evalin('base', chan);
         if ~isempty(chan)
-            disp(['Updating noise from source ' noisePath]);
+            disp(['Updating source ' noisePath]);
             noiseTf = sys(strcmp(noisePath, sys.InputName));
             noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(noiseTf*cal, 2*pi*nb.f)))';
             if isprop(noise, 'noiseData')
