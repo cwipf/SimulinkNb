@@ -13,11 +13,11 @@ Library {
   Creator		  "ccw"
   UpdateHistory		  "UpdateHistoryNever"
   ModifiedByFormat	  "%<Auto>"
-  LastModifiedBy	  "controls"
+  LastModifiedBy	  "christopher.wipf"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Sep  4 23:01:50 2013"
-  RTWModifiedTimeStamp	  300236486
-  ModelVersionFormat	  "1.%<AutoIncrement:26>"
+  LastModifiedDate	  "Mon Nov  4 20:05:40 2013"
+  RTWModifiedTimeStamp	  305496308
+  ModelVersionFormat	  "1.%<AutoIncrement:27>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -646,7 +646,7 @@ Library {
   }
   System {
     Name		    "NbLibrary"
-    Location		    [38, 133, 364, 388]
+    Location		    [759, 644, 1085, 899]
     Open		    on
     ModelBrowserVisibility  on
     ModelBrowserWidth	    200
@@ -811,27 +811,27 @@ Library {
       Opaque		      off
       RequestExecContextInheritance off
       MaskHideContents	      off
-      MaskPromptString	      "Amplitude spectral density|Group nesting depth|Group|Sub-group|Sub-sub-group|Sub-sub-sub"
-      "-group"
-      MaskStyleString	      "edit,popup(1|2|3|4),edit,edit,edit,edit"
-      MaskTunableValueString  "off,off,off,off,off,off"
-      MaskCallbackString      "|switch get_param(gcb, 'groupNest')\n    case '1'\n        set_param(gcb, 'MaskVisibili"
-      "ties', {'on', 'on', 'on', 'off', 'off', 'off'})\n        set_param(gcb, 'subgroup', '''''');\n        set_param("
-      "gcb, 'subsubgroup', '''''');\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '2'\n        set_param"
-      "(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'off', 'off'})\n        set_param(gcb, 'subsubgroup', '''''')"
-      ";\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '3'\n        set_param(gcb, 'MaskVisibilities', {"
-      "'on', 'on', 'on', 'on', 'on', 'off'})\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '4'\n        "
-      "set_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'on'});\nend||||"
-      MaskEnableString	      "on,on,on,on,on,on"
-      MaskVisibilityString    "on,on,on,off,off,off"
-      MaskToolTipString	      "on,on,on,on,on,on"
-      MaskVariables	      "asd=&1;groupNest=&2;group=&3;subgroup=&4;subsubgroup=&5;subsubsubgroup=&6;"
+      MaskPromptString	      "Amplitude spectral density|DAQ channel|Group nesting depth|Group|Sub-group|Sub-sub-group"
+      "|Sub-sub-sub-group"
+      MaskStyleString	      "edit,edit,popup(1|2|3|4),edit,edit,edit,edit"
+      MaskTunableValueString  "off,off,off,off,off,off,off"
+      MaskCallbackString      "||switch get_param(gcb, 'groupNest')\n    case '1'\n        set_param(gcb, 'MaskVisibil"
+      "ities', {'on', 'on', 'on', 'on', 'off', 'off', 'off'})\n        set_param(gcb, 'subgroup', '''''');\n        set"
+      "_param(gcb, 'subsubgroup', '''''');\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '2'\n        se"
+      "t_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'off', 'off'})\n        set_param(gcb, 'subsubgr"
+      "oup', '''''');\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '3'\n        set_param(gcb, 'MaskVis"
+      "ibilities', {'on', 'on', 'on', 'on', 'on', 'on', 'off'})\n        set_param(gcb, 'subsubsubgroup', '''''');\n   "
+      " case '4'\n        set_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'on', 'on'});\nend||||"
+      MaskEnableString	      "on,on,on,on,on,on,on"
+      MaskVisibilityString    "on,on,on,on,off,off,off"
+      MaskToolTipString	      "on,on,on,on,on,on,on"
+      MaskVariables	      "asd=&1;chan=&2;groupNest=&3;group=&4;subgroup=&5;subsubgroup=&6;subsubsubgroup=&7;"
       MaskIconFrame	      on
       MaskIconOpaque	      on
       MaskIconRotate	      "none"
       MaskPortRotate	      "default"
       MaskIconUnits	      "autoscale"
-      MaskValueString	      "unspecifiedAsd|1|''|''|''|''"
+      MaskValueString	      "unspecifiedAsd|''|1|''|''|''|''"
       System {
 	Name			"NbNoiseSource"
 	Location		[12, 80, 1036, 952]
