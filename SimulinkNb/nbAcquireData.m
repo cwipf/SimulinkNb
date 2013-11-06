@@ -94,7 +94,7 @@ if NFFT > numel(data)
         num2str(numel(data)/Fs) ' seconds of data were requested']);
 end
 [psd, f] = pwelch(data, hann(NFFT), NFFT/2, NFFT, Fs);
-asd = interp1(f, sqrt(psd), freq, 'cubic', 0);
+asd = interp1(f, sqrt(psd), freq, 'nearest', 0);
 
 end
 
@@ -123,7 +123,7 @@ end
 for n = 1:numel(nb.modelNoises)
     noise = nb.modelNoises{n};
     if isprop(noise, 'modelNoises')
-        chanList = findChans(mdl, noise, chanList);
+        chanList = findChans(mdl, sys, noise, chanList);
     else
         if isprop(noise, 'noiseData')
             nbNoiseSource = noise.noiseData.name;
@@ -171,7 +171,7 @@ if ~isempty(chan)
         noise.f = nb.f;
         noise.asd = noiseAsd;
         noise = renamed(noise, 'Measured');
-        nb.referenceData = [nb.referenceData {noise}];
+        nb.referenceNoises = [nb.referenceNoises {noise}];
     end
 end
 
