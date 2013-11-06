@@ -110,6 +110,15 @@ else
     error(['The requested DOF name (' opt.dof ') is not defined in the model']);
 end
 
+%% Evaluate the NbNoiseSink's measured ASD (if present)
+
+sinkNoise = struct('name', nbNoiseSink, 'f', freq, 'asd', []);
+if ~isempty(get_param(nbNoiseSink, 'asd'))
+    disp(['    ' nbNoiseSink ' :: ' get_param(nbNoiseSink, 'asd')]);
+    scb(nbNoiseSink);
+    sinkNoise.asd = evalin('base', get_param(nbNoiseSink, 'asd'));
+end
+
 %% Find the NbNoiseSource blocks
 
 nbNoiseSources = find_system(mdl, 'Tag', 'NbNoiseSource');
@@ -122,7 +131,8 @@ end
 
 noises = num2cell(struct('name', nbNoiseSources, 'f', freq, 'asd', []))';
 % Set numerator for noise/calibration TFs, and open the loop
-ioSink = linio(nbNoiseSink, 1, 'out', 'on');
+% (also sets denominator for open loop gain around the sink)
+ioSink = linio(nbNoiseSink, 1, 'outin', 'on');
 % Set denominator for calibration TF (cal to sink)
 ioCal = linio(nbNoiseCal, 1, 'in');
 for n = 1:numel(nbNoiseSources)
@@ -168,15 +178,22 @@ end
 sys = linFlexTfFold(sys, flexTfs);
 
 % Set sys input/output names to meaningful values
-sys.InputName = [{nbNoiseCal} nbNoiseSources'];
+sys.InputName = [{nbNoiseSink nbNoiseCal} nbNoiseSources'];
 sys.OutputName = nbNoiseSink;
 
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
-cal = 1/sys(1);
+cal = 1/sys(2);
 for n = 1:numel(nbNoiseSources)
-    noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n+1)*cal, 2*pi*freq)))';
+    noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n+2)*cal, 2*pi*freq)))';
 end
+
+%% Prepend the NbNoiseSink's measured spectrum
+
+if ~isempty(sinkNoise.asd)
+    sinkNoise.asd = sinkNoise.asd .* abs(squeeze(freqresp((1-sys(1))*cal, 2*pi*freq)))';
+end
+noises = [{sinkNoise} noises];
 
 end
 

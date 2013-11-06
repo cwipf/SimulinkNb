@@ -25,7 +25,7 @@ end
 %% Get the DOF and unit settings from the NbNoiseCal block
 
 load_system(mdl);
-nbNoiseCal = sys(1).InputName{:};
+nbNoiseCal = sys(2).InputName{:};
 disp(['NbNoiseCal block is ' nbNoiseCal ' (DOF ' ...
     get_param(nbNoiseCal, 'dof') ', unit ' get_param(nbNoiseCal, 'unit') ')']);
 dof = evalin('base', get_param(nbNoiseCal, 'dof'));
@@ -39,11 +39,16 @@ end
 %% Form groups and output a NoiseModel object
 
 % groupAtLevel is a (recursive) local function defined below
-group = groupAtLevel(noises, 1, unit);
+group = groupAtLevel(noises(2:end), 1, unit);
 
 nb = NoiseModel(group);
 nb.title = [dof ' NoiseBudget'];
 nb.unit = unit;
+
+if ~isempty(noises{1}.asd)
+    noises{1} = renamed(noises{1}, 'Measured');
+    nb.referenceNoises = noises(1);
+end
 
 end
 

@@ -9,12 +9,12 @@ function [ nb ] = nbAcquireData(mdl, sys, nb, start, duration, varargin)
 %   Description:
 %
 %   nbAcquireData(MDL, SYS, NB, START, DURATION) makes a list of DAQ
-%   channels that are requested by NbNoiseSource blocks in MDL.  It uses
-%   mDV to retrieve data for those channels, according to the specified
-%   START time (GPS) and DURATION (in seconds).  Then it computes the ASDs,
-%   and calibrates them using transfer functions from the SYS object (as
-%   returned by NBFROMSIMULINK).  Finally, the NOISEMODEL object NB (as
-%   returned by NBGROUPNOISES) is rebuilt to incorporate the newly
+%   channels that are requested by NbNoiseSource and NbNoiseSink blocks in
+%   MDL.  It uses mDV to retrieve data for those channels, according to the
+%   specified START time (GPS) and DURATION (in seconds).  Then it computes
+%   the ASDs, and calibrates them using transfer functions from the SYS
+%   object (as returned by NBFROMSIMULINK).  Finally, the NOISEMODEL object
+%   NB (as returned by NBGROUPNOISES) is rebuilt to incorporate the newly
 %   acquired data.
 %
 %   nbAcquireData(..., 'PropertyName', PropertyValue, ...) allows the
@@ -87,7 +87,8 @@ function [ asd ] = defaultAsd(data, Fs, freq)
 % Pick some reasonable resolution for the spectrum, in case the freq vector
 % has nonuniform spacing
 df = geomean(diff(freq));
-NFFT = round(Fs/df);
+df = min(df, min(freq(freq>0)));
+NFFT = 2^ceil(log2(Fs/df));
 if NFFT > numel(data)
     error(['Not enough data: at least ' num2str(NFFT/Fs) ' seconds of data '...
         'are needed to match the frequency vector''s resolution, but only '...
@@ -107,7 +108,7 @@ if isempty(varargin)
     chanList = {};
 
     % Check for sink's channel only the first time through this function
-    nbNoiseSink = sys(1).OutputName{:};
+    nbNoiseSink = sys(2).OutputName{:};
     chan = get_param(nbNoiseSink, 'chan');
     chan = evalin('base', chan);
     if ~isempty(chan)
@@ -148,14 +149,13 @@ function [ nb ] = updateNoises(sys, nb, noisesByChan)
 
 %% Initial setup (for noise sink)
 
-cal = 1/sys(1);
-
-nbNoiseSink = sys(1).OutputName{:};
+nbNoiseSink = sys(2).OutputName{:};
 chan = get_param(nbNoiseSink, 'chan');
 chan = evalin('base', chan);
 if ~isempty(chan)
     disp(['Updating sink ' nbNoiseSink]);
-    noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(cal, 2*pi*nb.f)))';
+    noiseTf = (1-sys(1))/sys(2);
+    noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(noiseTf, 2*pi*nb.f)))';
     foundSinkNoise = false;
     for n = 1:length(nb.referenceNoises)
         noise = nb.referenceNoises{n};
@@ -184,7 +184,7 @@ end
 function [ nb ] = updateNoises_n(sys, nb, noisesByChan)
 %UPDATENOISES_N is the recursive step for updateNoises()
 
-cal = 1/sys(1);
+cal = 1/sys(2);
 
 for n = 1:numel(nb.modelNoises)
     noise = nb.modelNoises{n};
