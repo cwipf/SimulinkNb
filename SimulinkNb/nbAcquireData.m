@@ -1,4 +1,4 @@
-function nb = nbAcquireData(mdl, sys, nb, start, duration, varargin)
+function [ nb ] = nbAcquireData(mdl, sys, nb, start, duration, varargin)
 %NBACQUIREDATA  Updates a noise model with fresh data from NDS
 %
 %   Syntax:
@@ -14,7 +14,7 @@ function nb = nbAcquireData(mdl, sys, nb, start, duration, varargin)
 %   START time (GPS) and DURATION (in seconds).  Then it computes the ASDs,
 %   and calibrates them using transfer functions from the SYS object (as
 %   returned by NBFROMSIMULINK).  Finally, the NOISEMODEL object NB (as
-%   returned by NBGROUPNOISES) is rebuilt to incorporate the freshly
+%   returned by NBGROUPNOISES) is rebuilt to incorporate the newly
 %   acquired data.
 %
 %   nbAcquireData(..., 'PropertyName', PropertyValue, ...) allows the
@@ -52,7 +52,7 @@ opt = parser.Results;
 
 load_system(mdl);
 % findChans() is a local function defined below
-chanList = findChans(mdl, nb, {});
+chanList = findChans(mdl, sys, nb);
 
 if isempty(chanList)
     return; % no channels requested, nothing to do
@@ -77,11 +77,11 @@ end
 %% Plug the new ASDs into the NoiseModel
 
 % updateNoises() is a local function defined below
-nb = updateNoises(nb, sys, noisesByChan);
+nb = updateNoises(sys, nb, noisesByChan);
 
 end
 
-function asd = defaultAsd(data, Fs, freq)
+function [ asd ] = defaultAsd(data, Fs, freq)
 %DEFAULTASD is meant to be a simple, DTT-esque ASD estimator
 
 % Pick some reasonable resolution for the spectrum, in case the freq vector
@@ -98,8 +98,27 @@ asd = interp1(f, sqrt(psd), freq, 'cubic', 0);
 
 end
 
-function chanList = findChans(mdl, nb, chanList)
+function [ chanList ] = findChans(mdl, sys, nb, varargin)
 %FINDCHANS recursively lists the DAQ channels that have been requested by a model
+
+%% Initial setup
+
+if isempty(varargin)
+    chanList = {};
+
+    % Check for sink's channel only the first time through this function
+    nbNoiseSink = sys(1).OutputName{:};
+    chan = get_param(nbNoiseSink, 'chan');
+    chan = evalin('base', chan);
+    if ~isempty(chan)
+        disp(['NbNoiseSink ' nbNoiseSink ' requested DAQ channel ' chan]);
+        chanList = {chan};
+    end
+else
+    chanList = varargin{1};
+end
+
+%% Recursively check for noise sources that request a DAQ channel
 
 for n = 1:numel(nb.modelNoises)
     noise = nb.modelNoises{n};
@@ -107,14 +126,14 @@ for n = 1:numel(nb.modelNoises)
         chanList = findChans(mdl, noise, chanList);
     else
         if isprop(noise, 'noiseData')
-            noisePath = noise.noiseData.name;
+            nbNoiseSource = noise.noiseData.name;
         else
-            noisePath = noise.name;
+            nbNoiseSource = noise.name;
         end
-        chan = get_param(noisePath, 'chan');
+        chan = get_param(nbNoiseSource, 'chan');
         chan = evalin('base', chan);
         if ~isempty(chan)
-            disp(['NbNoiseSource ' noisePath ' requested DAQ channel ' chan]);
+            disp(['NbNoiseSource ' nbNoiseSource ' requested DAQ channel ' chan]);
             if ~any(strcmp(chan, chanList))
                 chanList = [chanList {chan}]; %#ok<AGROW>
             end
@@ -124,26 +143,64 @@ end
 
 end
 
-function nb = updateNoises(nb, sys, noisesByChan)
-%UPDATENOISES calibrates the freshly acquired noises and replaces them in the NoiseModel object
+function [ nb ] = updateNoises(sys, nb, noisesByChan)
+%UPDATENOISES calibrates the newly acquired noises and places them in the NoiseModel object
+
+%% Initial setup (for noise sink)
+
+cal = 1/sys(1);
+
+nbNoiseSink = sys(1).OutputName{:};
+chan = get_param(nbNoiseSink, 'chan');
+chan = evalin('base', chan);
+if ~isempty(chan)
+    disp(['Updating sink ' nbNoiseSink]);
+    noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(cal, 2*pi*nb.f)))';
+    foundSinkNoise = false;
+    for n = 1:length(nb.referenceNoises)
+        noise = nb.referenceNoises{n};
+        if isprop(noise, 'noiseData') && strcmp(noise.noiseData.name, nbNoiseSink)
+            foundSinkNoise = true;
+            noise.noiseData.asd = noiseAsd;
+            nb.referenceNoises{n} = noise;
+            break;
+        end
+    end
+    if ~foundSinkNoise
+        noise.name = nbNoiseSink;
+        noise.f = nb.f;
+        noise.asd = noiseAsd;
+        noise = renamed(noise, 'Measured');
+        nb.referenceData = [nb.referenceData {noise}];
+    end
+end
+
+%% Recursively update noise sources
+
+nb = updateNoises_n(sys, nb, noisesByChan);
+
+end
+
+function [ nb ] = updateNoises_n(sys, nb, noisesByChan)
+%UPDATENOISES_N is the recursive step for updateNoises()
 
 cal = 1/sys(1);
 
 for n = 1:numel(nb.modelNoises)
     noise = nb.modelNoises{n};
     if isprop(noise, 'modelNoises')
-        noise = updateNoises(noise, sys, noisesByChan);
+        noise = updateNoises_n(sys, noise, noisesByChan);
     else
         if isprop(noise, 'noiseData')
-            noisePath = noise.noiseData.name;
+            nbNoiseSource = noise.noiseData.name;
         else
-            noisePath = noise.name;
+            nbNoiseSource = noise.name;
         end
-        chan = get_param(noisePath, 'chan');
+        chan = get_param(nbNoiseSource, 'chan');
         chan = evalin('base', chan);
         if ~isempty(chan)
-            disp(['Updating source ' noisePath]);
-            noiseTf = sys(strcmp(noisePath, sys.InputName));
+            disp(['Updating source ' nbNoiseSource]);
+            noiseTf = sys(strcmp(nbNoiseSource, sys.InputName));
             noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(noiseTf*cal, 2*pi*nb.f)))';
             if isprop(noise, 'noiseData')
                 noise.noiseData.asd = noiseAsd;
