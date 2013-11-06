@@ -71,7 +71,7 @@ data = get_data(chanList, 'raw', start, duration);
 noisesByChan = containers.Map();
 for n = 1:numel(data)
     asd = opt.asdMethod(data(n).data, data(n).rate, nb.f);
-    noisesByChan(data.name) = asd;
+    noisesByChan(data(n).name) = asd;
 end
 
 %% Plug the new ASDs into the NoiseModel
