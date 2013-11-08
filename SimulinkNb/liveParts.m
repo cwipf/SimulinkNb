@@ -18,10 +18,10 @@ chanList = {};
 for n = 1:numel(chans)
     chanList = [chanList chans{n}(:)']; %#ok<AGROW>
 end
-chanList = unique(chanList);
+chanList = sort(unique(chanList));
 disp(['Requesting ' num2str(duration) ' seconds of data for ' num2str(numel(chanList)) ...
     ' channels, starting at GPS time ' num2str(start)]);
-data = get_data(chanList, 'raw', start, duration);
+data = cacheGetData(chanList, 'raw', start, duration);
 
 dataByChan = containers.Map();
 for n = 1:numel(data)
@@ -138,3 +138,36 @@ assignin('base', 'zzz_assignin_kludge_tmp', val);
 evalin('base', [var ' = zzz_assignin_kludge_tmp; clear zzz_assignin_kludge_tmp']);
 
 end
+
+function data = cacheGetData(chanList, chanType, start, duration)
+
+global livePartsGetDataCache;
+
+if isempty(livePartsGetDataCache)
+    livePartsGetDataCache = {};
+end
+
+for n = 1:size(livePartsGetDataCache, 1)
+    cachedArgin = livePartsGetDataCache{n, 1};
+    cachedArgout = livePartsGetDataCache{n, 2};
+    if ~all(cellfun(@(x, y) strcmp(x, y), chanList, cachedArgin{1}))
+        continue;
+    elseif ~strcmp(chanType, cachedArgin{2})
+        continue;
+    elseif start ~= cachedArgin{3}
+        continue;
+    elseif duration ~= cachedArgin{4}
+        continue;
+    end
+    disp('Reusing get_data results from a previous run (cached in the global variable ''livePartsGetDataCache'')');
+    data = cachedArgout;
+    return;
+end
+
+data = get_data(chanList, chanType, start, duration);
+
+livePartsGetDataCache{end+1, 1} = {chanList, chanType, start, duration};
+livePartsGetDataCache{end, 2} = data;
+livePartsGetDataCache = livePartsGetDataCache(max(end-2, 1):end, :);
+
+end 
