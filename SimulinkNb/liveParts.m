@@ -1,9 +1,9 @@
-function liveParts(mdl, start, duration)
+function liveParts(mdl, start, duration, freq)
 
 %% Form channel list
-
-liveParts = [find_system(mdl, 'Tag', 'LiveConstant'), ...
-    find_system(mdl, 'Tag', 'LiveMatrix'), ...
+load_system(mdl);
+liveParts = [find_system(mdl, 'Tag', 'LiveConstant'); ...
+    find_system(mdl, 'Tag', 'LiveMatrix'); ...
     find_system(mdl, 'Tag', 'LiveFilter')];
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
@@ -36,7 +36,7 @@ end
 %% Apply params
 
 for n = 1:numel(liveParts)
-    liveParams(liveParts{n}, chans{n}, dataByChan);
+    liveParams(liveParts{n}, chans{n}, dataByChan, start, duration, freq);
 end
 
 end
@@ -65,19 +65,30 @@ switch blkType
                 chans{row, col} = [prefix '_' num2str(rows(row)) '_' num2str(cols(col))];
             end
         end
+
+    case 'LiveFilter'
+        prefix = blkVars(strcmp({blkVars.Name}, 'prefix')).Value;
+        % note: the liveParams function below depends on the ordering of these suffixes
+        fmChanSuffixes = {'_SWSTAT', '_OFFSET', '_GAIN', '_LIMIT'};
+        chans = cell(size(fmChanSuffixes));
+        for n = 1:numel(fmChanSuffixes)
+            chans{n} = [prefix fmChanSuffixes{n}];
+        end
+        
 end
         
 end
 
-function liveParams(blk, chans, dataByChan)
+function liveParams(blk, chans, dataByChan, start, duration, freq)
 
 blkType = get_param(blk, 'Tag');
+blkVars = get_param(blk, 'MaskWSVariables');
 
 switch blkType
     case 'LiveConstant'
         K = dataByChan(chans{1});
-        Kvar = get_param(blk, 'K');
-        assignin('base', Kvar, K);
+        kVar = get_param(blk, 'K');
+        assignin('base', kVar, K);
 
     case 'LiveMatrix'
         [rows, cols] = size(chans);
@@ -88,8 +99,35 @@ switch blkType
                 M(row, col) = dataByChan(chans{row, col});
             end
         end
-        Mvar = get_param(blk, 'M');
-        assignin('base', Mvar, M);
+        mVar = get_param(blk, 'M');
+        assignin('base', mVar, M);
+
+    case 'LiveFilter'
+        site = blkVars(strcmp({blkVars.Name}, 'site')).Value;
+        model = blkVars(strcmp({blkVars.Name}, 'feModel')).Value;
+        fmName = blkVars(strcmp({blkVars.Name}, 'fmName')).Value;
+        flexTf = blkVars(strcmp({blkVars.Name}, 'flexTf')).Value;
+        par.swstat = dataByChan(chans{1});
+        par.offset = dataByChan(chans{2});
+        par.gain = dataByChan(chans{3});
+        par.limit = dataByChan(chans{4});
+        ff = find_FilterFile(site, model(1:2), model, start);
+        ff2 = find_FilterFile(site, model(1:2), model, start + duration);
+        if ~strcmp(ff, ff2)
+            warning([model '.txt is not constant during the segment']);
+        end
+        filters = readFilterFile(ff);
+        fm = filters.(fmName);
+        for n = 1:10
+            [z, p, k] = sos2zp(fm(n).soscoef);
+            par.(['fm' num2str(n)]) = d2c(zpk(z, p, k, 1/fm(n).fs), 'tustin');
+            if flexTf
+                par.(['fm' num2str(n) 'frd']) = frd(par.(['fm' num2str(n)]), freq, 'Units', 'Hz');
+            end
+        end
+        parVar = get_param(blk, 'par');
+        assignin('base', parVar, par);
+        
 end
         
 end

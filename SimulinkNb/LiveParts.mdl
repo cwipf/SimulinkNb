@@ -19,7 +19,7 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [1457.0, 116.0, 802.0, 529.0]
+      Location		      [2591.0, 456.0, 658.0, 408.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -44,7 +44,7 @@ Library {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [569.0, 358.0]
+	  Extents		  [425.0, 237.0]
 	  ZoomFactor		  [1.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -52,10 +52,10 @@ Library {
 	  $ObjectID		  6
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
-	  LoadSaveID		  "4"
-	  Extents		  [569.0, 358.0]
+	  LoadSaveID		  "10"
+	  Extents		  [425.0, 237.0]
 	  ZoomFactor		  [1.0]
-	  Offset		  [0.0, -4.0]
+	  Offset		  [1215.0, 159.0]
 	}
 	PropName		"EditorsInfo"
       }
@@ -67,9 +67,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "christopher.wipf"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Nov 06 21:49:46 2013"
-  RTWModifiedTimeStamp	  305675384
-  ModelVersionFormat	  "1.%<AutoIncrement:3>"
+  LastModifiedDate	  "Thu Nov 07 02:48:48 2013"
+  RTWModifiedTimeStamp	  305689745
+  ModelVersionFormat	  "1.%<AutoIncrement:16>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -728,6 +728,9 @@ Library {
       SampleTime	      "-1"
     }
     Block {
+      BlockType		      Ground
+    }
+    Block {
       BlockType		      Inport
       Port		      "1"
       OutputFunctionCall      off
@@ -763,6 +766,21 @@ Library {
       InitialOutput	      "[]"
     }
     Block {
+      BlockType		      Saturate
+      UpperLimitSource	      "Dialog"
+      UpperLimit	      "0.5"
+      LowerLimitSource	      "Dialog"
+      LowerLimit	      "-0.5"
+      LinearizeAsGain	      on
+      ZeroCross		      on
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as input"
+      LockScale		      off
+      RndMeth		      "Floor"
+    }
+    Block {
       BlockType		      SubSystem
       ShowPortLabels	      "FromPortIcon"
       Permissions	      "ReadWrite"
@@ -785,10 +803,41 @@ Library {
       Variant		      off
       GeneratePreprocessorConditionals off
     }
+    Block {
+      BlockType		      Sum
+      IconShape		      "rectangular"
+      Inputs		      "++"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      AccumDataTypeStr	      "Inherit: Inherit via internal rule"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Switch
+      Criteria		      "u2 >= Threshold"
+      Threshold		      "0"
+      InputSameDT	      on
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Inherit via internal rule"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      ZeroCross		      on
+      SampleTime	      "-1"
+      AllowDiffInputSizes     off
+    }
   }
   System {
     Name		    "LiveParts"
-    Location		    [1457, 116, 2259, 645]
+    Location		    [2591, 456, 3249, 864]
     Open		    on
     ModelBrowserVisibility  on
     ModelBrowserWidth	    200
@@ -802,7 +851,7 @@ Library {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "9"
+    SIDHighWatermark	    "57"
     Block {
       BlockType		      SubSystem
       Name		      "LiveConstant"
@@ -889,6 +938,1007 @@ Library {
     }
     Block {
       BlockType		      SubSystem
+      Name		      "LiveFilter"
+      SID		      "10"
+      Tag		      "LiveFilter"
+      Ports		      [1, 1]
+      Position		      [210, 39, 315, 101]
+      ZOrder		      104
+      BackgroundColor	      "[0.666667, 1.000000, 0.000000]"
+      AttributesFormatString  "%<Tag>"
+      ShowPortLabels	      "none"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		21
+	$ClassName		"Simulink.Mask"
+	Initialization		"if flexTf\n    set_param([gcb '/FM1'], 'Description', ['FlexTf: ' get_param(gcb, 'par') '.fm1frd']);"
+	"\n    set_param([gcb '/FM2'], 'Description', ['FlexTf: ' get_param(gcb, 'par') '.fm2frd']);\n    set_param([gcb '/FM3"
+	"'], 'Description', ['FlexTf: ' get_param(gcb, 'par') '.fm3frd']);\n    set_param([gcb '/FM4'], 'Description', ['FlexT"
+	"f: ' get_param(gcb, 'par') '.fm4frd']);\n    set_param([gcb '/FM5'], 'Description', ['FlexTf: ' get_param(gcb, 'par')"
+	" '.fm5frd']);\n    set_param([gcb '/FM6'], 'Description', ['FlexTf: ' get_param(gcb, 'par') '.fm6frd']);\n    set_par"
+	"am([gcb '/FM7'], 'Description', ['FlexTf: ' get_param(gcb, 'par') '.fm7frd']);\n    set_param([gcb '/FM8'], 'Descript"
+	"ion', ['FlexTf: ' get_param(gcb, 'par') '.fm8frd']);\n    set_param([gcb '/FM9'], 'Description', ['FlexTf: ' get_para"
+	"m(gcb, 'par') '.fm9frd']);\n    set_param([gcb '/FM10'], 'Description', ['FlexTf: ' get_param(gcb, 'par') '.fm10frd']"
+	");\nelse\n    set_param([gcb '/FM1'], 'Description', '');\n    set_param([gcb '/FM2'], 'Description', '');\n    set_p"
+	"aram([gcb '/FM3'], 'Description', '');\n    set_param([gcb '/FM4'], 'Description', '');\n    set_param([gcb '/FM5'], "
+	"'Description', '');\n    set_param([gcb '/FM6'], 'Description', '');\n    set_param([gcb '/FM7'], 'Description', '');"
+	"\n    set_param([gcb '/FM8'], 'Description', '');\n    set_param([gcb '/FM9'], 'Description', '');\n    set_param([gc"
+	"b '/FM10'], 'Description', '');\nend"
+	SelfModifiable		"on"
+	Display			"if isstruct(par) && isfield(par, 'fm1')\n    if flexTf\n        disp([get_param(gcb, 'par') char(10) 'Flex"
+	"Tf']);\n    else\n        disp(get_param(gcb, 'par'));\n    end\nelse\n    disp('???')\nend"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  6
+	  Object {
+	    $ObjectID		    22
+	    Type		    "edit"
+	    Name		    "par"
+	    Prompt		    "FM parameter struct"
+	    Value		    "unspecifiedPar"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    23
+	    Type		    "edit"
+	    Name		    "prefix"
+	    Prompt		    "Channel prefix"
+	    Value		    "'unspecifiedChannel'"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    24
+	    Type		    "edit"
+	    Name		    "site"
+	    Prompt		    "Site"
+	    Value		    "'unspecifiedSite'"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    25
+	    Type		    "edit"
+	    Name		    "feModel"
+	    Prompt		    "FE model name"
+	    Value		    "'unspecifiedModel'"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    26
+	    Type		    "edit"
+	    Name		    "fmName"
+	    Prompt		    "FM name"
+	    Value		    "'unspecifiedName'"
+	  }
+	  Object {
+	    $ObjectID		    27
+	    Type		    "checkbox"
+	    Name		    "flexTf"
+	    Prompt		    "Use FlexTf"
+	    Value		    "off"
+	    Tunable		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"LiveFilter"
+	Location		[2591, 456, 3249, 864]
+	Open			on
+	ModelBrowserVisibility	on
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	SIDHighWatermark	"104"
+	Block {
+	  BlockType		  Inport
+	  Name			  "IN1"
+	  SID			  "10:11"
+	  Position		  [830, 193, 860, 207]
+	  ZOrder		  13
+	  BackgroundColor	  "yellow"
+	  NamePlacement		  "alternate"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM1"
+	  SID			  "10:12"
+	  Ports			  [1, 1]
+	  Position		  [1135, 190, 1215, 240]
+	  ZOrder		  12
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm1"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM10"
+	  SID			  "10:13"
+	  Ports			  [1, 1]
+	  Position		  [1460, 575, 1540, 625]
+	  ZOrder		  11
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm10"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM10SW"
+	  SID			  "10:51"
+	  Position		  [1555, 607, 1680, 623]
+	  ZOrder		  42
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^9)"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM1SW"
+	  SID			  "10:31"
+	  Position		  [1230, 222, 1355, 238]
+	  ZOrder		  21
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^0)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM2"
+	  SID			  "10:14"
+	  Ports			  [1, 1]
+	  Position		  [1460, 190, 1540, 240]
+	  ZOrder		  10
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm2"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM2SW"
+	  SID			  "10:32"
+	  Position		  [1555, 222, 1680, 238]
+	  ZOrder		  23
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^1)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM3"
+	  SID			  "10:15"
+	  Ports			  [1, 1]
+	  Position		  [1135, 285, 1215, 335]
+	  ZOrder		  9
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm3"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM3SW"
+	  SID			  "10:37"
+	  Position		  [1230, 317, 1355, 333]
+	  ZOrder		  28
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^2)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM4"
+	  SID			  "10:16"
+	  Ports			  [1, 1]
+	  Position		  [1460, 285, 1540, 335]
+	  ZOrder		  8
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm4"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM4SW"
+	  SID			  "10:39"
+	  Position		  [1555, 317, 1680, 333]
+	  ZOrder		  30
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^3)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM5"
+	  SID			  "10:17"
+	  Ports			  [1, 1]
+	  Position		  [1135, 380, 1215, 430]
+	  ZOrder		  7
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm5"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM5SW"
+	  SID			  "10:41"
+	  Position		  [1230, 412, 1355, 428]
+	  ZOrder		  32
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^4)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM6"
+	  SID			  "10:18"
+	  Ports			  [1, 1]
+	  Position		  [1460, 380, 1540, 430]
+	  ZOrder		  6
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm6"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM6SW"
+	  SID			  "10:43"
+	  Position		  [1555, 412, 1680, 428]
+	  ZOrder		  34
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^5)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM7"
+	  SID			  "10:19"
+	  Ports			  [1, 1]
+	  Position		  [1135, 475, 1215, 525]
+	  ZOrder		  5
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm7"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM7SW"
+	  SID			  "10:45"
+	  Position		  [1230, 507, 1355, 523]
+	  ZOrder		  36
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^6)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM8"
+	  SID			  "10:20"
+	  Ports			  [1, 1]
+	  Position		  [1460, 475, 1540, 525]
+	  ZOrder		  4
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm8"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM8SW"
+	  SID			  "10:47"
+	  Position		  [1555, 507, 1680, 523]
+	  ZOrder		  38
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^7)"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "FM9"
+	  SID			  "10:21"
+	  Ports			  [1, 1]
+	  Position		  [1135, 575, 1215, 625]
+	  ZOrder		  3
+	  NamePlacement		  "alternate"
+	  AttributesFormatString  "%<Description>"
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "par.fm9"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "FM9SW"
+	  SID			  "10:49"
+	  Position		  [1230, 607, 1355, 623]
+	  ZOrder		  40
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^8)"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "GAIN"
+	  SID			  "10:22"
+	  Position		  [1775, 564, 1835, 636]
+	  ZOrder		  2
+	  NamePlacement		  "alternate"
+	  Gain			  "par.gain"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Ground
+	  Name			  "Ground"
+	  SID			  "10:28"
+	  Position		  [840, 300, 860, 320]
+	  ZOrder		  18
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Ground
+	  Name			  "Ground1"
+	  SID			  "10:36"
+	  Position		  [840, 220, 860, 240]
+	  ZOrder		  26
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Ground
+	  Name			  "Ground2"
+	  SID			  "10:55"
+	  Position		  [2125, 620, 2145, 640]
+	  ZOrder		  47
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "INPUTSW"
+	  SID			  "10:35"
+	  Position		  [870, 207, 990, 223]
+	  ZOrder		  25
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^10)"
+	}
+	Block {
+	  BlockType		  Saturate
+	  Name			  "LIMIT"
+	  SID			  "10:26"
+	  Ports			  [1, 1]
+	  Position		  [1870, 585, 1900, 615]
+	  ZOrder		  16
+	  NamePlacement		  "alternate"
+	  InputPortMap		  "u0"
+	  UpperLimit		  "par.limit"
+	  LowerLimit		  "-par.limit"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "LIMITSW"
+	  SID			  "10:53"
+	  Position		  [1920, 607, 2045, 623]
+	  ZOrder		  44
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^13)"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "OFFSET"
+	  SID			  "10:24"
+	  Position		  [815, 270, 860, 290]
+	  ZOrder		  14
+	  NamePlacement		  "alternate"
+	  Value			  "par.offset"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "OFFSETSW"
+	  SID			  "10:29"
+	  Position		  [870, 287, 990, 303]
+	  ZOrder		  19
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^11)"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "OUTPUTSW"
+	  SID			  "10:56"
+	  Position		  [2155, 607, 2275, 623]
+	  ZOrder		  46
+	  ShowName		  off
+	  Value			  "bitand(par.swstat, 2^12)"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  SID			  "10:25"
+	  Ports			  [2, 1]
+	  Position		  [1080, 205, 1100, 225]
+	  ZOrder		  15
+	  ShowName		  off
+	  IconShape		  "round"
+	  Inputs		  "|++"
+	  InputSameDT		  off
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch"
+	  SID			  "10:27"
+	  Position		  [1005, 275, 1055, 315]
+	  ZOrder		  17
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch1"
+	  SID			  "10:30"
+	  Position		  [1370, 210, 1420, 250]
+	  ZOrder		  20
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch10"
+	  SID			  "10:50"
+	  Position		  [1370, 595, 1420, 635]
+	  ZOrder		  39
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch11"
+	  SID			  "10:52"
+	  Position		  [1695, 595, 1745, 635]
+	  ZOrder		  41
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch12"
+	  SID			  "10:54"
+	  Position		  [2060, 595, 2110, 635]
+	  ZOrder		  43
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch13"
+	  SID			  "10:57"
+	  Position		  [2290, 595, 2340, 635]
+	  ZOrder		  45
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch2"
+	  SID			  "10:33"
+	  Position		  [1695, 210, 1745, 250]
+	  ZOrder		  22
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch3"
+	  SID			  "10:34"
+	  Position		  [1005, 195, 1055, 235]
+	  ZOrder		  24
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch4"
+	  SID			  "10:38"
+	  Position		  [1370, 305, 1420, 345]
+	  ZOrder		  27
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch5"
+	  SID			  "10:40"
+	  Position		  [1695, 305, 1745, 345]
+	  ZOrder		  29
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch6"
+	  SID			  "10:42"
+	  Position		  [1370, 400, 1420, 440]
+	  ZOrder		  31
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch7"
+	  SID			  "10:44"
+	  Position		  [1695, 400, 1745, 440]
+	  ZOrder		  33
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch8"
+	  SID			  "10:46"
+	  Position		  [1370, 495, 1420, 535]
+	  ZOrder		  35
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Switch
+	  Name			  "Switch9"
+	  SID			  "10:48"
+	  Position		  [1695, 495, 1745, 535]
+	  ZOrder		  37
+	  ShowName		  off
+	  Criteria		  "u2 ~= 0"
+	  InputSameDT		  off
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "OUT"
+	  SID			  "10:23"
+	  Position		  [2370, 608, 2400, 622]
+	  ZOrder		  1
+	  BackgroundColor	  "orange"
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "GAIN"
+	  SrcPort		  1
+	  Points		  [9, 0]
+	  Branch {
+	    Points		    [0, 30]
+	    DstBlock		    "Switch12"
+	    DstPort		    3
+	  }
+	  Branch {
+	    DstBlock		    "LIMIT"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    DstBlock		    "FM1"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 30]
+	    DstBlock		    "Switch1"
+	    DstPort		    3
+	  }
+	}
+	Line {
+	  SrcBlock		  "OFFSET"
+	  SrcPort		  1
+	  DstBlock		  "Switch"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Ground"
+	  SrcPort		  1
+	  DstBlock		  "Switch"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "OFFSETSW"
+	  SrcPort		  1
+	  DstBlock		  "Switch"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch1"
+	  SrcPort		  1
+	  Points		  [12, 0]
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch2"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [0, -15]
+	    DstBlock		    "FM2"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM1"
+	  SrcPort		  1
+	  DstBlock		  "Switch1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM1SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "FM2"
+	  SrcPort		  1
+	  DstBlock		  "Switch2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM2SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch2"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch2"
+	  SrcPort		  1
+	  Points		  [13, 0; 0, 33; -643, 0; 0, 47]
+	  Branch {
+	    Points		    [0, 30]
+	    DstBlock		    "Switch4"
+	    DstPort		    3
+	  }
+	  Branch {
+	    DstBlock		    "FM3"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "INPUTSW"
+	  SrcPort		  1
+	  DstBlock		  "Switch3"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Ground1"
+	  SrcPort		  1
+	  DstBlock		  "Switch3"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "IN1"
+	  SrcPort		  1
+	  DstBlock		  "Switch3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM3"
+	  SrcPort		  1
+	  DstBlock		  "Switch4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Switch4"
+	  SrcPort		  1
+	  Points		  [14, 0]
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch5"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [1, 0; 0, -15]
+	    DstBlock		    "FM4"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM4"
+	  SrcPort		  1
+	  DstBlock		  "Switch5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM4SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch5"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "FM3SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch4"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch5"
+	  SrcPort		  1
+	  Points		  [9, 0; 0, 34; -639, 0; 0, 46]
+	  Branch {
+	    Points		    [0, 30]
+	    DstBlock		    "Switch6"
+	    DstPort		    3
+	  }
+	  Branch {
+	    DstBlock		    "FM5"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM5"
+	  SrcPort		  1
+	  DstBlock		  "Switch6"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Switch6"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch7"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [0, -15]
+	    DstBlock		    "FM6"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM5SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch6"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "FM6"
+	  SrcPort		  1
+	  DstBlock		  "Switch7"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Switch7"
+	  SrcPort		  1
+	  Points		  [9, 0; 0, 32; -639, 0; 0, 48]
+	  Branch {
+	    Points		    [0, 30]
+	    DstBlock		    "Switch8"
+	    DstPort		    3
+	  }
+	  Branch {
+	    DstBlock		    "FM7"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM6SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch7"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "FM7"
+	  SrcPort		  1
+	  DstBlock		  "Switch8"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM7SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch8"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch8"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    Points		    [0, -15]
+	    DstBlock		    "FM8"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch9"
+	    DstPort		    3
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM8"
+	  SrcPort		  1
+	  DstBlock		  "Switch9"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM8SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch9"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch9"
+	  SrcPort		  1
+	  Points		  [9, 0; 0, 35; -641, 0; 0, 50]
+	  Branch {
+	    Points		    [0, 30]
+	    DstBlock		    "Switch10"
+	    DstPort		    3
+	  }
+	  Branch {
+	    DstBlock		    "FM9"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM9"
+	  SrcPort		  1
+	  DstBlock		  "Switch10"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM9SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch10"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch10"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch11"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [0, -15]
+	    DstBlock		    "FM10"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "FM10"
+	  SrcPort		  1
+	  DstBlock		  "Switch11"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "FM10SW"
+	  SrcPort		  1
+	  DstBlock		  "Switch11"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch11"
+	  SrcPort		  1
+	  Points		  [10, 0]
+	  DstBlock		  "GAIN"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LIMIT"
+	  SrcPort		  1
+	  DstBlock		  "Switch12"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LIMITSW"
+	  SrcPort		  1
+	  DstBlock		  "Switch12"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch12"
+	  SrcPort		  1
+	  Points		  [2, 0; 0, -15]
+	  DstBlock		  "Switch13"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Ground2"
+	  SrcPort		  1
+	  DstBlock		  "Switch13"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "OUTPUTSW"
+	  SrcPort		  1
+	  DstBlock		  "Switch13"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Switch13"
+	  SrcPort		  1
+	  DstBlock		  "OUT"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Switch3"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Switch"
+	  SrcPort		  1
+	  Points		  [30, 0]
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
       Name		      "LiveMatrix"
       SID		      "4"
       Tag		      "LiveMatrix"
@@ -907,14 +1957,14 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		21
+	$ObjectID		28
 	$ClassName		"Simulink.Mask"
-	Display			"disp(M)"
+	Display			"disp([get_param(gcb, 'M') '*u']);"
 	Array {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  6
 	  Object {
-	    $ObjectID		    22
+	    $ObjectID		    29
 	    Type		    "edit"
 	    Name		    "M"
 	    Prompt		    "Matrix"
@@ -922,7 +1972,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    23
+	    $ObjectID		    30
 	    Type		    "edit"
 	    Name		    "prefix"
 	    Prompt		    "Channel prefix"
@@ -930,7 +1980,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    24
+	    $ObjectID		    31
 	    Type		    "edit"
 	    Name		    "firstRow"
 	    Prompt		    "First row"
@@ -938,7 +1988,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    25
+	    $ObjectID		    32
 	    Type		    "edit"
 	    Name		    "firstCol"
 	    Prompt		    "First column"
@@ -946,7 +1996,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    26
+	    $ObjectID		    33
 	    Type		    "edit"
 	    Name		    "lastRow"
 	    Prompt		    "Last row"
@@ -954,7 +2004,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    27
+	    $ObjectID		    34
 	    Type		    "edit"
 	    Name		    "lastCol"
 	    Prompt		    "Last column"
@@ -966,8 +2016,8 @@ Library {
       }
       System {
 	Name			"LiveMatrix"
-	Location		[1456, 174, 2258, 703]
-	Open			on
+	Location		[1457, 116, 2259, 645]
+	Open			off
 	ModelBrowserVisibility	on
 	ModelBrowserWidth	200
 	ScreenColor		"white"
