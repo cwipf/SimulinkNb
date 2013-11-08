@@ -2,7 +2,7 @@ function liveParts(mdl, start, duration, freq)
 
 %% Form channel list
 load_system(mdl);
-liveParts = find_system(mdl, 'FollowLink', 'on', 'LookUnderMasks', 'all', 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMatrix|LiveFilter)');
+liveParts = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMatrix|LiveFilter)');
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
 chans = cell(size(liveParts));
@@ -86,7 +86,7 @@ switch blkType
     case 'LiveConstant'
         K = dataByChan(chans{1});
         kVar = get_param(blk, 'K');
-        assignin('base', kVar, K);
+        setInBase(kVar, K);
 
     case 'LiveMatrix'
         [rows, cols] = size(chans);
@@ -98,7 +98,7 @@ switch blkType
             end
         end
         mVar = get_param(blk, 'M');
-        assignin('base', mVar, M);
+        setInBase(mVar, M);
 
     case 'LiveFilter'
         site = blkVars(strcmp({blkVars.Name}, 'site')).Value;
@@ -124,8 +124,17 @@ switch blkType
             end
         end
         parVar = get_param(blk, 'par');
-        assignin('base', parVar, par);
+        setInBase(parVar, par);
         
 end
         
+end
+
+function setInBase(var, val)
+% This function is a kludge to allow things like setting fields of
+% structures (not possible with assignin alone)
+
+assignin('base', 'zzz_assignin_kludge_tmp', val);
+evalin('base', [var ' = zzz_assignin_kludge_tmp; clear zzz_assignin_kludge_tmp']);
+
 end
