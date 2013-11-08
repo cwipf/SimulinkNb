@@ -23,7 +23,7 @@ function p = readFilterFile(fileName)
   % open file
   fid = fopen(fileName);
   if( fid == -1 )
-    errfmt('Unable to open filter file "%s".\n', fileName);
+    error(['Unable to open filter file "' fileName '".']);
   end
 
   % init
