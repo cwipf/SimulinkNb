@@ -121,7 +121,7 @@ end
 
 %% Find the NbNoiseSource blocks
 
-nbNoiseSources = find_system(mdl, 'Tag', 'NbNoiseSource');
+nbNoiseSources = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'Tag', 'NbNoiseSource');
 disp([num2str(numel(nbNoiseSources)) ' NbNoiseSource blocks found']);
 if numel(nbNoiseSources) < 1
     error('The model must contain at least one NbNoiseSource block');
@@ -200,7 +200,7 @@ end
 function [ blockTable ] = getBlocksByDof(mdl, tag)
 %% Locate the blocks with the requested tag
 
-blks = find_system(mdl, 'Tag', tag);
+blks = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'Tag', tag);
 disp([num2str(numel(blks)) ' ' tag ' blocks found']);
 
 %% Organize them in a hashtable (containers.Map object), indexed by the DOF name

@@ -2,9 +2,7 @@ function liveParts(mdl, start, duration, freq)
 
 %% Form channel list
 load_system(mdl);
-liveParts = [find_system(mdl, 'Tag', 'LiveConstant'); ...
-    find_system(mdl, 'Tag', 'LiveMatrix'); ...
-    find_system(mdl, 'Tag', 'LiveFilter')];
+liveParts = find_system(mdl, 'FollowLink', 'on', 'LookUnderMasks', 'all', 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMatrix|LiveFilter)');
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
 chans = cell(size(liveParts));
