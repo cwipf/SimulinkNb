@@ -22,7 +22,10 @@ for n = 1:size(tickleCache, 1)
     return;
 end
 
+% this trick for wrapping a varargin/varargout function comes from:
+% http://stackoverflow.com/questions/4895556/how-to-wrap-a-function-using-varargin-and-varargout
 [varargout{1:nargout}] = tickle(varargin{:});
+
 tickleCache{end+1, 1} = varargin;
 tickleCache{end, 2} = varargout;
 
