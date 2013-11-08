@@ -12,7 +12,7 @@ function frdOut = optickleFrd(opt,f,varargin)
     % see if we have a sigAC
     if nargin<3 || iscell(varargin{1})
         % compute from optickle
-        [~,~,sigAC] = tickle(opt,[],f);
+        [~,~,sigAC] = cacheTickle(opt,[],f);
         if ~isempty(varargin)
             drives = varargin{1};
             probes = varargin{2};
