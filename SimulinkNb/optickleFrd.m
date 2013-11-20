@@ -12,7 +12,7 @@ function frdOut = optickleFrd(opt,f,varargin)
     % see if we have a sigAC
     if nargin<3 || iscell(varargin{1})
         % compute from optickle
-        [~,~,sigAC] = cacheTickle(opt,[],f);
+        [~,~,sigAC,~,~] = cacheTickle(opt,[],f);
         if ~isempty(varargin)
             drives = varargin{1};
             probes = varargin{2};
@@ -41,6 +41,15 @@ function frdOut = optickleFrd(opt,f,varargin)
     
     if isempty(drives) || isempty(probes)
         error('optickleFrd:missingdriveprobes','No probe or drive names provided, nor found in simulink block');
+    end
+    
+    % if there is only one drive or probe, put in single element cell array
+    if ischar(drives)
+        drives = {drives};
+    end
+    
+    if ischar(probes)
+        probes = {probes};
     end
     
     driveIndex = cellfun(@(drive) getDriveNum(opt,drive),drives);
