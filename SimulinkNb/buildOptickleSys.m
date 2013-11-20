@@ -1,18 +1,29 @@
 function buildOptickleSys(optName,fVecName,inputs,outputs)
-%buildOptickleSys Creates an Optickle based subsystem for simulinkNB
+%buildOptickleSys Pops-up a window containing an Optickle based subsystem for simulinkNB
+    % buildOptickleSys(optName,fVecName,inputs,outputs)
+    % ARGUMENTS
+    % optName: a string giving the name of the optickle model object
+    %          note: if the input and output ports are not provided, then
+    %          the optickle model object must exist with this name in the 
+    %          workspace where this function is called.
+    % fVecName: a string giving the name of the frequency vector
+    % OPTIONAL ARGUMENTS
+    % inputs: a cell array of strings that define which optickle inputs
+    %        (drives) will be used
+    % outputs: a cell array of strings that define which optickle outputs
+    %        (probes) will be used
     
-    opt = evalin('caller',optName);
-
-    if nargin<3
-        inputs = getDriveNames(opt);
-    end
-
     if nargin<4
+        opt = evalin('caller',optName);
         probearray = opt.probe;
 
         for j =1:length(probearray)
             outputs{j} = probearray(j).name; 
         end
+    end
+    
+    if nargin<3
+        inputs = getDriveNames(opt);
     end
 
     % some
@@ -32,8 +43,17 @@ function buildOptickleSys(optName,fVecName,inputs,outputs)
     origin.outputSum = [700 50 720 70];
     offset.outputSum = offset.Outport;
     
-    base = 'opt';
-    new_system(base)
+    base = 'simulinkNBOptickleBlock';
+    try
+        new_system(base)
+    catch exception
+        if exist(base,'file') == 4
+            close_system(base,0)
+            new_system(base)
+        else
+            rethrow(exception)
+        end
+    end
     sys = [base '/OptickleModel'];
     add_block('built-in/SubSystem',sys,'Position',origin.opt,'BackGroundColor','purple');
     

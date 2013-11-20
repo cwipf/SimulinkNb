@@ -52,8 +52,40 @@ function frdOut = optickleFrd(opt,f,varargin)
         probes = {probes};
     end
     
-    driveIndex = cellfun(@(drive) getDriveNum(opt,drive),drives);
+    % this part is to handle both optics with and without multiple drive
+    % points
+    driveSplit = cell(length(drives),1);
+    for jj = 1:numel(drives);
+        drive = drives(jj);
+        
+        driveSplit{jj} = split('.',drive{1});
+        if numel(driveSplit{jj}) == 1
+            driveSplit{jj} = [driveSplit{jj} {1}];
+        end
+    end
+    
+    driveIndex = cellfun(@(drive) getDriveNum(opt,drive{1},drive{2}),driveSplit);
     probeIndex = cellfun(@(probe) getProbeNum(opt,probe),probes);
     
     frdOut = frd(sigAC(probeIndex,driveIndex,:),f,'Units','Hz');
+end
+
+function l = split(d,s)
+%L=SPLIT(S,D) splits a string S delimited by characters in D.  Meant to
+%             work roughly like the PERL split function (but without any
+%             regular expression support).  Internally uses STRTOK to do 
+%             the splitting.  Returns a cell array of strings.
+%
+%Example:
+%    >> split('_/', 'this_is___a_/_string/_//')
+%    ans = 
+%        'this'    'is'    'a'    'string'   []
+%
+%Written by Gerald Dalley (dalleyg@mit.edu), 2004
+
+l = {};
+while (~isempty(s))
+    [t,s] = strtok(s,d);
+    l = {l{:}, t};
+end
 end
