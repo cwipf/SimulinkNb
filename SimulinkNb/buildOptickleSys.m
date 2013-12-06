@@ -13,6 +13,9 @@ function buildOptickleSys(varargin)
     % outputs: a cell array of strings that define which optickle outputs
     %        (probes) will be used
     
+    % this is the string that appears in the noise budget legend
+    NOISEGROUP = 'Quantum Vacuum';
+    
     narginchk(2,4);
     
     optName = varargin{1};
@@ -116,7 +119,7 @@ function buildOptickleSys(varargin)
         set(noiseBlock,'Position',origin.noiseBlock+(jj-1)*offset.noiseBlock);
         set(noiseBlock,'asd',['optickleNoiseBlock(' optName ',' fVecName ',''' output ''')'])
         set(noiseBlock,'groupNest','2');
-        set(noiseBlock,'group','''Quantum Noise''');
+        set(noiseBlock,'group',['''' NOISEGROUP '''']);
         set(noiseBlock,'subgroup',['''' output '''']);
         
         % add sum block
