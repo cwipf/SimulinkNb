@@ -9,10 +9,11 @@ function frdOut = optickleFrd(opt,f,varargin)
     % or optickleFrd(opt,f,sigAC,{'W PM'},{'W REFL I'});
 
     parseBlock = 0;
+    needSigAC = 1;
     % see if we have a sigAC
     if nargin<3 || iscell(varargin{1})
         % compute from optickle
-        [~,~,sigAC,~,~] = cacheFunction(@tickle,opt,[],f);
+        %[~,~,sigAC,~,~] = cacheFunction(@tickle,opt,[],f);
         if ~isempty(varargin)
             drives = varargin{1};
             probes = varargin{2};
@@ -20,6 +21,7 @@ function frdOut = optickleFrd(opt,f,varargin)
             parseBlock = 1;
         end
     else
+        needSigAC = 0;
         sigAC = varargin{1};
         if length(varargin)>1
             drives = varargin{2};
@@ -52,40 +54,16 @@ function frdOut = optickleFrd(opt,f,varargin)
         probes = {probes};
     end
     
-    % this part is to handle both optics with and without multiple drive
-    % points
-    driveSplit = cell(length(drives),1);
-    for jj = 1:numel(drives);
-        drive = drives(jj);
-        
-        driveSplit{jj} = split('.',drive{1});
-        if numel(driveSplit{jj}) == 1
-            driveSplit{jj} = [driveSplit{jj} {1}];
-        end
-    end
-    
-    driveIndex = cellfun(@(drive) getDriveNum(opt,drive{1},drive{2}),driveSplit);
+    driveIndex = makeOptickleDriveIndex(opt,drives);
     probeIndex = cellfun(@(probe) getProbeNum(opt,probe),probes);
     
-    frdOut = frd(sigAC(probeIndex,driveIndex,:),f,'Units','Hz');
+    if needSigAC
+        % compute from optickle
+        [~,~,sigAC,~,~] = cacheFunction(@tickle,opt,[],f,driveIndex);
+    else
+        sigAC = sigAC(:,driveIndex,:);
+    end
+    
+    frdOut = frd(sigAC(probeIndex,:,:),f,'Units','Hz');
 end
 
-function l = split(d,s)
-%L=SPLIT(S,D) splits a string S delimited by characters in D.  Meant to
-%             work roughly like the PERL split function (but without any
-%             regular expression support).  Internally uses STRTOK to do 
-%             the splitting.  Returns a cell array of strings.
-%
-%Example:
-%    >> split('_/', 'this_is___a_/_string/_//')
-%    ans = 
-%        'this'    'is'    'a'    'string'   []
-%
-%Written by Gerald Dalley (dalleyg@mit.edu), 2004
-
-l = {};
-while (~isempty(s))
-    [t,s] = strtok(s,d);
-    l = {l{:}, t};
-end
-end
