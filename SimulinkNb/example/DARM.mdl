@@ -20681,7 +20681,7 @@ Model {
       DstPort		      1
     }
     Annotation {
-      Name		      "SVN $Id: DARM.mdl 18 2013-04-30 14:08:49Z jeffrey.kissel@LIGO.ORG $"
+      Name		      "SVN $Id$"
       Position		      [321, 477]
       FontSize		      18
     }

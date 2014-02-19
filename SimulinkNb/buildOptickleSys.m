@@ -92,7 +92,7 @@ function buildOptickleSys(varargin)
     set(sumblock,'Position',origin.internalSum);
     set(sumblock,'IconShape','rectangular');
     set(sumblock,'Inputs',repmat('+',1,length(inputs)));
-    
+
     % loop on inputs
     for jj = 1:length(inputs);
         input = inputs{jj};

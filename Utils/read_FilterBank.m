@@ -11,7 +11,7 @@
 %       such as 'MC2_M2_LOCK_L'
 %       This is used to call the filter bank in the Foton file
 % chans = the prefix of the epics channels associated with the filter bank
-%       such as 'IMC-L'
+%       such as 'IMC-L'   
 %       This is used to call the epics channels that store the gains,
 %       offsets, switch states, etc.
 %
@@ -31,7 +31,7 @@
 
 function data = read_FilterBank(ifo,model,filters,chans)
 
-addpath('/cvs/cds/project/mDV/extra/')
+addpath('/cvs/cds/project/mDV/extra/')  % doesn't exist!
 
 if ~iscell(filters)
     filters ={ filters};
@@ -53,7 +53,11 @@ for ii = 1:length(filters)
     chan = chans{ii};
 
     %% Get Filter File and Store SOS Coefficients
-    data.(filter).file.name = ['/opt/rtcds/llo/l1/chans/' model '.txt'];
+    if ifo == 'L1'
+        data.(filter).file.name = ['/opt/rtcds/llo/l1/chans/' model '.txt'];
+    elseif ifo == 'H1'
+        data.(filter).file.name = ['/opt/rtcds/lho/h1/chans/' model '.txt'];
+    end
     temp.susfilt = readFilterFile(data.(filter).file.name);
     
     data.(filter).file.time = clock;

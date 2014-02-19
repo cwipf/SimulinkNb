@@ -5,8 +5,6 @@ load_system(mdl);
 liveParts = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMatrix|LiveFilter)');
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
-chans = cell(size(liveParts));
-
 for n = 1:numel(liveParts)
     chans{n} = liveChans(liveParts{n});
     disp(['    ' liveParts{n} ' :: ' num2str(numel(chans{n}(:))) ' channels']);
@@ -21,6 +19,7 @@ end
 chanList = sort(unique(chanList));
 disp(['Requesting ' num2str(duration) ' seconds of data for ' num2str(numel(chanList)) ...
     ' channels, starting at GPS time ' num2str(start)]);
+
 data = cacheFunction(@get_data,chanList, 'raw', start, duration);
 
 dataByChan = containers.Map();

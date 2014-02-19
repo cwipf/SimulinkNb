@@ -45,7 +45,7 @@ classdef NoisePlotter < handle
             self.axesProperties.NextPlot = 'add';
             self.linesProperties = struct();
             self.linesProperties.LineWidth = 2;
-            self.legendProperties = struct();
+            self.legendProperties = struct('interpreter','none');
             self.titleProperties = struct();
             self.titleProperties.String = noiseModel.title;
             self.xlabelProperties = struct();
@@ -109,6 +109,7 @@ classdef NoisePlotter < handle
                 self.handles.ln = [];
             end
             
+
             if ~isempty(legendArgs)
                 lg = legend(ln, legendArgs{:});
                 self.handles.lg = lg;
