@@ -92,6 +92,10 @@ for n = 1:numel(flexTfBlocks)
     blk = flexTfBlocks{n};
     expr = get_param(blk, 'Description');
     expr = strtrim(expr(length('FlexTf:')+1:end));
+    % If expr is inside a library block, then its name probably refers to a
+    % library parameter (mask variable), which has to be resolved before
+    % evaluating
+    expr = resolveLibraryParam(expr, blk);
     disp(['    ' blk ' :: ' expr]);
     % Update the current block.  This is to allow clever FlexTf functions
     % to use gcb to figure out which block invoked them.

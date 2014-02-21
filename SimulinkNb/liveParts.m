@@ -6,7 +6,7 @@ liveParts = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'RegE
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
 for n = 1:numel(liveParts)
-    chans{n} = liveChans(liveParts{n});
+    chans{n} = liveChans(liveParts{n}); %#ok<AGROW>
     disp(['    ' liveParts{n} ' :: ' num2str(numel(chans{n}(:))) ' channels']);
 end
 
@@ -85,7 +85,7 @@ switch blkType
     case 'LiveConstant'
         K = dataByChan(chans{1});
         kVar = get_param(blk, 'K');
-        setInBase(kVar, K);
+        setInBase(kVar, K, blk);
 
     case 'LiveMatrix'
         [rows, cols] = size(chans);
@@ -97,7 +97,7 @@ switch blkType
             end
         end
         mVar = get_param(blk, 'M');
-        setInBase(mVar, M);
+        setInBase(mVar, M, blk);
 
     case 'LiveFilter'
         site = blkVars(strcmp({blkVars.Name}, 'site')).Value;
@@ -123,16 +123,20 @@ switch blkType
             end
         end
         parVar = get_param(blk, 'par');
-        setInBase(parVar, par);
+        setInBase(parVar, par, blk);
         
 end
         
 end
 
-function setInBase(var, val)
+function setInBase(var, val, blk)
 % This function is a kludge to allow things like setting fields of
 % structures (not possible with assignin alone)
 
+% If var is inside a library block, then its name probably refers to a
+% library parameter (mask variable), which has to be resolved before
+% evaluating
+var = resolveLibraryParam(var, blk);
 assignin('base', 'zzz_assignin_kludge_tmp', val);
 evalin('base', [var ' = zzz_assignin_kludge_tmp; clear zzz_assignin_kludge_tmp']);
 
