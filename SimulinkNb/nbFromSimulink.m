@@ -119,9 +119,20 @@ if ~isempty(get_param(nbNoiseSink, 'asd'))
     sinkNoise.asd = evalin('base', get_param(nbNoiseSink, 'asd'));
 end
 
+%% Find referenced models
+
+referencedMdls = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'BlockType', 'ModelReference');
+for n = 1:numel(referencedMdls)
+    referencedMdls{n} = get_param(referencedMdls{n}, 'ModelName');
+    load_system(referencedMdls{n});
+end
+
 %% Find the NbNoiseSource blocks
 
 nbNoiseSources = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'Tag', 'NbNoiseSource');
+for n = 1:numel(referencedMdls)
+    nbNoiseSources = [nbNoiseSources; find_system(referencedMdls{n}, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'Tag', 'NbNoiseSource')]; %#ok<AGROW>
+end
 disp([num2str(numel(nbNoiseSources)) ' NbNoiseSource blocks found']);
 if numel(nbNoiseSources) < 1
     error('The model must contain at least one NbNoiseSource block');
