@@ -31,33 +31,41 @@ function h = getFilterTf(f, plog, pfilt, varargin)
   end
 
   % determine filter TF
-  fprintf(fid, '%4s -', name);
+  if fid
+    fprintf(fid, '%4s -', name);
+  end
 
   % S-domain stuff
   fs = pfilt(1).fs;		% sample frequency
   digw = (2 * pi / fs) .* f;	% Convert from Hz to rad/sample
-  s = exp(-i * digw);		% S for this calculation 
+  s = exp(-1i * digw);		% S for this calculation 
   ss = s .* s;			% S^2
 
   sw1 = plog.SW1R;
   sw2 = plog.SW2R;
 
-  if( ~bitget(sw1, 3) | ~bitget(sw2, 10) )
-    fprintf(fid, ' Off');
+  if( ~bitget(sw1, 3) || ~bitget(sw2, 10) )
+    if fid
+      fprintf(fid, ' Off');
+    end
     h = zeros(size(f));
   else
     h = plog.GAIN * ones(size(f));
     for n = 1:length(pfilt)
       sc = pfilt(n).soscoef;
-      if( (n <= 6 & bitget(sw1, 2 * n +  4)) | ...
-          (n >= 7 & bitget(sw2, 2 * n - 12)) )
+      if( (n <= 6 && bitget(sw1, 2 * n +  4)) || ...
+          (n >= 7 && bitget(sw2, 2 * n - 12)) )
         for m = 1:size(sc, 1)
           num = sc(m, 1) + sc(m, 2) .* s + sc(m, 3) .* ss;
           den = sc(m, 4) + sc(m, 5) .* s + sc(m, 6) .* ss;
           h = h .* num ./ den;
         end
-        fprintf(fid, ' (%d) %s', n, pfilt(n).name);
+        if fid
+            fprintf(fid, ' (%d) %s', n, pfilt(n).name);
+        end
       end
     end
   end
-  fprintf(fid, '\n');
+  if fid
+    fprintf(fid, '\n');
+  end
