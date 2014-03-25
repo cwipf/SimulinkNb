@@ -12,12 +12,18 @@ if ~all(cellfun(@isvarname, structSplit))
     return;
 end
 
-% If blk or parentBlk is empty (recursion stop condition), do nothing
+% If blk or parentBlk is empty, do nothing
 if isempty(blk)
     return;
 end
 parentBlk = get_param(blk, 'Parent');
 if isempty(parentBlk)
+    return;
+end
+
+% If grandparent is empty (recursion stop condition), do nothing
+blk = parentBlk;
+if isempty(get_param(blk, 'Parent'));
     return;
 end
 
@@ -35,6 +41,6 @@ end
 
 %% Recursive step
 
-expr = resolveLibraryParam(expr, parentBlk);
+expr = resolveLibraryParam(expr, blk);
 
 end
