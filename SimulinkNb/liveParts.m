@@ -114,10 +114,10 @@ switch blkType
             warning([model '.txt is not constant during the segment']);
         end
         filters = readFilterFile(ff);
-        fm = filters.(fmName);
+        par.fm = filters.(fmName);
         for n = 1:10
-            [z, p, k] = sos2zp(fm(n).soscoef);
-            par.(['fm' num2str(n)]) = d2c(zpk(z, p, k, 1/fm(n).fs), 'tustin');
+            [z, p, k] = sos2zp(par.fm(n).soscoef);
+            par.(['fm' num2str(n)]) = d2c(zpk(z, p, k, 1/par.fm(n).fs), 'tustin');
             if flexTf
                 par.(['fm' num2str(n) 'frd']) = frd(par.(['fm' num2str(n)]), freq, 'Units', 'Hz');
             end
