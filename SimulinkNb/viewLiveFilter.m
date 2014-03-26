@@ -1,7 +1,15 @@
 function viewLiveFilter(blk)
 %VIEWLIVEFILTER A friendly interface for configuring LiveFilter blocks in Simulink
 
+if ~strcmp(get_param(blk, 'viewGui'), 'on')
+    return;
+end
+set_param(blk, 'viewGui', 'off');
+
 %% Tedious conversion of LiveFilter parameters to viewFilter inputs
+
+blkVars = get_param(blk, 'MaskWSVariables');
+name = blkVars(strcmp({blkVars.Name}, 'fmName')).Value;
 
 parVar = get_param(blk, 'par');
 % If parVar is inside a library block, then its name probably refers to a
@@ -9,9 +17,6 @@ parVar = get_param(blk, 'par');
 % evaluating
 parVar = resolveLibraryParam(parVar, blk);
 par = evalin('base', parVar);
-
-blkVars = get_param(blk, 'MaskWSVariables');
-name = blkVars(strcmp({blkVars.Name}, 'fmName')).Value;
 
 pLog.(name).OFFSET = par.offset;
 pLog.(name).GAIN = par.gain;

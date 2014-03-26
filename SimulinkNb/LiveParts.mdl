@@ -2,7 +2,7 @@ Library {
   Name			  "LiveParts"
   Version		  8.0
   MdlSubVersion		  0
-  SavedCharacterEncoding  "UTF-8"
+  SavedCharacterEncoding  "US-ASCII"
   LibraryType		  "BlockLibrary"
   SaveDefaultBlockParams  on
   ScopeRefreshTime	  0.035000
@@ -19,7 +19,7 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [676.0, 76.0, 674.0, 444.0]
+      Location		      [797.0, 178.0, 689.0, 456.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -43,7 +43,7 @@ Library {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[427.0, 277.0]
+	Extents			[456.0, 286.0]
 	ZoomFactor		[1.0]
 	Offset			[0.0, 0.0]
       }
@@ -53,11 +53,11 @@ Library {
   Creator		  "christopher.wipf"
   UpdateHistory		  "UpdateHistoryNever"
   ModifiedByFormat	  "%<Auto>"
-  LastModifiedBy	  "wipf"
+  LastModifiedBy	  "christopher.wipf"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Feb 20 23:40:16 2014"
-  RTWModifiedTimeStamp	  312336587
-  ModelVersionFormat	  "1.%<AutoIncrement:17>"
+  LastModifiedDate	  "Tue Mar 25 21:40:27 2014"
+  RTWModifiedTimeStamp	  317673187
+  ModelVersionFormat	  "1.%<AutoIncrement:18>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -825,7 +825,7 @@ Library {
   }
   System {
     Name		    "LiveParts"
-    Location		    [676, 76, 1350, 520]
+    Location		    [797, 178, 1486, 634]
     Open		    on
     ModelBrowserVisibility  on
     ModelBrowserWidth	    200
@@ -962,7 +962,7 @@ Library {
 	"Tf']);\n    else\n        disp(get_param(gcb, 'par'));\n    end\nelse\n    disp('???')\nend"
 	Array {
 	  Type			  "Simulink.MaskParameter"
-	  Dimension		  6
+	  Dimension		  7
 	  Object {
 	    $ObjectID		    21
 	    Type		    "edit"
@@ -1001,6 +1001,7 @@ Library {
 	    Name		    "fmName"
 	    Prompt		    "FM name"
 	    Value		    "'unspecifiedName'"
+	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    26
@@ -1009,6 +1010,15 @@ Library {
 	    Prompt		    "Use FlexTf"
 	    Value		    "off"
 	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    27
+	    Type		    "checkbox"
+	    Name		    "viewGui"
+	    Prompt		    "Click to view/edit config"
+	    Value		    "off"
+	    Tunable		    "off"
+	    Callback		    "viewLiveFilter(gcb);"
 	  }
 	  PropName		  "Parameters"
 	}
@@ -1943,14 +1953,14 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		27
+	$ObjectID		28
 	$ClassName		"Simulink.Mask"
 	Display			"disp([get_param(gcb, 'M') '*u']);"
 	Array {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  6
 	  Object {
-	    $ObjectID		    28
+	    $ObjectID		    29
 	    Type		    "edit"
 	    Name		    "M"
 	    Prompt		    "Matrix"
@@ -1958,7 +1968,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    29
+	    $ObjectID		    30
 	    Type		    "edit"
 	    Name		    "prefix"
 	    Prompt		    "Channel prefix"
@@ -1966,7 +1976,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    30
+	    $ObjectID		    31
 	    Type		    "edit"
 	    Name		    "firstRow"
 	    Prompt		    "First row"
@@ -1974,7 +1984,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    31
+	    $ObjectID		    32
 	    Type		    "edit"
 	    Name		    "firstCol"
 	    Prompt		    "First column"
@@ -1982,7 +1992,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    32
+	    $ObjectID		    33
 	    Type		    "edit"
 	    Name		    "lastRow"
 	    Prompt		    "Last row"
@@ -1990,7 +2000,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    33
+	    $ObjectID		    34
 	    Type		    "edit"
 	    Name		    "lastCol"
 	    Prompt		    "Last column"
