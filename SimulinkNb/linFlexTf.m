@@ -32,7 +32,7 @@ function [sys, flexTfs] = linFlexTf(varargin)
 mdl = varargin{1};
 load_system(mdl);
 
-flexTfBlocks = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'RegExp', 'on', 'Description', '^[Ff]lex[Tt][Ff]:');
+flexTfBlocks = findInSystemOrRefs(mdl, 'RegExp', 'on', 'Description', '^[Ff]lex[Tt][Ff]:');
 flexTfs = cell(size(flexTfBlocks));
 disp([num2str(numel(flexTfBlocks)) ' FlexTf blocks found in model ' strtrim(evalc('disp(mdl)'))]);
 

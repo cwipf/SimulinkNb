@@ -2,7 +2,7 @@ function liveParts(mdl, start, duration, freq)
 
 %% Form channel list
 load_system(mdl);
-liveParts = find_system(mdl, 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMatrix|LiveFilter)');
+liveParts = findInSystemOrRefs(mdl, 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMatrix|LiveFilter)');
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
 for n = 1:numel(liveParts)
