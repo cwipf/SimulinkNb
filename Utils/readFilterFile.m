@@ -56,7 +56,22 @@ function p = readFilterFile(fileName)
 
         case 'SAMPLING'
           % filter module sampling rate
-          [p.(arg{3}).fs] = deal(str2real(arg{4}));
+          if strcmp(arg{3}, 'RATE')
+              % SAMPLING RATE declaration at top of file applies to all
+              % modules
+              allFilters = fieldnames(p);
+              for n = 1:numel(allFilters)
+                  if strcmp(allFilters{n}, 'fileName')
+                      continue
+                  end
+                  [p.(allFilters{n}).fs] = deal(str2real(arg{4}));
+              end
+          else
+              % Per-filter SAMPLING declaration was apparently used by old
+              % iLIGO filter files
+              warning('Trying to parse obsolete filter file format')
+              [p.(arg{3}).fs] = deal(str2real(arg{4}));
+          end
 
         case 'DESIGN'
           % filter module design string
