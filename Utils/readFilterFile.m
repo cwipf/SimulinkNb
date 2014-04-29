@@ -69,7 +69,7 @@ function p = readFilterFile(fileName)
           else
               % Per-filter SAMPLING declaration was apparently used by old
               % iLIGO filter files
-              warning('Trying to parse obsolete filter file format')
+              warning(['Trying to parse obsolete filter file format in ' fileName])
               [p.(arg{3}).fs] = deal(str2real(arg{4}));
           end
 
