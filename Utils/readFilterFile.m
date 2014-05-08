@@ -28,6 +28,7 @@ function p = readFilterFile(fileName)
 
   % init
   p.fileName = fileName;
+  samplingWarnedOnce = false;
 
   % loop through file
   str = fgetl(fid);
@@ -69,7 +70,10 @@ function p = readFilterFile(fileName)
           else
               % Per-filter SAMPLING declaration was apparently used by old
               % iLIGO filter files
-              warning(['Trying to parse obsolete filter file format in ' fileName])
+              if ~samplingWarnedOnce
+                  warning(['Trying to parse obsolete filter file format in ' fileName])
+                  samplingWarnedOnce = true;
+              end
               [p.(arg{3}).fs] = deal(str2real(arg{4}));
           end
 
