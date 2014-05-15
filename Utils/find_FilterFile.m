@@ -3,8 +3,7 @@
 % and returns the filter file that was in effect at that time.
 %
 % Inputs:
-% site = 'llo', 'lho', etc
-% ifo = 'L1', 'H1', etc
+% ifo = 'L1', 'H1', or 'I1'
 % model = the name of the particular model such as 'L1SUSMC2'
 %       This is used to locate the Foton file
 % gpstime = The GPS time to use when searching for filter files
@@ -40,8 +39,7 @@ for file=files'
 end
 
 if ~exist('bestFileMatch')
-    %filename=fullfile(chansDir, strcat(upper(model), '.txt'));
-    filename = '';
+    filename=fullfile(chansDir, strcat(upper(model), '.txt'));
 else
 %filename = cellstr(filename);
     filename = fullfile(filterArchiveDir, bestFileMatch.name);
