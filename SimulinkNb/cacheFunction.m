@@ -5,7 +5,7 @@ function varargout = cacheFunction(varargin)
 % (functionCache), the output will be reused if the same function is called
 % with the same input arguments.
 
-cacheSize = 10;
+cacheSize = 100;
 
 global functionCache;
 
