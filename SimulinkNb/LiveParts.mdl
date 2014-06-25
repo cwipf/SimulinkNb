@@ -2,7 +2,7 @@ Library {
   Name			  "LiveParts"
   Version		  8.0
   MdlSubVersion		  0
-  SavedCharacterEncoding  "US-ASCII"
+  SavedCharacterEncoding  "UTF-8"
   LibraryType		  "BlockLibrary"
   SaveDefaultBlockParams  on
   ScopeRefreshTime	  0.035000
@@ -19,12 +19,12 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [797.0, 178.0, 689.0, 456.0]
+      Location		      [580.0, 178.0, 703.0, 463.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
 	$ClassName		"Simulink.ModelBrowserInfo"
-	Visible			[1]
+	Visible			[0]
 	DockPosition		"Left"
 	Width			[50]
 	Height			[50]
@@ -43,7 +43,7 @@ Library {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[456.0, 286.0]
+	Extents			[651.0, 286.0]
 	ZoomFactor		[1.0]
 	Offset			[0.0, 0.0]
       }
@@ -53,9 +53,9 @@ Library {
   Creator		  "christopher.wipf"
   UpdateHistory		  "UpdateHistoryNever"
   ModifiedByFormat	  "%<Auto>"
-  LastModifiedBy	  "christopher.wipf"
+  LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Mar 25 21:40:27 2014"
+  LastModifiedDate	  "Tue Jun 17 00:38:18 2014"
   RTWModifiedTimeStamp	  317673187
   ModelVersionFormat	  "1.%<AutoIncrement:18>"
   ConfigurationManager	  "none"
@@ -825,9 +825,9 @@ Library {
   }
   System {
     Name		    "LiveParts"
-    Location		    [797, 178, 1486, 634]
+    Location		    [580, 178, 1283, 641]
     Open		    on
-    ModelBrowserVisibility  on
+    ModelBrowserVisibility  off
     ModelBrowserWidth	    200
     ScreenColor		    "white"
     PaperOrientation	    "landscape"
@@ -889,7 +889,7 @@ Library {
 	Name			"LiveConstant"
 	Location		[1456, 174, 2258, 703]
 	Open			off
-	ModelBrowserVisibility	on
+	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
 	PaperOrientation	"landscape"
@@ -1027,7 +1027,7 @@ Library {
 	Name			"LiveFilter"
 	Location		[789, 456, 1447, 864]
 	Open			off
-	ModelBrowserVisibility	on
+	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
 	PaperOrientation	"landscape"
@@ -2014,7 +2014,7 @@ Library {
 	Name			"LiveMatrix"
 	Location		[1457, 116, 2259, 645]
 	Open			off
-	ModelBrowserVisibility	on
+	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
 	PaperOrientation	"landscape"
