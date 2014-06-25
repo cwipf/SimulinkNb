@@ -16,18 +16,33 @@ chanList = {};
 for n = 1:numel(chans)
     chanList = [chanList chans{n}(:)']; %#ok<AGROW>
 end
-chanList = sort(unique(chanList));
-disp(['Requesting ' num2str(duration) ' seconds of data for ' num2str(numel(chanList)) ...
-    ' channels, starting at GPS time ' num2str(start)]);
 
-data = cacheFunction(@get_data, chanList, 'raw', start, duration);
+chanList = sort(unique(chanList));
+
+% Break the channel list into digestible pieces for the NDS server
+maxChans = 100;
+lastChanIdx = 0;
+data = [];
+while (numel(chanList) - lastChanIdx) > 0
+    chansToFetch = min(numel(chanList) - lastChanIdx, maxChans);
+    disp(['Requesting ' num2str(duration) ' sec of data for ' num2str(chansToFetch) ...
+        ' channels, starting at GPS time ' num2str(start)]);
+
+    firstChanIdx = lastChanIdx + 1;
+    lastChanIdx = lastChanIdx + chansToFetch;
+%     for n = 1:chansToFetch
+%         disp(chanList(firstChanIdx+n));
+%         get_data(chanList(firstChanIdx+n), 'raw', start, duration);
+%     end
+    data = [data cacheFunction(@get_data, chanList(firstChanIdx:lastChanIdx), 'raw', start, duration)]; %#ok<AGROW>
+end
 
 dataByChan = containers.Map();
 for n = 1:numel(data)
     if any(diff(data(n).data) ~= 0)
         warning([data(n).name ' is not constant during the segment']);
     end
-    dataByChan(data(n).name) = mean(data(n).data);
+    dataByChan(data(n).name) = double(mode(data(n).data));
 end
 
 %% Apply params
