@@ -64,7 +64,7 @@ end
 % and get live data support
 % see e.g. bug 68: https://trac.ligo.caltech.edu/nds2/ticket/68
 % Fall back on good old mDV instead
-data = get_data(chanList, 'raw', start, duration);
+data = cacheFunction(@get_data, chanList, 'raw', start, duration);
 
 %% Compute ASDs 
 
