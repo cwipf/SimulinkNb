@@ -49,7 +49,7 @@ classdef NoisePlotter < handle
             self.titleProperties = struct();
             self.titleProperties.String = noiseModel.title;
             self.xlabelProperties = struct();
-            self.xlabelProperties.String = 'frequency [Hz]';
+            self.xlabelProperties.String = 'Frequency [Hz]';
             self.ylabelProperties = struct();
             self.ylabelProperties.String = noiseModel.unit;
             self.skipModelNoises = false(size(noiseModel.modelNoises));

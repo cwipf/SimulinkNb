@@ -34,7 +34,8 @@ while (numel(chanList) - lastChanIdx) > 0
 %         disp(chanList(firstChanIdx+n));
 %         get_data(chanList(firstChanIdx+n), 'raw', start, duration);
 %     end
-    data = [data cacheFunction(@get_data, chanList(firstChanIdx:lastChanIdx), 'raw', start, duration)]; %#ok<AGROW>
+    data = [data cacheFunction(@get_data, chanList(firstChanIdx:lastChanIdx),...
+            'raw', start, duration)]; %#ok<AGROW>
 end
 
 dataByChan = containers.Map();
