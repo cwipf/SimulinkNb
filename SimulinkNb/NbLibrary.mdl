@@ -19,7 +19,7 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [134.0, 79.0, 374.0, 490.0]
+      Location		      [126.0, 51.0, 390.0, 526.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -34,7 +34,7 @@ Library {
 	$PropName		"ExplorerBarInfo"
 	$ObjectID		4
 	$ClassName		"Simulink.ExplorerBarInfo"
-	Visible			[1]
+	Visible			[0]
       }
       Object {
 	$PropName		"EditorsInfo"
@@ -43,7 +43,7 @@ Library {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[336.0, 320.0]
+	Extents			[338.0, 379.0]
 	ZoomFactor		[1.0]
 	Offset			[0.0, 0.0]
       }
@@ -55,9 +55,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Jun 17 00:37:36 2014"
-  RTWModifiedTimeStamp	  324866254
-  ModelVersionFormat	  "1.%<AutoIncrement:30>"
+  LastModifiedDate	  "Thu Jul 10 14:25:53 2014"
+  RTWModifiedTimeStamp	  326903076
+  ModelVersionFormat	  "1.%<AutoIncrement:31>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -751,7 +751,7 @@ Library {
   }
   System {
     Name		    "NbLibrary"
-    Location		    [134, 79, 508, 569]
+    Location		    [126, 51, 516, 577]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -1003,13 +1003,16 @@ Library {
 	    Value		    "1"
 	    Evaluate		    "off"
 	    Tunable		    "off"
-	    Callback		    "switch get_param(gcb, 'groupNest')\n    case '1'\n        set_param(gcb, 'MaskVisibilities', {'on'"
-	    ", 'on', 'on', 'on', 'off', 'off', 'off'})\n        set_param(gcb, 'subgroup', '''''');\n        set_param(gcb, 's"
-	    "ubsubgroup', '''''');\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '2'\n        set_param(gcb, 'M"
-	    "askVisibilities', {'on', 'on', 'on', 'on', 'on', 'off', 'off'})\n        set_param(gcb, 'subsubgroup', '''''');\n"
-	    "        set_param(gcb, 'subsubsubgroup', '''''');\n    case '3'\n        set_param(gcb, 'MaskVisibilities', {'on'"
-	    ", 'on', 'on', 'on', 'on', 'on', 'off'})\n        set_param(gcb, 'subsubsubgroup', '''''');\n    case '4'\n       "
-	    " set_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'on', 'on'});\nend"
+	    Callback		    "try\n    switch get_param(gcb, 'groupNest')\n        case '1'\n            set_param(gcb, 'MaskVis"
+	    "ibilities', {'on', 'on', 'on', 'on', 'off', 'off', 'off'})\n            set_param(gcb, 'subgroup', '''''');\n    "
+	    "        set_param(gcb, 'subsubgroup', '''''');\n            set_param(gcb, 'subsubsubgroup', '''''');\n        ca"
+	    "se '2'\n            set_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'off', 'off'})\n           "
+	    " set_param(gcb, 'subsubgroup', '''''');\n            set_param(gcb, 'subsubsubgroup', '''''');\n        case '3'\n"
+	    "            set_param(gcb, 'MaskVisibilities', {'on', 'on', 'on', 'on', 'on', 'on', 'off'})\n            set_para"
+	    "m(gcb, 'subsubsubgroup', '''''');\n        case '4'\n            set_param(gcb, 'MaskVisibilities', {'on', 'on', "
+	    "'on', 'on', 'on', 'on', 'on'});\n    end\ncatch\n    % This is intended to catch spurious errors that arise when "
+	    "set_param\n    % is invoked on a block that's inside a library part.  There seems to\n    % be no way to filter o"
+	    "n the error type or rethrow an error without\n    % polluting the global workspace.\nend"
 	  }
 	  Object {
 	    $ObjectID		    28
