@@ -6,6 +6,18 @@ liveParts = findInSystemOrRefs(mdl, 'RegExp', 'on', 'Tag', '(LiveConstant|LiveMa
 disp([num2str(numel(liveParts)) ' LiveParts found']);
 
 for n = 1:numel(liveParts)
+    % The set_param is a workaround for blocks that fail to initialize
+    % their mask workspace
+    % http://www.mathworks.com/matlabcentral/newsreader/view_thread/77043
+    try
+        set_param(liveParts{n}, 'Mask', 'on');
+    catch err
+        % Ignore set_param failures that occur for blocks inside libraries
+        % that aren't designated as modifiable (they seem to initialize ok)
+        if ~strcmp(err.identifier, 'Simulink:Libraries:RefViolation')
+            rethrow(err);
+        end
+    end
     chans{n} = liveChans(liveParts{n}); %#ok<AGROW>
     disp(['    ' liveParts{n} ' :: ' num2str(numel(chans{n}(:))) ' channels']);
 end
@@ -81,6 +93,9 @@ switch blkType
 
     case 'LiveFilter'
         prefix = blkVars(strcmp({blkVars.Name}, 'prefix')).Value;
+        if ~numel(prefix)
+            error(['Prefix not set for blk ' blk]);
+        end
         % note: the liveParams function below depends on the ordering of these suffixes
         fmChanSuffixes = {'_SWSTAT', '_OFFSET', '_GAIN', '_LIMIT'};
         chans = cell(size(fmChanSuffixes));
