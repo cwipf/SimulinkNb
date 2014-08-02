@@ -40,7 +40,7 @@ classdef NoisePlotter < handle
             self.axesProperties.YGrid = 'on';
             self.axesProperties.XScale = 'log';
             self.axesProperties.YScale = 'log';
-            self.axesProperties.ColorOrder = distinguishable_colors(14);
+            self.axesProperties.ColorOrder = distinguishable_colors(11);
             self.axesProperties.LineStyleOrder = {'--', '-.', ':'};
             self.axesProperties.NextPlot = 'add';
             self.linesProperties = struct();
@@ -62,9 +62,11 @@ classdef NoisePlotter < handle
                 feval(self.prolog{n}, self, noiseModel);
             end
             
-            plotArgs = self.noisefun(@(noise) {noise.f noise.asd}, noiseModel, 'UniformOutput', false);
+            plotArgs = self.noisefun(@(noise) {noise.f noise.asd},...
+                noiseModel, 'UniformOutput', false);
             plotArgs = [plotArgs{:}];
-            legendArgs = self.noisefun(@(noise) noise.name, noiseModel, 'UniformOutput', false);
+            legendArgs = self.noisefun(@(noise) noise.name, noiseModel,...
+                'UniformOutput', false);
             self.buildPlot(plotArgs, legendArgs);
 
             for n = 1:numel(self.epilog)
@@ -180,8 +182,8 @@ classdef NoisePlotter < handle
         function setLinesProperties(self, noiseModel)
             %setLinesProperties is a prolog function that styles the reference and sum traces
             countReferences = numel(noiseModel.referenceNoises);
-            countSum = ~self.skipSumNoise;
-            countLines = countReferences + countSum + sum(~self.skipModelNoises);
+            countSum        = ~self.skipSumNoise;
+            countLines      = countReferences + countSum + sum(~self.skipModelNoises);
             
             if ~iscell(self.linesProperties)
                 self.linesProperties = num2cell(repmat(self.linesProperties, countLines, 1));
