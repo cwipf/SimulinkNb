@@ -70,7 +70,7 @@ data = cacheFunction(@get_data, chanList, 'raw', start, duration);
 
 noisesByChan = containers.Map();
 for n = 1:numel(data)
-    asd = opt.asdMethod(data(n).data, data(n).rate, nb.f);
+    asd = opt.asdMethod(double(data(n).data), data(n).rate, nb.f);
     noisesByChan(data(n).name) = asd;
 end
 
