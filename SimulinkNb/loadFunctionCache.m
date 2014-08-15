@@ -1,10 +1,18 @@
-function loadFunctionCache()
+function loadFunctionCache(varargin)
     % loads functionCache global variable from disk if it doesn't exist
     
-    FILENAME = 'functionCache.mat';
+    if numel(varargin) < 1
+        FILENAME = 'functionCache.mat';
+    else
+        FILENAME = varargin{1};
+        if ~ischar(FILENAME)
+            error('cacheFunction:badArg','argument is not a valid filename');
+        end
+    end
     
     if ~exist(FILENAME,'file')
-        warning('cacheFunction:diskCacheNotFound','Could not load functionCache from disk.')
+        warning('cacheFunction:diskCacheNotFound',...
+            ['Could not load functionCache from ' FILENAME]);
         return
     end
     
