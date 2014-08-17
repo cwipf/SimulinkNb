@@ -26,6 +26,9 @@ for n = 1:size(functionCache, 1)
     
     disp(['Reusing results of ' func2str(funchandle) ' from a previous run (cached in the global variable ''functionCache'')']);
     varargout = cachedVarargout;
+    % reorder cache to reflect the recent use of this item
+    idx = [1:n-1 n+1:length(functionCache) n];
+    functionCache = functionCache(idx, :);
     return;
 end
 
