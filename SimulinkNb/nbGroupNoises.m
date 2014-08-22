@@ -26,15 +26,17 @@ end
 
 load_system(mdl);
 nbNoiseCal = sys(2).InputName{:};
-disp(['NbNoiseCal block is ' nbNoiseCal ' (DOF ' ...
-    get_param(nbNoiseCal, 'dof') ', unit ' get_param(nbNoiseCal, 'unit') ')']);
-dof = evalin('base', get_param(nbNoiseCal, 'dof'));
-unit = evalin('base', get_param(nbNoiseCal, 'unit'));
+blkVars = get_param(nbNoiseCal, 'MaskWSVariables');
+blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
+dof = blkVars('dof');
+unit = blkVars('unit');
 if ~ischar(dof) || ~ischar(unit)
     error(['Invalid NbNoiseCal block ' nbNoiseCal char(10) ...
         'The DOF name (' get_param(nbNoiseCal, 'dof') ') ' ...
         'and unit (' get_param(nbNoiseCal, 'unit') ' must be strings']);
 end
+disp(['NbNoiseCal block is ' nbNoiseCal ' (DOF ' ...
+    blkVars('dof') ', unit ' blkVars('unit') ')']);
 
 %% Form groups and output a NoiseModel object
 
@@ -66,8 +68,10 @@ end
 noisesByGroup = containers.Map();
 for n = 1:numel(noises)
     noise = noises{n};
-    if str2double(get_param(noise.name, 'groupNest')) >= level
-        groupName = evalin('base', get_param(noise.name, groupVar{level}));
+    blkVars = get_param(noise.name, 'MaskWSVariables');
+    blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
+    if blkVars('groupNest') >= level
+        groupName = blkVars(groupVar{level});
         if ~ischar(groupName)
             error(['Invalid NbNoiseSource block ' noise.name char(10) ...
                 'The ' groupVar{level} ' parameter (' ...

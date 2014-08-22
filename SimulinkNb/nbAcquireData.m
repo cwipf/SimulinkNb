@@ -105,12 +105,10 @@ function [ chanList ] = findChans(mdl, sys, nb, varargin)
 %% Initial setup
 
 if isempty(varargin)
-    chanList = {};
-
     % Check for sink's channel only the first time through this function
+    chanList = {};
     nbNoiseSink = sys(2).OutputName{:};
-    chan = get_param(nbNoiseSink, 'chan');
-    chan = evalin('base', chan);
+    chan = getBlockChan(nbNoiseSink);
     if ~isempty(chan)
         disp(['NbNoiseSink ' nbNoiseSink ' requested DAQ channel ' chan]);
         chanList = {chan};
@@ -131,8 +129,7 @@ for n = 1:numel(nb.modelNoises)
         else
             nbNoiseSource = noise.name;
         end
-        chan = get_param(nbNoiseSource, 'chan');
-        chan = evalin('base', chan);
+        chan = getBlockChan(nbNoiseSource);
         if ~isempty(chan)
             disp(['NbNoiseSource ' nbNoiseSource ' requested DAQ channel ' chan]);
             if ~any(strcmp(chan, chanList))
@@ -150,8 +147,7 @@ function [ nb ] = updateNoises(sys, nb, noisesByChan)
 %% Initial setup (for noise sink)
 
 nbNoiseSink = sys(2).OutputName{:};
-chan = get_param(nbNoiseSink, 'chan');
-chan = evalin('base', chan);
+chan = getBlockChan(nbNoiseSink);
 if ~isempty(chan)
     disp(['Updating sink ' nbNoiseSink]);
     noiseTf = (1-sys(1))/sys(2);
@@ -196,8 +192,7 @@ for n = 1:numel(nb.modelNoises)
         else
             nbNoiseSource = noise.name;
         end
-        chan = get_param(nbNoiseSource, 'chan');
-        chan = evalin('base', chan);
+        chan = getBlockChan(nbNoiseSource);
         if ~isempty(chan)
             disp(['Updating source ' nbNoiseSource]);
             noiseTf = sys(strcmp(nbNoiseSource, sys.InputName));
@@ -210,6 +205,22 @@ for n = 1:numel(nb.modelNoises)
         end
     end
     nb.modelNoises{n} = noise;
+end
+
+end
+
+function [ chan ] = getBlockChan(blk)
+
+chan = '';
+tag = get_param(blk, 'Tag');
+blkVars = get_param(blk, 'MaskWSVariables');
+blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
+if ~ischar(blkVars('chan'))
+    error(['Invalid ' tag ' block ' blk char(10) ...
+        'The DAQ channel (' get_param(blk, 'chan') ') must be a string']);
+end
+if ~isempty(blkVars('chan'))
+    chan = blkVars('chan');
 end
 
 end

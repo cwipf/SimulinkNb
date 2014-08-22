@@ -2,7 +2,7 @@ Library {
   Name			  "NbLibrary"
   Version		  8.0
   MdlSubVersion		  0
-  SavedCharacterEncoding  "UTF-8"
+  SavedCharacterEncoding  "ISO-8859-1"
   LibraryType		  "BlockLibrary"
   SaveDefaultBlockParams  on
   ScopeRefreshTime	  0.035000
@@ -34,7 +34,7 @@ Library {
 	$PropName		"ExplorerBarInfo"
 	$ObjectID		4
 	$ClassName		"Simulink.ExplorerBarInfo"
-	Visible			[0]
+	Visible			[1]
       }
       Object {
 	$PropName		"EditorsInfo"
@@ -43,7 +43,7 @@ Library {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[338.0, 379.0]
+	Extents			[356.0, 427.0]
 	ZoomFactor		[1.0]
 	Offset			[0.0, 0.0]
       }
@@ -55,10 +55,10 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Jul 10 14:25:53 2014"
-  RTWModifiedTimeStamp	  326903076
-  ModelVersionFormat	  "1.%<AutoIncrement:31>"
-  ConfigurationManager	  "None"
+  LastModifiedDate	  "Thu Aug 21 15:06:56 2014"
+  RTWModifiedTimeStamp	  330534416
+  ModelVersionFormat	  "1.%<AutoIncrement:35>"
+  ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
   LibraryLinkDisplay	  "none"
@@ -434,11 +434,15 @@ Library {
 	    PropName		    "DisabledProps"
 	  }
 	  SystemTargetFile	  "grt.tlc"
+	  TLCOptions		  ""
 	  GenCodeOnly		  off
 	  MakeCommand		  "make_rtw"
 	  GenerateMakefile	  on
 	  PackageGeneratedCodeAndArtifacts off
+	  PackageName		  ""
 	  TemplateMakefile	  "grt_default_tmf"
+	  PostCodeGenCommand	  ""
+	  Description		  ""
 	  GenerateReport	  off
 	  SaveLog		  off
 	  RTWVerbose		  on
@@ -449,13 +453,21 @@ Library {
 	  TLCAssert		  off
 	  ProcessScriptMode	  "Default"
 	  ConfigurationMode	  "Optimized"
+	  ProcessScript		  ""
+	  ConfigurationScript	  ""
 	  ConfigAtBuild		  off
 	  RTWUseLocalCustomCode	  off
 	  RTWUseSimCustomCode	  off
+	  CustomSourceCode	  ""
+	  CustomHeaderCode	  ""
+	  CustomInclude		  ""
+	  CustomSource		  ""
+	  CustomLibrary		  ""
+	  CustomInitializer	  ""
+	  CustomTerminator	  ""
 	  IncludeHyperlinkInReport off
 	  LaunchReport		  off
 	  PortableWordSizes	  off
-	  GenerateErtSFunction	  off
 	  CreateSILPILBlock	  "None"
 	  CodeExecutionProfiling  off
 	  CodeExecutionProfileVariable "executionProfile"
@@ -474,8 +486,10 @@ Library {
 	  GenerateCodeMetricsReport off
 	  GenerateCodeReplacementReport	off
 	  RTWCompilerOptimization "Off"
+	  RTWCustomCompilerOptimizations ""
 	  CheckMdlBeforeBuild	  "Off"
 	  CustomRebuildMode	  "OnUpdate"
+	  DataInitializer	  ""
 	  Array {
 	    Type		    "Handle"
 	    Dimension		    2
@@ -541,7 +555,7 @@ Library {
 	      SimulinkBlockComments   on
 	      MATLABSourceComments    off
 	      EnableCustomComments    off
-	      InternalIdentifier      "Classic"
+	      InternalIdentifier      Classic
 	      InlinedPrmAccess	      "Literals"
 	      ReqsInCode	      off
 	      UseSimReservedNames     off
@@ -567,13 +581,13 @@ Library {
 		Cell			"SupportComplex"
 		Cell			"SupportAbsoluteTime"
 		Cell			"SupportContinuousTime"
-		Cell			"GenerateAllocFcn"
+		Cell			"MultiInstanceERTCode"
 		PropName		"DisabledProps"
 	      }
 	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
 	      TargetLibSuffix	      ""
 	      TargetPreCompLibLocation ""
-	      CodeReplacementLibrary  "ANSI_C"
+	      CodeReplacementLibrary  "None"
 	      UtilityFuncGeneration   "Auto"
 	      ERTMultiwordTypeDef     "System defined"
 	      ERTMultiwordLength      256
@@ -581,7 +595,6 @@ Library {
 	      GenerateFullHeader      on
 	      GenerateSampleERTMain   off
 	      GenerateTestInterfaces  off
-	      IsPILTarget	      off
 	      ModelReferenceCompliant on
 	      ParMdlRefBuildCompliant on
 	      CompOptLevelCompliant   on
@@ -607,7 +620,7 @@ Library {
 	      EnableShiftOperators    on
 	      ParenthesesLevel	      "Nominal"
 	      ModelStepFunctionPrototypeControlCompliant off
-	      CPPClassGenCompliant    off
+	      CPPClassGenCompliant    on
 	      AutosarCompliant	      off
 	      GRTInterface	      on
 	      UseMalloc		      off
@@ -626,12 +639,13 @@ Library {
 	    }
 	    PropName		    "Components"
 	  }
+	  GenerateErtSFunction	  off
 	}
 	PropName		"Components"
       }
       Name		      "Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition     [ 280, 135, 1160, 765 ] 
+      ConfigPrmDlgPosition    [ 280, 135, 1160, 765 ]  
     }
     PropName		    "ConfigurationSets"
   }
@@ -752,7 +766,7 @@ Library {
   System {
     Name		    "NbLibrary"
     Location		    [126, 51, 516, 577]
-    Open		    on
+    Open		    off
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
     ScreenColor		    "white"
@@ -776,13 +790,7 @@ Library {
       ZOrder		      -1
       BackgroundColor	      "orange"
       AttributesFormatString  "%<Tag>"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      RTWSystemCode	      "Auto"
-      FunctionWithSeparateData off
-      Opaque		      off
       RequestExecContextInheritance off
-      MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
 	$ObjectID		17
@@ -796,7 +804,6 @@ Library {
 	    Name		    "dof"
 	    Prompt		    "DOF name"
 	    Value		    "'unspecified DOF'"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	  }
 	  Object {
@@ -805,7 +812,6 @@ Library {
 	    Name		    "unit"
 	    Prompt		    "Unit"
 	    Value		    "'unspecified unit'"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	  }
 	  PropName		  "Parameters"
@@ -849,6 +855,12 @@ Library {
 	  DstPort		  1
 	}
       }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
     }
     Block {
       BlockType		      SubSystem
@@ -860,13 +872,7 @@ Library {
       ZOrder		      -2
       BackgroundColor	      "orange"
       AttributesFormatString  "%<Tag>"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      RTWSystemCode	      "Auto"
-      FunctionWithSeparateData off
-      Opaque		      off
       RequestExecContextInheritance off
-      MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
 	$ObjectID		20
@@ -880,7 +886,6 @@ Library {
 	    Name		    "dof"
 	    Prompt		    "DOF name"
 	    Value		    "'unspecified DOF'"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	  }
 	  Object {
@@ -898,7 +903,6 @@ Library {
 	    Name		    "chan"
 	    Prompt		    "DAQ channel"
 	    Value		    "''"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	  }
 	  PropName		  "Parameters"
@@ -943,6 +947,12 @@ Library {
 	  DstPort		  1
 	}
       }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
     }
     Block {
       BlockType		      SubSystem
@@ -954,13 +964,7 @@ Library {
       ZOrder		      -3
       BackgroundColor	      "orange"
       AttributesFormatString  "%<Tag>"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      RTWSystemCode	      "Auto"
-      FunctionWithSeparateData off
-      Opaque		      off
       RequestExecContextInheritance off
-      MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
 	$ObjectID		24
@@ -983,7 +987,6 @@ Library {
 	    Name		    "chan"
 	    Prompt		    "DAQ channel"
 	    Value		    "''"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	  }
 	  Object {
@@ -1001,7 +1004,6 @@ Library {
 	    Name		    "groupNest"
 	    Prompt		    "Group nesting depth"
 	    Value		    "1"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	    Callback		    "try\n    switch get_param(gcb, 'groupNest')\n        case '1'\n            set_param(gcb, 'MaskVis"
 	    "ibilities', {'on', 'on', 'on', 'on', 'off', 'off', 'off'})\n            set_param(gcb, 'subgroup', '''''');\n    "
@@ -1020,7 +1022,6 @@ Library {
 	    Name		    "group"
 	    Prompt		    "Group"
 	    Value		    "''"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	  }
 	  Object {
@@ -1029,7 +1030,6 @@ Library {
 	    Name		    "subgroup"
 	    Prompt		    "Sub-group"
 	    Value		    "''"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	    Visible		    "off"
 	  }
@@ -1039,7 +1039,6 @@ Library {
 	    Name		    "subsubgroup"
 	    Prompt		    "Sub-sub-group"
 	    Value		    "''"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	    Visible		    "off"
 	  }
@@ -1049,7 +1048,6 @@ Library {
 	    Name		    "subsubsubgroup"
 	    Prompt		    "Sub-sub-sub-group"
 	    Value		    "''"
-	    Evaluate		    "off"
 	    Tunable		    "off"
 	    Visible		    "off"
 	  }
@@ -1094,6 +1092,12 @@ Library {
 	  DstPort		  1
 	}
       }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
     }
   }
 }

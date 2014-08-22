@@ -112,12 +112,8 @@ end
 
 %% Evaluate the NbNoiseSink's measured ASD (if present)
 
-sinkNoise = struct('name', nbNoiseSink, 'f', freq, 'asd', []);
-if ~isempty(get_param(nbNoiseSink, 'asd'))
-    disp(['    ' nbNoiseSink ' :: ' get_param(nbNoiseSink, 'asd')]);
-    scb(nbNoiseSink);
-    sinkNoise.asd = evalin('base', get_param(nbNoiseSink, 'asd'));
-end
+% getBlockNoise() is a local function defined below
+sinkNoise = getBlockNoise(nbNoiseSink, freq);
 
 %% Find the NbNoiseSource blocks
 
@@ -139,35 +135,8 @@ for n = 1:numel(nbNoiseSources)
     blk = nbNoiseSources{n};
     % Set denominator for noise TF (source to sink)
     ioSource(n) = linio(blk, 1, 'in'); %#ok<AGROW>
-    expr = get_param(blk, 'asd');
-    % If expr is inside a library block, then its name probably refers to a
-    % library parameter (mask variable), which has to be resolved before
-    % evaluating
-    expr = resolveLibraryParam(expr, blk);
-    disp(['    ' blk ' :: ' expr]);
-    % Update the current block.  This is to allow clever ASD functions
-    % to use gcb to figure out which block invoked them.
-    scb(blk);
-    % Evaluate the noise ASD
-    % Note: evaluation is done in the base workspace (any variables set in
-    % the model workspace are ignored).  The NbNoiseSource block mask is
-    % set to NOT evaluate anything automatically.  This way, the noise
-    % budget spectra don't have to be defined when the model is used for
-    % purposes other than making a noise budget.
-    noises{n}.asd = evalin('base', expr);
-    % Sanity checks on the ASD
-    if ~isreal(noises{n}.asd) || min(size(noises{n}.asd)) > 1
-        error(['Invalid NbNoiseSource block ' blk char(10) ...
-            'The ASD (' get_param(blk, 'asd') ') is not a real-valued 1D array']);
-    elseif numel(noises{n}.asd) ~= 1 && numel(noises{n}.asd) ~= numel(freq)
-        error(['Invalid NbNoiseSource block ' blk char(10) ...
-            'The length of the ASD (' get_param(blk, 'asd') ') doesn''t match the frequency vector' char(10) ...
-            '(ASD''s length is ' num2str(numel(noises{n}.asd)) ...
-            ' and frequency vector''s length is ' num2str(numel(freq)) ')']);
-    end
-    if size(noises{n}.asd, 1) ~= 1
-        noises{n}.asd = noises{n}.asd';
-    end
+    % getBlockNoise() is a local function defined below
+    noises{n} = getBlockNoise(blk, freq);
 end
 io = [ioSink ioCal ioSource];
 
@@ -213,19 +182,61 @@ disp([num2str(numel(blks)) ' ' tag ' blocks found']);
 blockTable = containers.Map();
 for n = 1:numel(blks)
     blk = blks{n};
-    % Evaluate the DOF
-    disp(['    ' blk ' :: ' get_param(blk, 'dof')]);
-    val = evalin('base', get_param(blk, 'dof'));
-    if ~ischar(val)
+    blkVars = get_param(blk, 'MaskWSVariables');
+    blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
+    if ~ischar(blkVars('dof'))
         error(['Invalid ' tag ' block ' blk char(10) ...
-            'The DOF name (' get_param(blk, param) ') must be a string']);
+            'The DOF name (' get_param(blk, 'dof') ') must be a string']);
     end
-    if ~blockTable.isKey(val)
-        blockTable(val) = blk;
+    disp(['    ' blk ' :: ' blkVars('dof')]);
+    if ~blockTable.isKey(blkVars('dof'))
+        blockTable(blkVars('dof')) = blk;
     else
         error(['The DOF name cannot be shared by multiple ' tag ' blocks' char(10) ...
-            'Blocks ' blk ' and ' blockTable(val) ' both have dof=' val]);
+            'Blocks ' blk ' and ' blockTable(blkVars('dof')) ' both have dof=' blkVars('dof')]);
     end
+end
+
+end
+
+function [ noise ] = getBlockNoise(blk, freq)
+
+noise = struct('name', blk, 'f', freq, 'asd', []);
+tag = get_param(blk, 'Tag');
+expr = get_param(blk, 'asd');
+% If expr is inside a library block, then its name probably refers to a
+% library parameter (mask variable), which has to be resolved before
+% evaluating
+expr = resolveLibraryParam(expr, blk);
+% Permit NbNoiseSink block to have an empty ASD
+if strcmp(tag, 'NbNoiseSink')
+    if isempty(expr) || strcmp(expr, '''''') || strcmp(expr, '[]')
+        return;
+    end
+end
+disp(['    ' blk ' :: ' expr]);
+% Update the current block.  This is to allow clever ASD functions
+% to use gcb to figure out which block invoked them.
+scb(blk);
+% Evaluate the noise ASD
+% Note: evaluation is done in the base workspace (any variables set in
+% the model workspace are ignored).  The NbNoiseSource block mask is
+% set to NOT evaluate anything automatically.  This way, the noise
+% budget spectra don't have to be defined when the model is used for
+% purposes other than making a noise budget.
+noise.asd = evalin('base', expr);
+% Sanity checks on the ASD
+if ~isreal(noise.asd) || min(size(noise.asd)) > 1
+    error(['Invalid ' tag ' block ' blk char(10) ...
+        'The ASD (' expr ') is not a real-valued 1D array']);
+elseif numel(noise.asd) ~= 1 && numel(noise.asd) ~= numel(freq)
+    error(['Invalid ' tag ' block ' blk char(10) ...
+        'The length of the ASD (' expr ') doesn''t match the frequency vector' char(10) ...
+        '(ASD''s length is ' num2str(numel(noise.asd)) ...
+        ' and frequency vector''s length is ' num2str(numel(freq)) ')']);
+end
+if size(noise.asd, 1) ~= 1
+    noise.asd = noise.asd';
 end
 
 end
