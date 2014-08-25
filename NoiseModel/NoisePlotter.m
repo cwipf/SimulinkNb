@@ -29,7 +29,7 @@ classdef NoisePlotter < handle
             %NoisePlotter object constructor
             %
             %   NoisePlotter(noiseModel) prepares to plot a NoiseModel.
-            self.prolog = {@NoisePlotter.skipNegligibleNoises @NoisePlotter.setYLim @NoisePlotter.setLinesProperties};
+            self.prolog = {@NoisePlotter.skipNegligibleNoises @NoisePlotter.setXLim @NoisePlotter.setYLim @NoisePlotter.setLinesProperties};
             self.epilog = {};
             self.handles = struct();
             self.figureProperties = struct();
@@ -68,7 +68,7 @@ classdef NoisePlotter < handle
             legendArgs = self.noisefun(@(noise) noise.name, noiseModel,...
                 'UniformOutput', false);
             self.buildPlot(plotArgs, legendArgs);
-
+            
             for n = 1:numel(self.epilog)
                 feval(self.epilog{n}, self, noiseModel);
             end
@@ -95,7 +95,7 @@ classdef NoisePlotter < handle
             ax = axes();
             self.handles.ax = ax;
             set(ax, self.axesProperties);
-
+            
             if ~isempty(plotArgs)
                 ln = plot(ax, plotArgs{:});
                 self.handles.ln = ln;
@@ -111,7 +111,7 @@ classdef NoisePlotter < handle
                 self.handles.ln = [];
             end
             
-
+            
             if ~isempty(legendArgs)
                 lg = legend(ln, legendArgs{:});
                 self.handles.lg = lg;
@@ -123,11 +123,11 @@ classdef NoisePlotter < handle
             ti = title(ax, '');
             self.handles.ti = ti;
             set(ti, self.titleProperties);
-
+            
             xl = xlabel(ax, '');
             self.handles.xl = xl;
             set(xl, self.xlabelProperties);
-
+            
             yl = ylabel(ax, '');
             self.handles.yl = yl;
             set(yl, self.ylabelProperties);
@@ -144,9 +144,14 @@ classdef NoisePlotter < handle
             end
         end
         
+        function setXLim(self, noiseModel)
+            %setXLim is a prolog function that sets the x-axis limits to a sane default
+            self.axesProperties.XLim = [min(noiseModel.f) max(noiseModel.f)];
+        end
+        
         function setYLim(self, noiseModel)
             %setYLim is a prolog function that sets the y-axis limits to a sane default
-
+            
             % Sanity check on the noises
             nonFinite = cellfun(@(noise) ~any(isfinite(noise.asd)), noiseModel.modelNoises);
             if any(nonFinite(~self.skipModelNoises))
@@ -168,14 +173,14 @@ classdef NoisePlotter < handle
                 minNoise = min(asd(isfinite(asd)));
             end
             [modelMax, modelMin] = cellfun(@maxminNoise, noiseModel.modelNoises(~self.skipModelNoises));
-
+            
             sumData = noiseModel.sumNoise.asd;
             sumMax = max(sumData(isfinite(sumData)));
             sumMin = min(sumData(isfinite(sumData)));
             
             minY = min([min(modelMax) sumMin]);
             maxY = max([max(modelMin) sumMax]);
-                        
+            
             self.axesProperties.YLim = [10^floor(log10(minY)) 10^ceil(log10(maxY))];
         end
         
