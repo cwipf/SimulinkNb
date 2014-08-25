@@ -139,12 +139,12 @@ switch blkType
         par.offset = dataByChan(chans{2});
         par.gain = dataByChan(chans{3});
         par.limit = dataByChan(chans{4});
-        ff = cacheFunction(@find_FilterFile, site, model(1:2), model, start);
-        ff2 = cacheFunction(@find_FilterFile, site, model(1:2), model, start + duration);
+        ff = find_FilterFile(site, model(1:2), model, start);
+        ff2 = find_FilterFile(site, model(1:2), model, start + duration);
         if ~strcmp(ff, ff2)
             warning([model '.txt is not constant during the segment']);
         end
-        filters = cacheFunction(@readFilterFile, ff);
+        filters = readFilterFile(ff);
         par.fm = filters.(fmName);
         for n = 1:10
             [z, p, k] = sos2zp(par.fm(n).soscoef);
