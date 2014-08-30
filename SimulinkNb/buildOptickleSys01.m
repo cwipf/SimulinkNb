@@ -122,7 +122,7 @@ function buildOptickleSys01(varargin)
         % add the noiseblock
         noiseBlock = add_block('NbLibrary/NbNoiseSource',[sys '/' output '_Noise']);
         set(noiseBlock,'Position',origin.noiseBlock+(jj-1)*offset.noiseBlock);
-        set(noiseBlock,'asd',['optickleNoiseBlock(' optName ',' fVecName ',''' output ''','...
+        set(noiseBlock,'asd',['optickleNoiseBlock01(' optName ',' fVecName ',''' output ''','...
             'makeOptickleDriveIndex(' optName ',' makeCellLiteralString(inputs) '))'])
         set(noiseBlock,'groupNest','2');
         set(noiseBlock,'group',['''' NOISEGROUP '''']);

@@ -59,8 +59,8 @@ function frdOut = optickleFrd01(opt,f,varargin)
     
     if needSigAC
         % compute from optickle
-        [sigAC,~,~] = cacheFunction(@tickle01,opt,[],f);
-        sigAC = sigAC(:, driveIndex, :);
+        [sigAC,~] = cacheFunction(@tickle01,opt,[],f, driveIndex);
+        
         
     else
         sigAC = sigAC(:,driveIndex,:);
