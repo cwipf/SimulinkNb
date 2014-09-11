@@ -58,6 +58,15 @@ for n = 1:numel(data)
     dataByChan(data(n).name) = double(mode(data(n).data));
 end
 
+% Validate the results
+for n = 1:numel(chanList)
+    if ~isKey(dataByChan, chanList{n})
+        error(['No data found for channel ' chanList{n}]);
+    elseif isnan(dataByChan(chanList{n}))
+        error(['NaN value returned for channel ' chanList{n}]);
+    end
+end
+
 %% Apply params
 
 for n = 1:numel(liveParts)
