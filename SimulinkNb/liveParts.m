@@ -83,9 +83,15 @@ blkVars = get_param(blk, 'MaskWSVariables');
 switch blkType
     case 'LiveConstant'
         chans = {blkVars(strcmp({blkVars.Name}, 'chan')).Value};
+        if ~numel(chans{1})
+            error(['Channel not set for blk ' blk]);
+        end
         
     case 'LiveMatrix'
         prefix = blkVars(strcmp({blkVars.Name}, 'prefix')).Value;
+        if ~numel(prefix)
+            error(['Prefix not set for blk ' blk]);
+        end
         firstRow = blkVars(strcmp({blkVars.Name}, 'firstRow')).Value;
         firstCol = blkVars(strcmp({blkVars.Name}, 'firstCol')).Value;
         lastRow = blkVars(strcmp({blkVars.Name}, 'lastRow')).Value;
