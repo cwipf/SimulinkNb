@@ -58,20 +58,49 @@ if isempty(chanList)
     return; % no channels requested, nothing to do
 end
 
+chanList = sort(unique(chanList));
+
 % conn = nds2.connection(server, port);
 % buffers = conn.fetch(start, end, chanList);
 % The java NDS2 library needs more development before we can adopt it
 % and get live data support
 % see e.g. bug 68: https://trac.ligo.caltech.edu/nds2/ticket/68
 % Fall back on good old mDV instead
-data = cacheFunction(@get_data, chanList, 'raw', start, duration);
+% Break the channel list into digestible pieces for the NDS server
+maxChans = 100;
+lastChanIdx = 0;
+data = [];
+while (numel(chanList) - lastChanIdx) > 0
+    chansToFetch = min(numel(chanList) - lastChanIdx, maxChans);
+    disp(['Requesting ' num2str(duration) ' sec of data for ' num2str(chansToFetch) ...
+        ' channels, starting at GPS time ' num2str(start)]);
+
+    firstChanIdx = lastChanIdx + 1;
+    lastChanIdx = lastChanIdx + chansToFetch;
+%     for n = 1:chansToFetch
+%         disp(chanList(firstChanIdx+n-1));
+%         get_data(chanList(firstChanIdx+n-1), 'raw', start, duration);
+%     end
+    data = [data cacheFunction(@get_data, chanList(firstChanIdx:lastChanIdx),...
+            'raw', start, duration)]; %#ok<AGROW>
+end
 
 %% Compute ASDs 
 
 noisesByChan = containers.Map();
 for n = 1:numel(data)
+    if any(isnan(data(n).data))
+        error(['NaN value returned for channel ' data(n).name]);
+    end
     asd = opt.asdMethod(double(data(n).data), data(n).rate, nb.f);
     noisesByChan(data(n).name) = asd;
+end
+
+% Validate the results
+for n = 1:numel(chanList)
+    if ~isKey(noisesByChan, chanList{n})
+        error(['No data found for channel ' chanList{n}]);
+    end
 end
 
 %% Plug the new ASDs into the NoiseModel
