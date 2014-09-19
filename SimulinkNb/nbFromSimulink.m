@@ -142,7 +142,9 @@ io = [ioSink ioCal ioSource];
 
 %% Perform the linearization using FlexTf functions
 
-[sys, flexTfs] = linFlexTf(mdl, io);
+% Don't abbreviate I/O block names (it's faster that way)
+linOpt = linoptions('UseFullBlockNameLabels', 'on');
+[sys, flexTfs] = linFlexTf(mdl, io, linOpt);
 % Attempt to improve numerical accuracy with prescale
 minPosFreq = min(freq(freq>0));
 maxPosFreq = max(freq(freq>0));
@@ -150,10 +152,6 @@ if ~isempty(minPosFreq) && ~isempty(maxPosFreq)
     sys = prescale(sys, {2*pi*minPosFreq, 2*pi*maxPosFreq});
 end
 sys = linFlexTfFold(sys, flexTfs);
-
-% Set sys input/output names to meaningful values
-sys.InputName = [{nbNoiseSink nbNoiseCal} nbNoiseSources'];
-sys.OutputName = nbNoiseSink;
 
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
