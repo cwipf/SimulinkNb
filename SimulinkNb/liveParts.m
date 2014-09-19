@@ -69,8 +69,9 @@ end
 
 %% Apply params
 
+filterCache = containers.Map();
 for n = 1:numel(liveParts)
-    liveParams(liveParts{n}, chans{n}, dataByChan, start, duration, freq);
+    filterCache = liveParams(liveParts{n}, chans{n}, dataByChan, start, duration, freq, filterCache);
 end
 
 end
@@ -122,7 +123,7 @@ end
         
 end
 
-function liveParams(blk, chans, dataByChan, start, duration, freq)
+function filterCache = liveParams(blk, chans, dataByChan, start, duration, freq, filterCache)
 
 blkType = get_param(blk, 'Tag');
 blkVars = get_param(blk, 'MaskWSVariables');
@@ -159,7 +160,14 @@ switch blkType
         if ~strcmp(ff, ff2)
             warning([model '.txt is not constant during the segment']);
         end
-        filters = readFilterFile(ff);
+        if ~isKey(filterCache, ff)
+            % Cache all filters from each file.  This speeds up subsequent
+            % reads of other filters from the same file.
+            filters = readFilterFile(ff);
+            filterCache(ff) = filters;
+        else
+            filters = filterCache(ff);
+        end
         par.fm = filters.(fmName);
         for n = 1:10
             [z, p, k] = sos2zp(par.fm(n).soscoef);

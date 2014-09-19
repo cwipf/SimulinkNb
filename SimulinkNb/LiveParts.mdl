@@ -2,7 +2,7 @@ Library {
   Name			  "LiveParts"
   Version		  8.0
   MdlSubVersion		  0
-  SavedCharacterEncoding  "UTF-8"
+  SavedCharacterEncoding  "ISO-8859-1"
   LibraryType		  "BlockLibrary"
   SaveDefaultBlockParams  on
   ScopeRefreshTime	  0.035000
@@ -19,7 +19,7 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [580.0, 178.0, 703.0, 463.0]
+      Location		      [0.0, 22.0, 1276.0, 778.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -43,9 +43,9 @@ Library {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[651.0, 286.0]
+	Extents			[1242.0, 679.0]
 	ZoomFactor		[1.0]
-	Offset			[0.0, 0.0]
+	Offset			[-446.0625, -256.5]
       }
     }
   }
@@ -55,9 +55,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Jun 17 00:38:18 2014"
-  RTWModifiedTimeStamp	  317673187
-  ModelVersionFormat	  "1.%<AutoIncrement:18>"
+  LastModifiedDate	  "Thu Sep 18 16:19:40 2014"
+  RTWModifiedTimeStamp	  332957980
+  ModelVersionFormat	  "1.%<AutoIncrement:22>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -434,11 +434,15 @@ Library {
 	    PropName		    "DisabledProps"
 	  }
 	  SystemTargetFile	  "grt.tlc"
+	  TLCOptions		  ""
 	  GenCodeOnly		  off
 	  MakeCommand		  "make_rtw"
 	  GenerateMakefile	  on
 	  PackageGeneratedCodeAndArtifacts off
+	  PackageName		  ""
 	  TemplateMakefile	  "grt_default_tmf"
+	  PostCodeGenCommand	  ""
+	  Description		  ""
 	  GenerateReport	  off
 	  SaveLog		  off
 	  RTWVerbose		  on
@@ -449,13 +453,21 @@ Library {
 	  TLCAssert		  off
 	  ProcessScriptMode	  "Default"
 	  ConfigurationMode	  "Optimized"
+	  ProcessScript		  ""
+	  ConfigurationScript	  ""
 	  ConfigAtBuild		  off
 	  RTWUseLocalCustomCode	  off
 	  RTWUseSimCustomCode	  off
+	  CustomSourceCode	  ""
+	  CustomHeaderCode	  ""
+	  CustomInclude		  ""
+	  CustomSource		  ""
+	  CustomLibrary		  ""
+	  CustomInitializer	  ""
+	  CustomTerminator	  ""
 	  IncludeHyperlinkInReport off
 	  LaunchReport		  off
 	  PortableWordSizes	  off
-	  GenerateErtSFunction	  off
 	  CreateSILPILBlock	  "None"
 	  CodeExecutionProfiling  off
 	  CodeExecutionProfileVariable "executionProfile"
@@ -474,8 +486,10 @@ Library {
 	  GenerateCodeMetricsReport off
 	  GenerateCodeReplacementReport	off
 	  RTWCompilerOptimization "Off"
+	  RTWCustomCompilerOptimizations ""
 	  CheckMdlBeforeBuild	  "Off"
 	  CustomRebuildMode	  "OnUpdate"
+	  DataInitializer	  ""
 	  Array {
 	    Type		    "Handle"
 	    Dimension		    2
@@ -541,7 +555,7 @@ Library {
 	      SimulinkBlockComments   on
 	      MATLABSourceComments    off
 	      EnableCustomComments    off
-	      InternalIdentifier      "Shortened"
+	      InternalIdentifier      Classic
 	      InlinedPrmAccess	      "Literals"
 	      ReqsInCode	      off
 	      UseSimReservedNames     off
@@ -567,13 +581,13 @@ Library {
 		Cell			"SupportComplex"
 		Cell			"SupportAbsoluteTime"
 		Cell			"SupportContinuousTime"
-		Cell			"GenerateAllocFcn"
+		Cell			"MultiInstanceERTCode"
 		PropName		"DisabledProps"
 	      }
 	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
 	      TargetLibSuffix	      ""
 	      TargetPreCompLibLocation ""
-	      CodeReplacementLibrary  "ANSI_C"
+	      CodeReplacementLibrary  "None"
 	      UtilityFuncGeneration   "Auto"
 	      ERTMultiwordTypeDef     "System defined"
 	      ERTMultiwordLength      256
@@ -581,7 +595,6 @@ Library {
 	      GenerateFullHeader      on
 	      GenerateSampleERTMain   off
 	      GenerateTestInterfaces  off
-	      IsPILTarget	      off
 	      ModelReferenceCompliant on
 	      ParMdlRefBuildCompliant on
 	      CompOptLevelCompliant   on
@@ -607,7 +620,7 @@ Library {
 	      EnableShiftOperators    on
 	      ParenthesesLevel	      "Nominal"
 	      ModelStepFunctionPrototypeControlCompliant off
-	      CPPClassGenCompliant    off
+	      CPPClassGenCompliant    on
 	      AutosarCompliant	      off
 	      GRTInterface	      off
 	      UseMalloc		      off
@@ -626,12 +639,13 @@ Library {
 	    }
 	    PropName		    "Components"
 	  }
+	  GenerateErtSFunction	  off
 	}
 	PropName		"Components"
       }
       Name		      "Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition     [ 2120, 405, 3000, 1035 ] 
+      ConfigPrmDlgPosition    [ 2120, 405, 3000, 1035 ]  
     }
     PropName		    "ConfigurationSets"
   }
@@ -822,11 +836,19 @@ Library {
       SampleTime	      "-1"
       AllowDiffInputSizes     off
     }
+    Block {
+      BlockType		      ZeroPole
+      Zeros		      "[1]"
+      Poles		      "[0 1]"
+      Gain		      "[1]"
+      AbsoluteTolerance	      "auto"
+      ContinuousStateAttributes	"''"
+    }
   }
   System {
     Name		    "LiveParts"
-    Location		    [580, 178, 1283, 641]
-    Open		    on
+    Location		    [0, 22, 1276, 800]
+    Open		    off
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
     ScreenColor		    "white"
@@ -851,13 +873,7 @@ Library {
       BackgroundColor	      "[0.666667, 1.000000, 0.000000]"
       AttributesFormatString  "%<Tag>"
       ShowPortLabels	      "none"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      RTWSystemCode	      "Auto"
-      FunctionWithSeparateData off
-      Opaque		      off
       RequestExecContextInheritance off
-      MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
 	$ObjectID		17
@@ -923,6 +939,12 @@ Library {
 	  DstPort		  1
 	}
       }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
     }
     Block {
       BlockType		      SubSystem
@@ -935,13 +957,7 @@ Library {
       BackgroundColor	      "[0.666667, 1.000000, 0.000000]"
       AttributesFormatString  "%<Tag>"
       ShowPortLabels	      "none"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      RTWSystemCode	      "Auto"
-      FunctionWithSeparateData off
-      Opaque		      off
       RequestExecContextInheritance off
-      MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
 	$ObjectID		20
@@ -1025,7 +1041,7 @@ Library {
       }
       System {
 	Name			"LiveFilter"
-	Location		[789, 456, 1447, 864]
+	Location		[0, 22, 1276, 800]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1038,7 +1054,7 @@ Library {
 	TiledPageScale		1
 	ShowPageBoundaries	off
 	ZoomFactor		"100"
-	SIDHighWatermark	"151"
+	SIDHighWatermark	"255"
 	Block {
 	  BlockType		  Inport
 	  Name			  "IN1"
@@ -1050,34 +1066,26 @@ Library {
 	  IconDisplay		  "Port number"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM1"
-	  SID			  "10:12"
-	  Ports			  [1, 1]
-	  Position		  [1135, 190, 1215, 240]
-	  ZOrder		  12
+	  SID			  "10:199"
+	  Position		  [1145, 197, 1205, 233]
+	  ZOrder		  48
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm1"
-	  IC			  "[]"
+	  Zeros			  "par.fm1.z{1}"
+	  Poles			  "par.fm1.p{1}"
+	  Gain			  "par.fm1.k"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM10"
-	  SID			  "10:13"
-	  Ports			  [1, 1]
-	  Position		  [1460, 575, 1540, 625]
-	  ZOrder		  11
+	  SID			  "10:208"
+	  Position		  [1470, 582, 1530, 618]
+	  ZOrder		  57
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm10"
-	  IC			  "[]"
+	  Zeros			  "par.fm10.z{1}"
+	  Poles			  "par.fm10.p{1}"
+	  Gain			  "par.fm10.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1098,19 +1106,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^0)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM2"
-	  SID			  "10:14"
-	  Ports			  [1, 1]
-	  Position		  [1460, 190, 1540, 240]
-	  ZOrder		  10
+	  SID			  "10:200"
+	  Position		  [1470, 197, 1530, 233]
+	  ZOrder		  49
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm2"
-	  IC			  "[]"
+	  Zeros			  "par.fm2.z{1}"
+	  Poles			  "par.fm2.p{1}"
+	  Gain			  "par.fm2.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1122,19 +1126,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^1)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM3"
-	  SID			  "10:15"
-	  Ports			  [1, 1]
-	  Position		  [1135, 285, 1215, 335]
-	  ZOrder		  9
+	  SID			  "10:201"
+	  Position		  [1145, 292, 1205, 328]
+	  ZOrder		  50
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm3"
-	  IC			  "[]"
+	  Zeros			  "par.fm3.z{1}"
+	  Poles			  "par.fm3.p{1}"
+	  Gain			  "par.fm3.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1146,19 +1146,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^2)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM4"
-	  SID			  "10:16"
-	  Ports			  [1, 1]
-	  Position		  [1460, 285, 1540, 335]
-	  ZOrder		  8
+	  SID			  "10:202"
+	  Position		  [1470, 292, 1530, 328]
+	  ZOrder		  51
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm4"
-	  IC			  "[]"
+	  Zeros			  "par.fm4.z{1}"
+	  Poles			  "par.fm4.p{1}"
+	  Gain			  "par.fm4.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1170,19 +1166,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^3)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM5"
-	  SID			  "10:17"
-	  Ports			  [1, 1]
-	  Position		  [1135, 380, 1215, 430]
-	  ZOrder		  7
+	  SID			  "10:203"
+	  Position		  [1145, 387, 1205, 423]
+	  ZOrder		  52
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm5"
-	  IC			  "[]"
+	  Zeros			  "par.fm5.z{1}"
+	  Poles			  "par.fm5.p{1}"
+	  Gain			  "par.fm5.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1194,19 +1186,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^4)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM6"
-	  SID			  "10:18"
-	  Ports			  [1, 1]
-	  Position		  [1460, 380, 1540, 430]
-	  ZOrder		  6
+	  SID			  "10:204"
+	  Position		  [1470, 387, 1530, 423]
+	  ZOrder		  53
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm6"
-	  IC			  "[]"
+	  Zeros			  "par.fm6.z{1}"
+	  Poles			  "par.fm6.p{1}"
+	  Gain			  "par.fm6.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1218,19 +1206,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^5)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM7"
-	  SID			  "10:19"
-	  Ports			  [1, 1]
-	  Position		  [1135, 475, 1215, 525]
-	  ZOrder		  5
+	  SID			  "10:205"
+	  Position		  [1145, 482, 1205, 518]
+	  ZOrder		  54
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm7"
-	  IC			  "[]"
+	  Zeros			  "par.fm7.z{1}"
+	  Poles			  "par.fm7.p{1}"
+	  Gain			  "par.fm7.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1242,19 +1226,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^6)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM8"
-	  SID			  "10:20"
-	  Ports			  [1, 1]
-	  Position		  [1460, 475, 1540, 525]
-	  ZOrder		  4
+	  SID			  "10:206"
+	  Position		  [1470, 482, 1530, 518]
+	  ZOrder		  55
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm8"
-	  IC			  "[]"
+	  Zeros			  "par.fm8.z{1}"
+	  Poles			  "par.fm8.p{1}"
+	  Gain			  "par.fm8.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1266,19 +1246,15 @@ Library {
 	  Value			  "bitand(par.swstat, 2^7)"
 	}
 	Block {
-	  BlockType		  Reference
+	  BlockType		  ZeroPole
 	  Name			  "FM9"
-	  SID			  "10:21"
-	  Ports			  [1, 1]
-	  Position		  [1135, 575, 1215, 625]
-	  ZOrder		  3
+	  SID			  "10:207"
+	  Position		  [1145, 582, 1205, 618]
+	  ZOrder		  56
 	  NamePlacement		  "alternate"
-	  AttributesFormatString  "%<Description>"
-	  LibraryVersion	  "1.108"
-	  SourceBlock		  "cstblocks/LTI System"
-	  SourceType		  "LTI Block"
-	  sys			  "par.fm9"
-	  IC			  "[]"
+	  Zeros			  "par.fm9.z{1}"
+	  Poles			  "par.fm9.p{1}"
+	  Gain			  "par.fm9.k"
 	}
 	Block {
 	  BlockType		  Constant
@@ -1610,14 +1586,14 @@ Library {
 	  SrcPort		  1
 	  Points		  [12, 0]
 	  Branch {
-	    Points		    [0, 15]
-	    DstBlock		    "Switch2"
-	    DstPort		    3
-	  }
-	  Branch {
 	    Points		    [0, -15]
 	    DstBlock		    "FM2"
 	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch2"
+	    DstPort		    3
 	  }
 	}
 	Line {
@@ -1649,13 +1625,13 @@ Library {
 	  SrcPort		  1
 	  Points		  [13, 0; 0, 33; -643, 0; 0, 47]
 	  Branch {
+	    DstBlock		    "FM3"
+	    DstPort		    1
+	  }
+	  Branch {
 	    Points		    [0, 30]
 	    DstBlock		    "Switch4"
 	    DstPort		    3
-	  }
-	  Branch {
-	    DstBlock		    "FM3"
-	    DstPort		    1
 	  }
 	}
 	Line {
@@ -1687,14 +1663,14 @@ Library {
 	  SrcPort		  1
 	  Points		  [14, 0]
 	  Branch {
-	    Points		    [0, 15]
-	    DstBlock		    "Switch5"
-	    DstPort		    3
-	  }
-	  Branch {
 	    Points		    [1, 0; 0, -15]
 	    DstBlock		    "FM4"
 	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch5"
+	    DstPort		    3
 	  }
 	}
 	Line {
@@ -1720,13 +1696,13 @@ Library {
 	  SrcPort		  1
 	  Points		  [9, 0; 0, 34; -639, 0; 0, 46]
 	  Branch {
+	    DstBlock		    "FM5"
+	    DstPort		    1
+	  }
+	  Branch {
 	    Points		    [0, 30]
 	    DstBlock		    "Switch6"
 	    DstPort		    3
-	  }
-	  Branch {
-	    DstBlock		    "FM5"
-	    DstPort		    1
 	  }
 	}
 	Line {
@@ -1740,14 +1716,14 @@ Library {
 	  SrcPort		  1
 	  Points		  [15, 0]
 	  Branch {
-	    Points		    [0, 15]
-	    DstBlock		    "Switch7"
-	    DstPort		    3
-	  }
-	  Branch {
 	    Points		    [0, -15]
 	    DstBlock		    "FM6"
 	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch7"
+	    DstPort		    3
 	  }
 	}
 	Line {
@@ -1767,13 +1743,13 @@ Library {
 	  SrcPort		  1
 	  Points		  [9, 0; 0, 32; -639, 0; 0, 48]
 	  Branch {
+	    DstBlock		    "FM7"
+	    DstPort		    1
+	  }
+	  Branch {
 	    Points		    [0, 30]
 	    DstBlock		    "Switch8"
 	    DstPort		    3
-	  }
-	  Branch {
-	    DstBlock		    "FM7"
-	    DstPort		    1
 	  }
 	}
 	Line {
@@ -1826,13 +1802,13 @@ Library {
 	  SrcPort		  1
 	  Points		  [9, 0; 0, 35; -641, 0; 0, 50]
 	  Branch {
+	    DstBlock		    "FM9"
+	    DstPort		    1
+	  }
+	  Branch {
 	    Points		    [0, 30]
 	    DstBlock		    "Switch10"
 	    DstPort		    3
-	  }
-	  Branch {
-	    DstBlock		    "FM9"
-	    DstPort		    1
 	  }
 	}
 	Line {
@@ -1852,14 +1828,14 @@ Library {
 	  SrcPort		  1
 	  Points		  [15, 0]
 	  Branch {
-	    Points		    [0, 15]
-	    DstBlock		    "Switch11"
-	    DstPort		    3
-	  }
-	  Branch {
 	    Points		    [0, -15]
 	    DstBlock		    "FM10"
 	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 15]
+	    DstBlock		    "Switch11"
+	    DstPort		    3
 	  }
 	}
 	Line {
@@ -1932,6 +1908,12 @@ Library {
 	  DstPort		  2
 	}
       }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
     }
     Block {
       BlockType		      SubSystem
@@ -1944,13 +1926,7 @@ Library {
       BackgroundColor	      "[0.666667, 1.000000, 0.000000]"
       AttributesFormatString  "%<Tag>"
       ShowPortLabels	      "none"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      RTWSystemCode	      "Auto"
-      FunctionWithSeparateData off
-      Opaque		      off
       RequestExecContextInheritance off
-      MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
 	$ObjectID		28
@@ -2066,6 +2042,12 @@ Library {
 	  DstPort		  1
 	}
       }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
     }
   }
 }
