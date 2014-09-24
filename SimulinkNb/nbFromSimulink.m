@@ -153,6 +153,11 @@ if ~isempty(minPosFreq) && ~isempty(maxPosFreq)
 end
 sys = linFlexTfFold(sys, flexTfs);
 
+% Set sys input/output names to meaningful values
+% (UseFullBlockNameLabels appends signal names to the block names)
+sys.InputName = [{nbNoiseSink nbNoiseCal} nbNoiseSources'];
+sys.OutputName = nbNoiseSink;
+
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
 cal = 1/sys(2);
