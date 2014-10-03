@@ -155,10 +155,16 @@ switch blkType
         par.offset = dataByChan(chans{2});
         par.gain = dataByChan(chans{3});
         par.limit = dataByChan(chans{4});
-        ff = find_FilterFile(site, model(1:2), model, start);
-        ff2 = find_FilterFile(site, model(1:2), model, start + duration);
-        if ~strcmp(ff, ff2)
-            warning([model '.txt is not constant during the segment']);
+        if ~isKey(filterCache, model)
+            % Cache filter file paths to accelerate subsequent lookups
+            ff = find_FilterFile(site, model(1:2), model, start);
+            ff2 = find_FilterFile(site, model(1:2), model, start + duration);
+            if ~strcmp(ff, ff2)
+                warning([model '.txt is not constant during the segment']);
+            end
+            filterCache(model) = ff;
+        else
+            ff = filterCache(model);
         end
         if ~isKey(filterCache, ff)
             % Cache all filters from each file.  This speeds up subsequent
