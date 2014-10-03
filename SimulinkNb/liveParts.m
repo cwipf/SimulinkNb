@@ -156,23 +156,17 @@ switch blkType
         par.gain = dataByChan(chans{3});
         par.limit = dataByChan(chans{4});
         if ~isKey(filterCache, model)
-            % Cache filter file paths to accelerate subsequent lookups
+            % Cache all filters from each file.  This speeds up subsequent
+            % reads of other filters from the same file.
             ff = find_FilterFile(site, model(1:2), model, start);
             ff2 = find_FilterFile(site, model(1:2), model, start + duration);
             if ~strcmp(ff, ff2)
                 warning([model '.txt is not constant during the segment']);
             end
-            filterCache(model) = ff;
-        else
-            ff = filterCache(model);
-        end
-        if ~isKey(filterCache, ff)
-            % Cache all filters from each file.  This speeds up subsequent
-            % reads of other filters from the same file.
             filters = readFilterFile(ff);
-            filterCache(ff) = filters;
+            filterCache(model) = filters;
         else
-            filters = filterCache(ff);
+            filters = filterCache(model);
         end
         par.fm = filters.(fmName);
         for n = 1:10
