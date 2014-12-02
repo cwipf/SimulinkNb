@@ -65,20 +65,7 @@ swstat = swstat + sum(bitset(0, 11:12, bitget(SW1R, 3:4)));
 swstat = swstat + sum(bitset(0, 13:14, bitget(SW2R, [10 9])));
 par.swstat = swstat;
 
-parVar = get_param(blk, 'par');
-setInBase(parVar, par, blk);
-
-end
-
-function setInBase(var, val, blk)
-% This function is a kludge to allow things like setting fields of
-% structures (not possible with assignin alone)
-
-% If var is inside a library block, then its name probably refers to a
-% library parameter (mask variable), which has to be resolved before
-% evaluating
-var = resolveLibraryParam(var, blk);
-assignin('base', 'zzz_assignin_kludge_tmp', val);
-evalin('base', [var ' = zzz_assignin_kludge_tmp; clear zzz_assignin_kludge_tmp']);
+parVar = resolveLibraryParam(get_param(blk, 'par'), blk);
+assignInBase(parVar, par);
 
 end
