@@ -74,7 +74,7 @@ classdef FragPlotterFactory < handle
         end
         
         function fragOutput(self, noisePlotter, ~)
-            jarPath = [fileparts(mfilename('fullpath')) '/../eps2pgf/'];
+            jarPath = [fileparts(mfilename('fullpath')) '/../Utils/eps2pgf/'];
             tmpFileName = tempname();
             matlabfrag(tmpFileName, 'handle', noisePlotter.handles.fg);
             fix_lines([tmpFileName '.eps']);
