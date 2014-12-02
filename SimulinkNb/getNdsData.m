@@ -81,11 +81,19 @@ end
 function conn = setupConnection(varargin)
 
 if ~exist('nds2.connection', 'class')
-    [status, output] = system('nds-client-config --javaclasspath');
-    if ~status
+    % check hardcoded MacPorts path /opt/local/bin, which may not otherwise
+    % be picked up by the matlab app's PATH environment variable
+    pathsToCheck = {'', '/opt/local/bin/'};
+    for n = 1:numel(pathsToCheck)
+        [status, output] = system([pathsToCheck{n} 'nds-client-config --javaclasspath']);
+        if ~status
+            javaaddpath(deblank(output));
+            break;
+        end
+    end
+    if status
         error('Can''t find nds2-client: please ensure it''s installed and available on the PATH');
     end
-    javaaddpath(deblank(output));
 end
 
 if nargin > 0
