@@ -8,7 +8,7 @@ function assignInBase(var, val)
 
 assignin('base', 'zzz_assigninbase_kludge_tmp', val);
 cleanupVar = onCleanup(@() evalin('base', 'clear zzz_assigninbase_kludge_tmp'));
-evalin('base', [var ' = zzz_assigninbase_kludge_tmp']);
+evalin('base', [var ' = zzz_assigninbase_kludge_tmp;']);
 clear cleanupVar;
 
 end
