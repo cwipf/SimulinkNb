@@ -97,7 +97,7 @@ function buildOptickleSys(varargin)
     % add internal dummy system
     dummyBlock = add_block('cstblocks/LTI System',[sys '/' optName '/' dummyName]);
     set(dummyBlock,'Position',origin.internalDummy);
-    set_param([sys '/' optName '/' dummyName],'sys',['repmat(tf(1,[1,1]),[' num2str(length(outputs)) ',' num2str(length(inputs)) '])']);
+    set_param([sys '/' optName '/' dummyName],'sys',['repmat(tf(1),[' num2str(length(outputs)) ',' num2str(length(inputs)) '])']);
     %set(dummyBlock,
     mux = add_block('built-in/Mux',[sys '/' optName '/' muxName]);
     set(mux,'Position',origin.internalMux);
