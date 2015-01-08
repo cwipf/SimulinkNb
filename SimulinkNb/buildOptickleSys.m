@@ -51,11 +51,19 @@ function buildOptickleSys(varargin)
     offset.optOutport = offset.Outport;
     origin.noiseBlock = origin.Outport - [150 50 150 50];
     offset.noiseBlock = offset.Outport;
-    origin.internalSum = [400 20 425 400];
+    origin.internalDummy = [350 200 450 250];
+    origin.internalMux = [275 25 300 425];
+    origin.internalDemux = [500 25 525 425];
     origin.outputSum = [700 50 720 70];
     offset.outputSum = offset.Outport;
     
+    % names
     base = 'simulinkNBOptickleBlock';
+    sys = [base '/OptickleModel'];
+    dummyName = 'opticalSystem';
+    muxName = 'mux';
+    demuxName = 'demux';
+    
     try
         new_system(base)
     catch exception
@@ -66,7 +74,6 @@ function buildOptickleSys(varargin)
             rethrow(exception)
         end
     end
-    sys = [base '/OptickleModel'];
     sysblock = add_block('built-in/SubSystem',sys,'Position',origin.opt,'BackGroundColor','purple');
     set(sysblock,'AttributesFormatString','%<Description>');
     
@@ -87,11 +94,19 @@ function buildOptickleSys(varargin)
     set(optFrd,'AttributesFormatString','%<Description>');
     set(optFrd,'Description',['flexTF: optickleFrd(' optName ',' fVecName ')']);
     
-    % add internals of optickleFrd
-    sumblock = add_block('built-in/Sum',[sys '/' optName '/Sum']);
-    set(sumblock,'Position',origin.internalSum);
-    set(sumblock,'IconShape','rectangular');
-    set(sumblock,'Inputs',repmat('+',1,length(inputs)));
+    % add internal dummy system
+    dummyBlock = add_block('cstblocks/LTI System',[sys '/' optName '/' dummyName]);
+    set(dummyBlock,'Position',origin.internalDummy);
+    set_param([sys '/' optName '/' dummyName],'sys',['repmat(tf(1,[1,1]),[' num2str(length(outputs)) ',' num2str(length(inputs)) '])']);
+    %set(dummyBlock,
+    mux = add_block('built-in/Mux',[sys '/' optName '/' muxName]);
+    set(mux,'Position',origin.internalMux);
+    set(mux,'Inputs',num2str(length(inputs)));
+    demux = add_block('built-in/Demux',[sys '/' optName '/' demuxName]);
+    set(demux,'Position',origin.internalDemux);
+    set(demux,'Outputs',num2str(length(outputs)));
+    add_line([sys '/' optName],[muxName '/1'],[dummyName '/1']);
+    add_line([sys '/' optName],[dummyName '/1'],[demuxName '/1']);
 
     % loop on inputs
     for jj = 1:length(inputs);
@@ -103,7 +118,7 @@ function buildOptickleSys(varargin)
         
         % add links
         add_line(sys,[input '/1'],[optName '/' num2str(jj)],'autorouting','on');
-        add_line([sys '/' optName],[input '/1'],['Sum/' num2str(jj)],'autorouting','on');
+        add_line([sys '/' optName],[input '/1'],[muxName '/' num2str(jj)],'autorouting','on');
     end
     
     % loop on outputs
@@ -123,14 +138,14 @@ function buildOptickleSys(varargin)
         set(noiseBlock,'group',['''' NOISEGROUP '''']);
         set(noiseBlock,'subgroup',['''' output '''']);
         
-        % add sum block
+        % add sum block to add noise to output
         sumblock = add_block('built-in/Sum',[sys '/Sum' num2str(jj)]);
         set(sumblock,'Position',origin.outputSum + (jj-1)*offset.outputSum);
         set(sumblock,'IconShape','round');
         set(sumblock,'Inputs','++|');
         
         % add links
-        add_line([sys '/' optName],'Sum/1',[output '/1'],'autorouting','on');
+        add_line([sys '/' optName],[demuxName '/' num2str(jj)],[output '/1'],'autorouting','on');
         add_line(sys,[output '_Noise/1'],['Sum' num2str(jj) '/1'],'autorouting','on');
         add_line(sys,[optName '/' num2str(jj)],['Sum' num2str(jj) '/2'],'autorouting','on');
         add_line(sys,['Sum' num2str(jj) '/1'],[output '/1'],'autorouting','on');
