@@ -36,10 +36,6 @@ elseif ~isobject(sys)
     error('The sys object is not an object');
 elseif ~isprop(nb, 'modelNoises')
     error('The nb object is not a NoiseModel');
-elseif ~(isreal(start) && start > 0)
-    error('The start time is not a GPS time');
-elseif ~(isreal(duration) && duration > 0)
-    error('The duration is not a positive real number');
 end
 
 % Parse parameter-value pairs in varargin
