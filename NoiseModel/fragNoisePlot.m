@@ -1,5 +1,7 @@
-function fragNoisePlot(noiseModel, fileName)
+function fragNoisePlot(noiseModel, fileName, varargin)
+
 plotterFactory = FragPlotterFactory(fileName);
-noiseModel.drilldown(@plotterFactory.getPlotter);
+noiseModel.drilldown(@(noiseModel) plotterFactory.getPlotter(noiseModel, varargin{:}));
 plotterFactory.finalize()
+
 end

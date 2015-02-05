@@ -27,8 +27,8 @@ classdef FragPlotterFactory < handle
                 fprintf(self.fileID, '\n');
             end
         end
-        function plotter = getPlotter(self, noiseModel)
-            plotter = NoisePlotter(noiseModel);
+        function plotter = getPlotter(self, noiseModel, varargin)
+            plotter = NoisePlotter(noiseModel, varargin{:});
             plotter.figureProperties.Visible = 'off';
             %plotter.axesProperties.GridLineStyle = '-';
             %plotter.axesProperties.MinorGridLineStyle = '-';

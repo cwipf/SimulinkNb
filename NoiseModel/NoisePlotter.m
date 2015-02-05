@@ -25,35 +25,43 @@ classdef NoisePlotter < handle
     end
     
     methods
-        function self = NoisePlotter(noiseModel)
+        function self = NoisePlotter(noiseModel, varargin)
             %NoisePlotter object constructor
             %
             %   NoisePlotter(noiseModel) prepares to plot a NoiseModel.
-            self.prolog = {@NoisePlotter.skipNegligibleNoises @NoisePlotter.setXLim @NoisePlotter.setYLim @NoisePlotter.setLinesProperties};
-            self.epilog = {};
+            
+            %% Parse arguments
+            
+            opt = NoisePlotter.defaultOptions(noiseModel);
+            parser = inputParser();
+            parser.addParamValue('prolog', opt.prolog, @iscell);
+            parser.addParamValue('epilog', opt.epilog, @iscell);
+            parser.addParamValue('figureProperties', opt.figureProperties, @isstruct);
+            parser.addParamValue('axesProperties', opt.axesProperties, @isstruct);
+            parser.addParamValue('linesProperties', opt.linesProperties, @isstruct);
+            parser.addParamValue('legendProperties', opt.legendProperties, @isstruct);
+            parser.addParamValue('titleProperties', opt.titleProperties, @isstruct);
+            parser.addParamValue('xlabelProperties', opt.xlabelProperties, @isstruct);
+            parser.addParamValue('ylabelProperties', opt.ylabelProperties, @isstruct);
+            parser.parse(varargin{:});
+            opt = parser.Results;
+            
+            %% Initialize object
+            
             self.handles = struct();
-            self.figureProperties = struct();
-            self.figureProperties.DefaultTextInterpreter = 'none';
-            self.axesProperties = struct();
-            self.axesProperties.Box = 'on';
-            self.axesProperties.XGrid = 'on';
-            self.axesProperties.YGrid = 'on';
-            self.axesProperties.XScale = 'log';
-            self.axesProperties.YScale = 'log';
-            self.axesProperties.ColorOrder = distinguishable_colors(11);
-            self.axesProperties.LineStyleOrder = {'--', '-.', ':'};
-            self.axesProperties.NextPlot = 'add';
-            self.linesProperties = struct();
-            self.linesProperties.LineWidth = 2;
-            self.legendProperties = struct('interpreter','none');
-            self.titleProperties = struct();
-            self.titleProperties.String = noiseModel.title;
-            self.xlabelProperties = struct();
-            self.xlabelProperties.String = 'Frequency [Hz]';
-            self.ylabelProperties = struct();
-            self.ylabelProperties.String = noiseModel.unit;
             self.skipModelNoises = false(size(noiseModel.modelNoises));
             self.skipSumNoise = (numel(noiseModel.modelNoises) == 1);
+            
+            self.prolog = opt.prolog;
+            self.epilog = opt.epilog;
+            self.figureProperties = opt.figureProperties;
+            self.axesProperties = opt.axesProperties;
+            self.linesProperties = opt.linesProperties;
+            self.legendProperties = opt.legendProperties;
+            self.titleProperties = opt.titleProperties;
+            self.xlabelProperties = opt.xlabelProperties;
+            self.ylabelProperties = opt.ylabelProperties;
+            
         end
         
         function process(self, noiseModel)
@@ -201,6 +209,32 @@ classdef NoisePlotter < handle
                 self.linesProperties{countReferences+countSum}.LineWidth = 4;
             end
         end
+        
+        function d = defaultOptions(noiseModel)
+            d = struct();
+            d.prolog = {@NoisePlotter.skipNegligibleNoises @NoisePlotter.setXLim @NoisePlotter.setYLim @NoisePlotter.setLinesProperties};
+            d.epilog = {};
+            d.figureProperties = struct();
+            d.figureProperties.DefaultTextInterpreter = 'none';
+            d.axesProperties = struct();
+            d.axesProperties.Box = 'on';
+            d.axesProperties.XGrid = 'on';
+            d.axesProperties.YGrid = 'on';
+            d.axesProperties.XScale = 'log';
+            d.axesProperties.YScale = 'log';
+            d.axesProperties.ColorOrder = distinguishable_colors(11);
+            d.axesProperties.LineStyleOrder = {'--', '-.', ':'};
+            d.axesProperties.NextPlot = 'add';
+            d.linesProperties = struct();
+            d.linesProperties.LineWidth = 2;
+            d.legendProperties = struct();
+            d.legendProperties.interpreter = 'none';
+            d.titleProperties = struct();
+            d.titleProperties.String = noiseModel.title;
+            d.xlabelProperties = struct();
+            d.xlabelProperties.String = 'Frequency [Hz]';
+            d.ylabelProperties = struct();
+            d.ylabelProperties.String = noiseModel.unit;
+        end
     end
-    
 end

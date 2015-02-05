@@ -1,5 +1,7 @@
-function tikzNoisePlot(noiseModel, fileName)
+function tikzNoisePlot(noiseModel, fileName, varargin)
+
 plotterFactory = TikzPlotterFactory(fileName);
-noiseModel.drilldown(@plotterFactory.getPlotter);
+noiseModel.drilldown(@(noiseModel) plotterFactory.getPlotter(noiseModel, varargin{:}));
 plotterFactory.finalize()
+
 end

@@ -1,6 +1,6 @@
-function matlabNoisePlot(noiseModel)
-       
-     plotterFactory = MatlabPlotterFactory();
-     noiseModel.drilldown(@plotterFactory.getPlotter);
-     
+function matlabNoisePlot(noiseModel, varargin)
+
+plotterFactory = MatlabPlotterFactory();
+noiseModel.drilldown(@(noiseModel) plotterFactory.getPlotter(noiseModel, varargin{:}));
+
 end

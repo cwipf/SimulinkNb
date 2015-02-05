@@ -4,8 +4,8 @@ classdef MatlabPlotterFactory < handle
     end
     
     methods
-        function plotter = getPlotter(self, noiseModel)
-            plotter = NoisePlotter(noiseModel);
+        function plotter = getPlotter(self, noiseModel, varargin)
+            plotter = NoisePlotter(noiseModel, varargin{:});
             plotter.epilog{end+1} = @self.stripLinks;
         end
         

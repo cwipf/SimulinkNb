@@ -32,8 +32,8 @@ classdef TikzPlotterFactory < handle
             end
         end
         
-        function plotter = getPlotter(self, noiseModel)
-            plotter = NoisePlotter(noiseModel);
+        function plotter = getPlotter(self, noiseModel, varargin)
+            plotter = NoisePlotter(noiseModel, varargin{:});
             plotter.epilog{end+1} = @self.tikzOutput;
         end
         
