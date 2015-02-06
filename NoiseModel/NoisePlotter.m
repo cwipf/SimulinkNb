@@ -13,6 +13,7 @@ classdef NoisePlotter < handle
         prolog % cell array of function handles that are called before the plot is drawn
         epilog % cell array of function handles that are called after the plot is drawn
         handles % struct of graphics handles for each component of the plot
+        plotterProperties
         figureProperties
         axesProperties
         linesProperties
@@ -36,6 +37,7 @@ classdef NoisePlotter < handle
             parser = inputParser();
             parser.addParamValue('prolog', opt.prolog, @iscell);
             parser.addParamValue('epilog', opt.epilog, @iscell);
+            parser.addParamValue('plotterProperties', opt.plotterProperties, @isstruct);
             parser.addParamValue('figureProperties', opt.figureProperties, @isstruct);
             parser.addParamValue('axesProperties', opt.axesProperties, @isstruct);
             parser.addParamValue('linesProperties', opt.linesProperties, @isstruct);
@@ -54,6 +56,7 @@ classdef NoisePlotter < handle
             
             self.prolog = opt.prolog;
             self.epilog = opt.epilog;
+            self.plotterProperties = opt.plotterProperties;
             self.figureProperties = opt.figureProperties;
             self.axesProperties = opt.axesProperties;
             self.linesProperties = opt.linesProperties;
@@ -144,9 +147,11 @@ classdef NoisePlotter < handle
     
     methods (Static)
         function skipNegligibleNoises(self, noiseModel)
-            %skipNegligibleNoises is a prolog function that omits noises contributing less than 10% to the sum everywhere
+            %skipNegligibleNoises is a prolog function that omits noises contributing only a negligible amount to the sum everywhere
+            epsi = self.plotterProperties.NegligibleNoiseLevel;
             for n = 1:numel(noiseModel.modelNoises)
-                if ~ismethod(noiseModel.modelNoises{n}, 'drilldown') && all(noiseModel.modelNoises{n}.asd < 0.1*noiseModel.sumNoise.asd)
+                if ~ismethod(noiseModel.modelNoises{n}, 'drilldown') && ...
+                        all(noiseModel.modelNoises{n}.asd < epsi*noiseModel.sumNoise.asd)
                     self.skipModelNoises(n) = true;
                 end
             end
@@ -214,6 +219,8 @@ classdef NoisePlotter < handle
             d = struct();
             d.prolog = {@NoisePlotter.skipNegligibleNoises @NoisePlotter.setXLim @NoisePlotter.setYLim @NoisePlotter.setLinesProperties};
             d.epilog = {};
+            d.plotterProperties = struct();
+            d.plotterProperties.NegligibleNoiseLevel = 0;
             d.figureProperties = struct();
             d.figureProperties.DefaultTextInterpreter = 'none';
             d.axesProperties = struct();
