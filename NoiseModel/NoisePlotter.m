@@ -99,9 +99,17 @@ classdef NoisePlotter < handle
         
         function buildPlot(self, plotArgs, legendArgs)
             %buildPlot generates the plot components
-            fg = figure();
-            self.handles.fg = fg;
-            set(fg, self.figureProperties);
+            if isfield(self.figureProperties, 'Number')
+                % apply figure number property specially
+                % (it's read-only after figure creation)
+                fg = figure(self.figureProperties.Number);
+                self.handles.fg = fg;
+                set(fg, rmfield(self.figureProperties, 'Number'));
+            else
+                fg = figure();
+                self.handles.fg = fg;
+                set(fg, self.figureProperties);
+            end
             
             ax = axes();
             self.handles.ax = ax;

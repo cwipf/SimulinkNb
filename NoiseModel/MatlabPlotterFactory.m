@@ -1,12 +1,27 @@
 classdef MatlabPlotterFactory < handle
     
     properties
+        fixedFigureNumber = 0;
+        handles = {}
     end
     
     methods
         function plotter = getPlotter(self, noiseModel, varargin)
             plotter = NoisePlotter(noiseModel, varargin{:});
+            plotter.prolog{end+1} = @self.setFigureNumber;
             plotter.epilog{end+1} = @self.stripLinks;
+            plotter.epilog{end+1} = @self.harvestHandles;
+        end
+        
+        function setFigureNumber(self, noisePlotter, ~)
+            if self.fixedFigureNumber
+                noisePlotter.figureProperties.Number = self.fixedFigureNumber;
+                self.fixedFigureNumber = self.fixedFigureNumber + 1;
+            end
+        end
+        
+        function harvestHandles(self, noisePlotter, ~)
+            self.handles{end+1} = noisePlotter.handles;
         end
         
         function stripLinks(~, noisePlotter, ~)

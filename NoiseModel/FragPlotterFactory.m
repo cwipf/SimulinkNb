@@ -1,6 +1,8 @@
 classdef FragPlotterFactory < handle
     
     properties
+        fixedFigureNumber = 0;
+        handles = {}
         fileName
         fileID
         figNum
@@ -27,13 +29,27 @@ classdef FragPlotterFactory < handle
                 fprintf(self.fileID, '\n');
             end
         end
+        
         function plotter = getPlotter(self, noiseModel, varargin)
             plotter = NoisePlotter(noiseModel, varargin{:});
             plotter.figureProperties.Visible = 'off';
             %plotter.axesProperties.GridLineStyle = '-';
             %plotter.axesProperties.MinorGridLineStyle = '-';
+            plotter.prolog{end+1} = @self.setFigureNumber;
             plotter.epilog{end+1} = @self.fragLinks;
             plotter.epilog{end+1} = @self.fragOutput;
+            plotter.epilog{end+1} = @self.harvestHandles;
+        end
+        
+        function setFigureNumber(self, noisePlotter, ~)
+            if self.fixedFigureNumber
+                noisePlotter.figureProperties.Number = self.fixedFigureNumber;
+                self.fixedFigureNumber = self.fixedFigureNumber + 1;
+            end
+        end
+        
+        function harvestHandles(self, noisePlotter, ~)
+            self.handles{end+1} = noisePlotter.handles;
         end
         
         function fragLinks(~, noisePlotter, ~)
