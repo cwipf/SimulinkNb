@@ -5,9 +5,16 @@ classdef GWData < handle
   %
   % Methods:
   %  - Methods for getting data:
+  %     <a href="matlab:help GWdata.fetch">fetch</a> - fetch data from NDS
   %
-  %  - Methods for Kerberos Authentication:
+  %  - Static Methods for GPS time conversion:
+  %     <a href="matlab:help GWdata.gps_time">gps_time</a> - get GPS time now, or at some specified time
+  %     <a href="matlab:help GWdata.gps_to_datenum">gps_to_datenum</a> - convert GPS time now to Matlab date number
+  %
+  %  - Static Methods for Kerberos Authentication:
   %     <a href="matlab:help GWdata.make_kerberos_ready">make_kerberos_ready</a> - check Kerberos ticket status (with is_kerberos_ready) and call kinit if needed
+  %
+  % by Matthew Evans and Chris Wipf, January 2015
   
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Properties
@@ -117,7 +124,7 @@ classdef GWData < handle
     function t = gps_time(varargin)
       % t = gps_time
       %   get GPS seconds, with sub-second precision
-      %   (see also gps_to_datenum)
+      %   (see also gps_to_datenum, tzconvert)
       %
       % if an argument is given, it is used instead of "now"
       % (see now, datenum, datevec, etc.)
@@ -133,7 +140,7 @@ classdef GWData < handle
       %
       % % Example, using full datenum format string:
       % tLeapA = GWData.gps_time('Jan 01 00:00:00 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy')
-      % tLeapB = GWData.gps_time('Jan 01 00:00:01 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy')
+      % tLeapB = GWData.gps_time({'Jan 01 00:00:01 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy'})
       %
       % % Example: consistency check!
       % datestr(GWData.gps_to_datenum(GWData.gps_time('3 Dec 2014 13:00:10')))
@@ -154,7 +161,7 @@ classdef GWData < handle
         end
       end
       
-      % use date matlab number
+      % use matlab date number
       [y, m, d, h, mn, s] = datevec(dn);
       javaDate = java.util.Date(y - 1900, m - 1, d, h, mn, floor(s));
       
@@ -512,7 +519,6 @@ classdef GWData < handle
         end
       end
     end
-
     function [data, t, info] = ...
         fetch(obj, start_time, end_time, channel_list, data_rate)
       
@@ -527,14 +533,14 @@ classdef GWData < handle
       %            of seconds BEFORE the current time.  To get data from 1 hour
       %            ago, for instance, use start_time = 3600.
       %              If start_time is a string, vector, or cell array, it is
-      %            passed to datenum for conversion.  Note, datenum uses
-      %            local time, not UTC (see datenum for more information).
+      %            passed to GWData.gps_time for conversion.  Note, this
+      %            uses local time, not UTC (see gps_time and tzconvert).
       %
       % end_time = data ends at this GPS second
       %            If end_time corresponds to a date before January 1, 2000,
       %            it is taken as the duration of the data segment.
       %              If end_time is a string, vector, or cell array, it is
-      %            passed to datenum for conversion.
+      %            passed to GWData.gps_time for conversion.
       %
       % channel_list = channel name, or cell array of channel names to fetch
       %            In many cases, adding ".mean,s-trend" (or ".mean,m-trend")
@@ -621,10 +627,6 @@ classdef GWData < handle
       %  wrong user name or password?  This should be your "albert.einstein"
       %  username and corresponding ligo.org password.
       %
-      % -----------------------------------------------
-      % by Matthew Evans (mevans@ligo.mit.edu)
-      % v1 - 7 Dec 2014, was get_data function
-      % v2 - 18 Jan 2015
 
       % TODO:
       % catch NDS errors and try backup servers
