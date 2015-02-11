@@ -387,7 +387,8 @@ classdef GWData < handle
       end
       
       % split result into lines
-      result_lines = strsplit(result, {'\n', '\r'});
+      %result_lines = strsplit(result, {'\n', '\r'});
+      result_lines = GWData.splitlines(result);
       
       if ~iscell(result_lines) || numel(result_lines) < first_line
         % not enough lines
@@ -420,6 +421,30 @@ classdef GWData < handle
       is_ready = false;
     end
 
+    % same as strsplit(result, {'\n', '\r'});
+    % for old matlab versions
+    function strlist = splitlines(str)
+      nn = strfind(str, char(10)); % \n
+      nr = strfind(str, char(13)); % \r
+      nnr = strfind(str, [char(10) char(13)]);
+      nrn = strfind(str, [char(13) char(10)]);
+      
+      nAll = unique([nn, nr, nnr, nrn]);
+      if isempty(nAll)
+        strlist = str;
+      else
+        nLast = 0;
+        strlist = {};
+        for n = 1:numel(nAll)
+          nNext = nAll(n);
+          if nNext > nLast + 1
+            strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
+          end
+          nLast = nNext;
+        end
+      end
+    end
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Data Processing
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -576,21 +601,21 @@ classdef GWData < handle
       % ====== Examples ======
       %
       % % start with a GW Data object
-      % g = GWData;
+      % gwd = GWData;
       %
-      % % get the minute trend of IMC input power
-      % [data, t] = g.fetch(1101765660, 1101767040, 'L1:IMC-PWR_IN_OUT16.mean,m-trend');
+      % % get the minute trend of IMC input power from a few hours ago
+      % [data, t] = gwd.fetch(5 * 3600, 1000, 'L1:IMC-PWR_IN_OUT16.mean,m-trend');
       % plot(t, data)
       %
       % % get 16Hz data for Y-arm power and input power
       % % start time is 2 hours ago, duration is 1000s
-      % [data, t] = g.fetch(2 * 3600, 1000, ...
+      % [data, t] = gwd.fetch(2 * 3600, 1000, ...
       %   {'L1:ASC-Y_TR_B_SUM_OUT16', 'L1:IMC-PWR_IN_OUT16'});
       % plot(t, [data(:, 1) / 1e3, data(:, 2)])
       %
       % % -- find a channel, then get data --
       % % initialize Kerberos (if not already done)
-      % g.fetch;
+      % gwd.make_kerberos_ready;
       %
       % % connect to server and find some channels
       % conn = nds2.connection('nds.ligo-la.caltech.edu', 31200);
@@ -599,11 +624,11 @@ classdef GWData < handle
       % % look through the channels to find the one you want... say #3
       % % <L1:LSC-X_TR_A_LF_OUTPUT.mean,m-trend (0.0166667Hz, MTREND, FLOAT64)>
       % % and then get some data for it
-      % [data, t, info] = g.fetch('3-Dec-2014', 10000, fc(3).getName);
+      % [data, t, info] = gwd.fetch(5 * 3600, 1000, fc(3).getName);
       % t0 = info.start_time;  % start time GPS
       %
       % % change server for H1 (note: H1 is second in GWData.site_list)
-      % g.site_info(2).server = 'nds.ligo.caltech.edu';
+      % gwd.site_info(2).server = 'nds.ligo.caltech.edu';
       %
       % ====== Troubleshooting ======
       %  Start by looking under "Matlab Tools" on the remote data access wiki:
