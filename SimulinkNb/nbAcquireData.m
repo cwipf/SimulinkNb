@@ -36,10 +36,6 @@ elseif ~isobject(sys)
     error('The sys object is not an object');
 elseif ~isprop(nb, 'modelNoises')
     error('The nb object is not a NoiseModel');
-elseif ~(isreal(start) && start > 0)
-    error('The start time is not a GPS time');
-elseif ~(isreal(duration) && duration > 0)
-    error('The duration is not a positive real number');
 end
 
 % Parse parameter-value pairs in varargin
@@ -60,30 +56,7 @@ end
 
 chanList = sort(unique(chanList));
 
-% conn = nds2.connection(server, port);
-% buffers = conn.fetch(start, end, chanList);
-% The java NDS2 library needs more development before we can adopt it
-% and get live data support
-% see e.g. bug 68: https://trac.ligo.caltech.edu/nds2/ticket/68
-% Fall back on good old mDV instead
-% Break the channel list into digestible pieces for the NDS server
-maxChans = 100;
-lastChanIdx = 0;
-data = [];
-while (numel(chanList) - lastChanIdx) > 0
-    chansToFetch = min(numel(chanList) - lastChanIdx, maxChans);
-    disp(['Requesting ' num2str(duration) ' sec of data for ' num2str(chansToFetch) ...
-        ' channels, starting at GPS time ' num2str(start)]);
-
-    firstChanIdx = lastChanIdx + 1;
-    lastChanIdx = lastChanIdx + chansToFetch;
-%     for n = 1:chansToFetch
-%         disp(chanList(firstChanIdx+n-1));
-%         get_data(chanList(firstChanIdx+n-1), 'raw', start, duration);
-%     end
-    data = [data cacheFunction(@get_data, chanList(firstChanIdx:lastChanIdx),...
-            'raw', start, duration)]; %#ok<AGROW>
-end
+data = cacheFunction(@getNdsData, chanList, start, duration);
 
 %% Compute ASDs 
 

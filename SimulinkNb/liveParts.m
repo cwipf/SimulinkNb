@@ -31,24 +31,7 @@ end
 
 chanList = sort(unique(chanList));
 
-% Break the channel list into digestible pieces for the NDS server
-maxChans = 100;
-lastChanIdx = 0;
-data = [];
-while (numel(chanList) - lastChanIdx) > 0
-    chansToFetch = min(numel(chanList) - lastChanIdx, maxChans);
-    disp(['Requesting ' num2str(duration) ' sec of data for ' num2str(chansToFetch) ...
-        ' channels, starting at GPS time ' num2str(start)]);
-
-    firstChanIdx = lastChanIdx + 1;
-    lastChanIdx = lastChanIdx + chansToFetch;
-%     for n = 1:chansToFetch
-%         disp(chanList(firstChanIdx+n-1));
-%         get_data(chanList(firstChanIdx+n-1), 'raw', start, duration);
-%     end
-    data = [data cacheFunction(@get_data, chanList(firstChanIdx:lastChanIdx),...
-            'raw', start, duration)]; %#ok<AGROW>
-end
+data = cacheFunction(@getNdsData, chanList, start, duration);
 
 dataByChan = containers.Map();
 for n = 1:numel(data)
