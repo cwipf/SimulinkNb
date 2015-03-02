@@ -56,7 +56,17 @@ end
 
 chanList = sort(unique(chanList));
 
-data = cacheFunction(@getNdsData, chanList, start, duration);
+%% Read data using NDS (LIGO) or from ffl file (Virgo)
+% find which channels are for Virgo
+virgoChannels = ~cellfun(@isempty, regexp(chanList, '^V1:.*'));
+if all(virgoChannels)
+  % if all channels are from Virgo use getVirgoData
+  % FIXME: hard-coded using rds frames
+  data = cacheFunction(@getVirgoData, chanList, 'rds', start, duration);
+else
+  % use NDS for all channels if any LIGO channels is requested
+  data = cacheFunction(@getNdsData, chanList, start, duration);
+end
 
 %% Compute ASDs 
 
