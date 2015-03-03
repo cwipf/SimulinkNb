@@ -153,7 +153,7 @@ if ~isempty(minPosFreq) && ~isempty(maxPosFreq)
 end
 sys = linFlexTfFold(sys, flexTfs);
 % Ensure sys gets converted to frequency response data
-sys = frd(sys, freq, 'Hz');
+sys = frd(sys, freq, 'Units', 'Hz');
 
 % Set sys input/output names to meaningful values
 % (UseFullBlockNameLabels appends signal names to the block names)
