@@ -189,17 +189,23 @@ for n = 1:numel(blks)
     blk = blks{n};
     blkVars = get_param(blk, 'MaskWSVariables');
     blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
-    if ~ischar(blkVars('dof'))
+    dofs = blkVars('dof');
+    if ischar(dofs)
+        dofs = {dofs};
+    end
+    if ~iscellstr(dofs)
         error(['Invalid ' tag ' block ' blk char(10) ...
-            'The DOF name (' get_param(blk, 'dof') ') must be a string']);
+            'The DOF name (' get_param(blk, 'dof') ') must be a string or cell array']);
     end
-    disp(['    ' blk ' :: ' blkVars('dof')]);
-    if ~blockTable.isKey(blkVars('dof'))
-        blockTable(blkVars('dof')) = blk;
-    else
-        error(['The DOF name cannot be shared by multiple ' tag ' blocks' char(10) ...
-            'Blocks ' blk ' and ' blockTable(blkVars('dof')) ' both have dof=' blkVars('dof')]);
-    end
+    for nn = 1:numel(dofs)
+        disp(['    ' blk ' :: ' dofs{nn}]);
+        if ~blockTable.isKey(dofs{nn})
+            blockTable(dofs{nn}) = blk;
+        else
+            error(['The DOF name cannot be shared by multiple ' tag ' blocks' char(10) ...
+                'Blocks ' blk ' and ' blockTable(dofs{nn}) ' both have dof=' dofs{nn}]);
+        end
+    end    
 end
 
 end
