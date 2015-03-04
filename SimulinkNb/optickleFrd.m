@@ -65,5 +65,7 @@ function frdOut = optickleFrd(opt,f,varargin)
     end
     
     frdOut = frd(sigAC(probeIndex,:,:),f,'Units','Hz');
+    frdOut.InputName = drives;
+    frdOut.OutputName = probes;
 end
 
