@@ -109,10 +109,10 @@ function [ chanList ] = findChans(mdl, sys, nb, varargin)
 if isempty(varargin)
     % Check for sink's channel only the first time through this function
     chanList = {};
-    nbNoiseSink = sys(2).OutputName{:};
-    chan = getBlockChan(nbNoiseSink);
+    sinkName = [sys(2).OutputName{:} '{1}'];
+    chan = getBlockChan(sinkName);
     if ~isempty(chan)
-        disp(['NbNoiseSink ' nbNoiseSink ' requested DAQ channel ' chan]);
+        disp(['NbNoiseSink ' sinkName ' requested DAQ channel ' chan]);
         chanList = {chan};
     end
 else
@@ -127,13 +127,13 @@ for n = 1:numel(nb.modelNoises)
         chanList = findChans(mdl, sys, noise, chanList);
     else
         if isprop(noise, 'noiseData')
-            nbNoiseSource = noise.noiseData.name;
+            name = noise.noiseData.name;
         else
-            nbNoiseSource = noise.name;
+            name = noise.name;
         end
-        chan = getBlockChan(nbNoiseSource);
+        chan = getBlockChan(name);
         if ~isempty(chan)
-            disp(['NbNoiseSource ' nbNoiseSource ' requested DAQ channel ' chan]);
+            disp(['NbNoiseSource ' name ' requested DAQ channel ' chan]);
             if ~any(strcmp(chan, chanList))
                 chanList = [chanList {chan}]; %#ok<AGROW>
             end
@@ -148,16 +148,16 @@ function [ nb ] = updateNoises(sys, nb, noisesByChan)
 
 %% Initial setup (for noise sink)
 
-nbNoiseSink = sys(2).OutputName{:};
-chan = getBlockChan(nbNoiseSink);
+sinkName = [sys(2).OutputName{:} '{1}'];
+chan = getBlockChan(sinkName);
 if ~isempty(chan)
-    disp(['Updating sink ' nbNoiseSink]);
+    disp(['Updating sink ' sinkName]);
     noiseTf = (1-sys(1))/sys(2);
     noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(noiseTf, 2*pi*nb.f)))';
     foundSinkNoise = false;
     for n = 1:length(nb.referenceNoises)
         noise = nb.referenceNoises{n};
-        if isprop(noise, 'noiseData') && strcmp(noise.noiseData.name, nbNoiseSink)
+        if isprop(noise, 'noiseData') && strcmp(noise.noiseData.name, sinkName)
             foundSinkNoise = true;
             noise.noiseData.asd = noiseAsd;
             nb.referenceNoises{n} = noise;
@@ -165,7 +165,7 @@ if ~isempty(chan)
         end
     end
     if ~foundSinkNoise
-        noise.name = nbNoiseSink;
+        noise.name = sinkName;
         noise.f = nb.f;
         noise.asd = noiseAsd;
         noise = renamed(noise, 'Measured');
@@ -190,19 +190,21 @@ for n = 1:numel(nb.modelNoises)
         noise = updateNoises_n(sys, noise, noisesByChan);
     else
         if isprop(noise, 'noiseData')
-            nbNoiseSource = noise.noiseData.name;
+            name = noise.noiseData.name;
         else
-            nbNoiseSource = noise.name;
+            name = noise.name;
         end
-        chan = getBlockChan(nbNoiseSource);
+        nameParts = regexp(name, '(.*)\{\d+\}', 'tokens');
+        blk = nameParts{1};
+        chan = getBlockChan(name);
         if ~isempty(chan)
-            disp(['Updating source ' nbNoiseSource]);
-            noiseTf = sys(strcmp(nbNoiseSource, sys.InputName));
-            noiseAsd = noisesByChan(chan) .* abs(squeeze(freqresp(noiseTf*cal, 2*pi*nb.f)))';
+            disp(['Updating source ' name]);
+            tf = sys(strcmp(blk, sys.InputName)) * getBlockTf(name, nb.f);
+            asd = noisesByChan(chan) .* abs(squeeze(freqresp(tf*cal, 2*pi*nb.f)))';
             if isprop(noise, 'noiseData')
-                noise.noiseData.asd = noiseAsd;
+                noise.noiseData.asd = asd;
             else
-                noise.asd = noiseAsd;
+                noise.asd = asd;
             end
         end
     end
@@ -211,18 +213,48 @@ end
 
 end
 
-function [ chan ] = getBlockChan(blk)
+function [ chan ] = getBlockChan(name)
 
 chan = '';
+nameParts = regexp(name, '(.*)\{(\d+)\}', 'tokens');
+blk = nameParts{1}{1};
+multiplex = str2double(nameParts{1}{2});
 tag = get_param(blk, 'Tag');
 blkVars = get_param(blk, 'MaskWSVariables');
 blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
-if ~ischar(blkVars('chan'))
-    error(['Invalid ' tag ' block ' blk char(10) ...
-        'The DAQ channel (' get_param(blk, 'chan') ') must be a string']);
+chanVar = blkVars('chan');
+if ~iscell(chanVar)
+    chanVar = {struct('chan', chanVar)};
 end
-if ~isempty(blkVars('chan'))
-    chan = blkVars('chan');
+chanVar = chanVar{multiplex};
+if ~isstruct(chanVar) || ~isfield(chanVar, 'chan') || ~ischar(chanVar.chan)
+    error(['Invalid ' tag ' block ' name char(10) ...
+        'DAQ channel (from ' get_param(blk, 'chan') ') must be a string or well-formed struct']);
 end
+if ~isempty(chanVar.chan)
+    chan = chanVar.chan;
+end
+
+end
+
+function [ tf ] = getBlockTf(name, freq)
+
+nameParts = regexp(name, '(.*)\{(\d+)\}', 'tokens');
+blk = nameParts{1}{1};
+multiplex = str2double(nameParts{1}{2});
+tag = get_param(blk, 'Tag');
+blkVars = get_param(blk, 'MaskWSVariables');
+blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
+chanVar = blkVars('chan');
+
+tf = frd(ones(size(freq)), freq, 'Units', 'Hz');
+if ~iscell(chanVar)
+    return;
+end
+chanVar = chanVar{multiplex};
+if ~isfield(chanVar, 'tf')
+    return;
+end
+tf = chanVar.tf;
 
 end

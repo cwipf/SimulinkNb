@@ -113,7 +113,8 @@ end
 %% Evaluate the NbNoiseSink's measured ASD (if present)
 
 % getBlockNoise() is a local function defined below
-sinkNoise = getBlockNoise(nbNoiseSink, freq);
+sinkNoise = getBlockNoises(nbNoiseSink, freq);
+sinkNoise = sinkNoise{1};
 
 %% Find the NbNoiseSource blocks
 
@@ -125,7 +126,7 @@ end
 
 %% Evaluate each NbNoiseSource block's ASD, and set up noise/calibration TFs
 
-noises = num2cell(struct('name', nbNoiseSources, 'f', freq, 'asd', []))';
+noises = {};
 % Set numerator for noise/calibration TFs, and open the loop
 % (also sets denominator for open loop gain around the sink)
 ioSink = linio(nbNoiseSink, 1, 'outin', 'on');
@@ -136,7 +137,7 @@ for n = 1:numel(nbNoiseSources)
     % Set denominator for noise TF (source to sink)
     ioSource(n) = linio(blk, 1, 'in'); %#ok<AGROW>
     % getBlockNoise() is a local function defined below
-    noises{n} = getBlockNoise(blk, freq);
+    noises = [noises getBlockNoises(blk, freq)]; %#ok<AGROW>
 end
 io = [ioSink ioCal ioSource];
 
@@ -163,8 +164,12 @@ sys.OutputName = nbNoiseSink;
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
 cal = 1/sys(2);
-for n = 1:numel(nbNoiseSources)
-    noises{n}.asd = noises{n}.asd .* abs(squeeze(freqresp(sys(n+2)*cal, 2*pi*freq)))';
+for n = 1:numel(noises)
+    nameParts = regexp(noises{n}.name, '(.*)\{\d+\}', 'tokens');
+    blk = nameParts{1};
+    tfIdx = strcmp(blk, sys.InputName);
+    tf = abs(squeeze(freqresp(sys(tfIdx)*cal, 2*pi*freq)))';
+    noises{n}.asd = noises{n}.asd .* tf; %#ok<AGROW>
 end
 
 %% Prepend the NbNoiseSink's measured spectrum
@@ -210,9 +215,8 @@ end
 
 end
 
-function [ noise ] = getBlockNoise(blk, freq)
+function [ noises ] = getBlockNoises(blk, freq)
 
-noise = struct('name', blk, 'f', freq, 'asd', []);
 tag = get_param(blk, 'Tag');
 expr = get_param(blk, 'asd');
 % If expr is inside a library block, then its name probably refers to a
@@ -222,6 +226,7 @@ expr = resolveLibraryParam(expr, blk);
 % Permit NbNoiseSink block to have an empty ASD
 if strcmp(tag, 'NbNoiseSink')
     if isempty(expr) || strcmp(expr, '''''') || strcmp(expr, '[]')
+        noises = {struct('name', [blk '{1}'], 'f', freq, 'asd', [])};
         return;
     end
 end
@@ -235,19 +240,30 @@ scb(blk);
 % set to NOT evaluate anything automatically.  This way, the noise
 % budget spectra don't have to be defined when the model is used for
 % purposes other than making a noise budget.
-noise.asd = evalin('base', expr);
-% Sanity checks on the ASD
-if ~isreal(noise.asd) || min(size(noise.asd)) > 1
-    error(['Invalid ' tag ' block ' blk char(10) ...
-        'The ASD (' expr ') is not a real-valued 1D array']);
-elseif numel(noise.asd) ~= 1 && numel(noise.asd) ~= numel(freq)
-    error(['Invalid ' tag ' block ' blk char(10) ...
-        'The length of the ASD (' expr ') doesn''t match the frequency vector' char(10) ...
-        '(ASD''s length is ' num2str(numel(noise.asd)) ...
-        ' and frequency vector''s length is ' num2str(numel(freq)) ')']);
+asds = evalin('base', expr);
+
+if ~iscell(asds)
+    asds = {asds};
 end
-if size(noise.asd, 1) ~= 1
-    noise.asd = noise.asd';
+
+noises = cell(1, numel(asds));
+for n = 1:numel(asds)
+    noises{n} = struct('name', [blk '{' num2str(n) '}'], 'f', freq, 'asd', []);
+    asd = asds{n};
+    % Sanity checks on the ASD
+    if ~isreal(asd) || min(size(asd)) > 1
+        error(['Invalid ' tag ' block ' blk char(10) ...
+            'ASD #' num2str(n) ' (from ' expr ') is not a real-valued 1D array']);
+    elseif numel(asd) ~= 1 && numel(asd) ~= numel(freq)
+    error(['Invalid ' tag ' block ' blk char(10) ...
+        'Length of ASD #' num2str(n) ' (from ' expr ') doesn''t match the frequency vector' char(10) ...
+        '(ASD''s length is ' num2str(numel(asd)) ...
+        ' and frequency vector''s length is ' num2str(numel(freq)) ')']);
+    end
+    if size(asd, 1) ~= 1
+        asd = asd';
+    end
+    noises{n}.asd = asd;
 end
 
 end
