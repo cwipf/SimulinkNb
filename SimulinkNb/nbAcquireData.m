@@ -56,7 +56,17 @@ end
 
 chanList = sort(unique(chanList));
 
-data = cacheFunction(@getNdsData, chanList, start, duration);
+%% Read data using NDS (LIGO) or from ffl file (Virgo)
+% find which channels are for Virgo
+virgoChannels = ~cellfun(@isempty, regexp(chanList, '^V1:.*'));
+if all(virgoChannels)
+  % if all channels are from Virgo use getVirgoData
+  % FIXME: hard-coded using raw_full frames
+  data = cacheFunction(@getVirgoData, chanList, 'raw_full', start, duration);
+else
+  % use NDS for all channels if any LIGO channels is requested
+  data = cacheFunction(@getNdsData, chanList, start, duration);
+end
 
 %% Compute ASDs 
 
@@ -88,7 +98,7 @@ function [ asd ] = defaultAsd(data, Fs, freq)
 
 % Pick some reasonable resolution for the spectrum, in case the freq vector
 % has nonuniform spacing
-df = geomean(diff(freq));
+df = exp(mean(log(diff(freq))));
 df = min(df, min(freq(freq>0)));
 NFFT = 2^ceil(log2(Fs/df));
 if NFFT > numel(data)
