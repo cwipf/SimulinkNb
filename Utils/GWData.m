@@ -404,7 +404,7 @@ classdef GWData < handle
         if ~isempty(hasSP{n})
           % looking for lines like:
           % 12/09/2014 15:24:34  12/10/2014 15:24:34  krbtgt/LIGO.ORG@LIGO.ORG
-          date_time_strs = strsplit(result_lines{n});
+          date_time_strs = GWData.splitwords(result_lines{n});
           if numel(date_time_strs) > 4
             % get data number for end time, and compare to time now
             end_time = datenum([date_time_strs{3} ' ' date_time_strs{4}]);
@@ -430,6 +430,28 @@ classdef GWData < handle
       nrn = strfind(str, [char(13) char(10)]);
       
       nAll = unique([nn, nr, nnr, nrn]);
+      if isempty(nAll)
+        strlist = str;
+      else
+        nLast = 0;
+        strlist = {};
+        for n = 1:numel(nAll)
+          nNext = nAll(n);
+          if nNext > nLast + 1
+            strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
+          end
+          nLast = nNext;
+        end
+      end
+    end
+    
+    % same as strsplit(result, {' ', '\t'});
+    % for old matlab versions
+    function strlist = splitwords(str)
+      nt = strfind(str, char(9));  % \t
+      ns = strfind(str, ' ');
+      
+      nAll = [nt, ns];
       if isempty(nAll)
         strlist = str;
       else
@@ -547,7 +569,7 @@ classdef GWData < handle
     function [data, t, info] = ...
         fetch(obj, start_time, end_time, channel_list, data_rate)
       
-      % [data, t, info] = fetch(start_time, end_time, channel_list, data_rate)
+      % [data, t, info] = gwd.fetch(start_time, end_time, channel_list, data_rate)
       %
       % Fetch data from NDS2 servers.
       %
