@@ -98,7 +98,7 @@ function [ asd ] = defaultAsd(data, Fs, freq)
 
 % Pick some reasonable resolution for the spectrum, in case the freq vector
 % has nonuniform spacing
-df = exp(mean(log(diff(freq))));
+df = 1./mean(1./diff(freq)); % harmonic mean value
 df = min(df, min(freq(freq>0)));
 NFFT = 2^ceil(log2(Fs/df));
 if NFFT > numel(data)
