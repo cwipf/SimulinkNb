@@ -31,17 +31,9 @@ end
 
 chanList = sort(unique(chanList));
 
-%% Read data using NDS (LIGO) or from ffl file (Virgo)
-% find which channels are for Virgo
-virgoChannels = ~cellfun(@isempty, regexp(chanList, '^V1:.*'));
-if all(virgoChannels)
-  % if all channels are from Virgo use getVirgoData
-  % FIXME: hard-coded using raw_full frames
-  data = cacheFunction(@getVirgoData, chanList, 'raw_full', start, duration);
-else
-  % use NDS for all channels if any LIGO channels is requested
-  data = cacheFunction(@getNdsData, chanList, start, duration);
-end
+%% Read data
+
+data = cacheFunction(@getGWData, chanList, start, duration);
 
 dataByChan = containers.Map();
 for n = 1:numel(data)
