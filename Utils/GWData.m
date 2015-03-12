@@ -808,7 +808,7 @@ classdef GWData < handle
       
       % determine site
       site_name = channel_list{1}(1:2);
-      site_num = find(strcmp(obj.site_list, site_name), 1);
+      site_num = find(strncmp(obj.site_list, site_name, 1), 1);
       if isempty(site_num)
         error('Unknown site name %s in channel %s.', site_name, channel_list{1});
       end
