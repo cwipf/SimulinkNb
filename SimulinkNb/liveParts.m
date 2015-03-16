@@ -143,12 +143,22 @@ switch blkType
         if ~isKey(filterCache, model)
             % Cache all filters from each file.  This speeds up subsequent
             % reads of other filters from the same file.
-            ff = find_FilterFile(site, model(1:2), model, start);
-            ff2 = find_FilterFile(site, model(1:2), model, start + duration);
-            if ~strcmp(ff, ff2)
-                warning([model '.txt is not constant during the segment']);
+            if exist(['/opt/rtcds/' site '/' lower(model(1:2)) '/chans'], 'dir')
+                % read filter archive on control room workstations
+                ff = find_FilterFile(site, model(1:2), model, start);
+                ff2 = find_FilterFile(site, model(1:2), model, start + duration);
+                if ~strcmp(ff, ff2)
+                    warning([model '.txt is not constant during the segment']);
+                end
+                filters = readFilterFile(ff);
+            else
+                % read DAQ SVN from offsite
+                filters = downloadFilterFile(model, start);
+                filters2 = downloadFilterFile(model, start + duration);
+                if ~isequaln(filters, filters2)
+                    warning([model '.txt is not constant during the segment']);
+                end
             end
-            filters = readFilterFile(ff);
             filterCache(model) = filters;
         else
             filters = filterCache(model);
