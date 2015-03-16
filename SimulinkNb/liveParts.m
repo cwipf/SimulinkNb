@@ -143,7 +143,7 @@ switch blkType
         if ~isKey(filterCache, model)
             % Cache all filters from each file.  This speeds up subsequent
             % reads of other filters from the same file.
-            if exist(['/opt/rtcds/' site '/' lower(model(1:2)) '/chans'], 'dir')
+            if exist(['/opt/rtcds/' site '/' lower(model(1:2)) '/chans/filter_archive'], 'dir')
                 % read filter archive on control room workstations
                 ff = find_FilterFile(site, model(1:2), model, start);
                 ff2 = find_FilterFile(site, model(1:2), model, start + duration);
