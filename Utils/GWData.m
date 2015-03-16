@@ -52,6 +52,49 @@ classdef GWData < handle
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % GPS Times
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    function t = gps_time(varargin)
+      % t = gps_time
+      %   get GPS seconds, with sub-second precision
+      %   (see also gps_to_datenum, tzconvert)
+      %
+      % if an argument is given, it is used instead of "now"
+      % (see now, datenum, datevec, etc.)
+      %
+      % % Example:
+      % t_now = GWData.gps_time
+      %
+      % % Example:
+      % t_dec3 = GWData.gps_time('3 Dec 2014 13:00:10')
+      %
+      % % Exmaple, using GWData.tzconvert:
+      % t0 = GWData.gps_time('06 Jan 1980 00:00:00 GMT')
+      %
+      % % Example, using full datenum format string:
+      % tLeapA = GWData.gps_time('Jan 01 00:00:00 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy')
+      % tLeapB = GWData.gps_time({'Jan 01 00:00:01 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy'})
+      %
+      % % Example: consistency check!
+      % datestr(GWData.gps_to_datenum(GWData.gps_time('3 Dec 2014 13:00:10')))
+      
+      if nargin == 0
+        % use current time
+        dn = now;
+      else
+        % convert strings or other things to a date number
+        if nargin == 1 && isscalar(varargin{1})
+          dn = varargin{1};
+        elseif nargin == 1 && ischar(varargin{1})
+          dn = GWData.tzconvert(varargin{1});
+        elseif nargin == 1 && iscell(varargin{1})
+          dn = datenum(varargin{1}{:});
+        else
+          dn = datenum(varargin{:});
+        end
+      end
+      
+      % convert date number to GPS time
+      t = GWData.datenum_to_gps(dn);
+    end    
     function t = gps_convert(userGPS, anchorGPS, isAfter, pivotGPS)
       % t = gps_convert(userGPS, anchorGPS, isAfter, pivotGPS)
       %   convert a user specified time into a GPS value
@@ -121,92 +164,128 @@ classdef GWData < handle
         end
       end
     end
-    function t = gps_time(varargin)
-      % t = gps_time
-      %   get GPS seconds, with sub-second precision
-      %   (see also gps_to_datenum, tzconvert)
-      %
-      % if an argument is given, it is used instead of "now"
-      % (see now, datenum, datevec, etc.)
-      %
-      % % Example:
-      % t_now = GWData.gps_time
-      %
-      % % Example:
-      % t_dec3 = GWData.gps_time('3 Dec 2014 13:00:10')
-      %
-      % % Exmaple, using GWData.tzconvert:
-      % t0 = GWData.gps_time('06 Jan 1980 00:00:00 GMT')
-      %
-      % % Example, using full datenum format string:
-      % tLeapA = GWData.gps_time('Jan 01 00:00:00 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy')
-      % tLeapB = GWData.gps_time({'Jan 01 00:00:01 GMT 2009', 'mmm dd HH:MM:SS zzz yyyy'})
-      %
-      % % Example: consistency check!
-      % datestr(GWData.gps_to_datenum(GWData.gps_time('3 Dec 2014 13:00:10')))
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Time Standards
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    function t = gps_to_datenum(t_gps)
+      % t = gps_to_datenum(gpsTime)
+      %   Converts GPS second to a local matlab date number
+      %   (see also gps_time, gps_to_unix, unix_to_datenum)
       
-      if nargin == 0
-        % use current time
-        dn = now;
-      else
-        % convert strings or other things to a date number
-        if nargin == 1 && isscalar(varargin{1})
-          dn = varargin{1};
-        elseif nargin == 1 && ischar(varargin{1})
-          dn = GWData.tzconvert(varargin{1});
-        elseif nargin == 1 && iscell(varargin{1})
-          dn = datenum(varargin{1}{:});
-        else
-          dn = datenum(varargin{:});
-        end
-      end
+      t = GWData.unix_to_datenum(GWData.gps_to_unix(t_gps));
+    end
+    function t = datenum_to_gps(dn)
+      % t = gps_to_datenum(gpsTime)
+      %   Converts local matlab date number to GPS second
+      %   (see also gps_time, datenum_to_unix, unix_to_gps)
       
-      % use matlab date number
+      t = GWData.unix_to_gps(GWData.datenum_to_unix(dn));
+    end
+    function t = datenum_to_unix(dn)
+      % t = datenum_to_unix(gpsTime)
+      %   Converts local matlab date number to UNIX time
+      %   (see also gps_time, datenum_to_unix, unix_to_gps)
+      
+      % use matlab date number (note that milliseconds are lost
+      % when making javaDate, and added back in later)
       [y, m, d, h, mn, s] = datevec(dn);
       javaDate = java.util.Date(y - 1900, m - 1, d, h, mn, floor(s));
       
-      % correct for missing milliseconds
-      javaTime = javaDate.getTime + 1000 * (s - floor(s));
-      javaDate.setTime(javaTime);
-        
+      % UNIX time, noting that java time is in milliseconds
+      % and that we lost some milliseconds when creating the javaDate
+      t = javaDate.getTime / 1000 + (s - floor(s));
+    end
+    function dn = unix_to_datenum(t_unix)
+      % t = unix_to_datenum(gpsTime)
+      %   Converts UNIX time to local matlab date number
+      %   (see also gps_time, datenum_to_unix, unix_to_gps)
+      
+      % This is trickier than it looks!
+      % Note that the datenum is not continuous across daylight savings
+      % changes, while UNIX time is, so the following does not work:
+      %  localOffset = datenum('Jan 01 1970 GMT', 'mmm dd yyyy zzz');
+      %  t = (t_unix / 86400) + localOffset;
+      
+      % go back to datenum through java, reversing datenum_to_unix
+      javaDate = java.util.Date(t_unix * 1000);
+      cal = java.util.GregorianCalendar;
+      cal.setTime(javaDate);
+      
+      y = cal.get(java.util.Calendar.YEAR);
+      mo = cal.get(java.util.Calendar.MONTH);
+      d = cal.get(java.util.Calendar.DAY_OF_MONTH);
+      h = cal.get(java.util.Calendar.HOUR_OF_DAY);
+      mi = cal.get(java.util.Calendar.MINUTE);
+      s = cal.get(java.util.Calendar.SECOND);
+      ms = cal.get(java.util.Calendar.MILLISECOND);
+      
+      dn = datenum(y, mo + 1, d, h, mi, s + ms / 1000);
+
+      % cross check...
+      %[y , mo, d, h, mi, s]
+      %[y , mo, d, h, mi, s] = datevec(dn)
+    end
+    function t = gps_to_unix(t_gps)
+      % t = gps_to_unix(gpsTime)
+      %   Converts GPS second to UNIX time
+      %   (see also gps_time, unix_to_gps, unix_to_datenum)
+      
       % this is the offset between Unix time (started Jan 1, 1970)
       % and GPS time (started Jan 6, 1980)
       gpsOffset = 315964800;
       
-      % the result, noting that java time is in milliseconds
-      t = javaDate.getTime / 1000 - gpsOffset;
-      
-      % add leap seconds
-      t = t + GWData.leap_seconds_in_datenum(dn);
-    end
-    function t = gps_to_datenum(gpsTime)
-      % t = gps_to_datenum(gpsTime)
-      %   Converts GPS second to a local matlab date number
-      %   (see also gps_time)
-      
-      
-      % get local time at start of GPS epoch
-      %   this corrects for local time zone, but not for leap seconds
-      t0 = datenum('Jan 06 00:00:00 GMT 1980', 'mmm dd HH:MM:SS zzz yyyy');
-      
-      % local time, from GPS second (without leap seconds)
-      t = gpsTime / 86400 + t0;
-
       % correct for leap seconds
-      t = t - GWData.leap_seconds_in_datenum(t, true) / 86400;
-      
+      t = t_gps + gpsOffset - GWData.leap_seconds_in_gps(t_gps);
     end
-    function leap_num = leap_seconds_in_datenum(t_datenum, is_inclusive)
+    function t = unix_to_gps(t_unix)
+      % t = unix_to_gps(gpsTime)
+      %   Converts UNIX time to GPS second
+      %   (see also gps_time, gps_to_unix, gps_to_datenum)
+      
+      % this is the offset between Unix time (started Jan 1, 1970)
+      % and GPS time (started Jan 6, 1980)
+      gpsOffset = 315964800;
+      
+      % convert to GPS time and add leap seconds
+      t = t_unix - gpsOffset + GWData.leap_seconds_in_unix(t_unix);
+    end
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Leap Seconds
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    function leap_num = leap_seconds_in_unix(t_unix)
+      % leap second correction
+      %  datenum is tied to UNIX time, where leap seconds are removed
+      %  so we have to put them back to convert from GPS to UNIX time
+      
+      % leap second UNIX times
+      [~, leap_unix] = GWData.leap_seconds();
+                              
+      % count accumulated leap seconds
+      leap_num = sum(leap_unix < t_unix);
+    end
+    function leap_num = leap_seconds_in_gps(t_gps)
       % leap second correction
       %  datenum is tied to UNIX time, where leap seconds are removed
       %  so we have to put them back to convert from GPS to Unix time
-      %
-      % is_inclusive = true, indicates that the date number
-      % given already includes leap seconds (e.g., was
-      % generated from GPS or TIA) and so leap seconds must
-      % be removed when comparing it to the tabulated leap dates.
       
-      % number of leap seconds since 1980 (updated January, 2015)
+      % leap second GPS times
+      [leap_gps, ~] = GWData.leap_seconds();
+              
+      % count accumulated leap seconds
+      leap_num = sum(leap_gps < t_gps);
+    end
+    function [leap_gps, leap_unix, leap_datenum] = leap_seconds()
+      % get timestamps for when leap seconds happened
+      %  note that leap_gps and leap_unix are timezone independent
+      %  while leap_datenum depends on timezone
+      
+      % NOTE: execution of this function takes only a few milliseconds!
+      % tic; [leap_gps, leap_unix, leap_datenum] = GWData.leap_seconds(); toc
+      % Elapsed time is 0.005852 seconds.
+
+      % leap seconds since 1980 (updated January, 2015)
       leap_date = [...
         'Jul 01 1981 GMT'
         'Jul 01 1982 GMT'
@@ -237,14 +316,26 @@ classdef GWData < handle
       % convert to date numbers
       leap_datenum = datenum(leap_date, 'mmm dd yyyy zzz');
       
-      % count accumulated leap seconds
-      leap_num = sum(leap_datenum < t_datenum);
+      % this is the offset between Unix time (started Jan 1, 1970)
+      % and GPS time (started Jan 6, 1980)
+      gpsOffset = 315964800;
       
-      % if t_datenum includes leap seconds, remove them
-      if nargin > 1 && is_inclusive
-        leap_num = sum(leap_datenum < (t_datenum -  leap_num/ 86400));
+      % convert to gps times
+      leap_gps = zeros(size(leap_date, 1), 1);
+      leap_unix = zeros(size(leap_date, 1), 1);
+      for n = 1:numel(leap_gps)
+        % get UNIX time for each (comes in milliseconds)
+        leap_unix(n) = java.util.Date(leap_date(n, :)).getTime / 1000;
+        
+        % remove gps offset, and add accumulated leap seconds
+        %   (can't use unix_to_gps, since that comes here!)
+        leap_gps(n) = (leap_unix(n) - gpsOffset) + n;
       end
     end
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Time Zone Paring
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     function date_num = tzconvert(date_str)
       % TZCONVERT  Convert date string to serial date number (time zone aware)
       % Matlab's builtin DATENUM function ignores time zone specifiers when
@@ -451,7 +542,7 @@ classdef GWData < handle
       nt = strfind(str, char(9));  % \t
       ns = strfind(str, ' ');
       
-      nAll = [nt, ns];
+      nAll = unique([nt, ns]);
       if isempty(nAll)
         strlist = str;
       else
@@ -463,6 +554,9 @@ classdef GWData < handle
             strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
           end
           nLast = nNext;
+        end
+        if nLast < numel(str)
+          strlist(end + 1) = {str((nLast + 1):end)};
         end
       end
     end
