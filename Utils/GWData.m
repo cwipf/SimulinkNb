@@ -529,7 +529,7 @@ classdef GWData < handle
         for n = 1:numel(nAll)
           nNext = nAll(n);
           if nNext > nLast + 1
-            strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
+            strlist(end + 1) = {str((nLast + 1):(nNext - 1))}; %#ok<AGROW>
           end
           nLast = nNext;
         end
@@ -551,7 +551,7 @@ classdef GWData < handle
         for n = 1:numel(nAll)
           nNext = nAll(n);
           if nNext > nLast + 1
-            strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
+            strlist(end + 1) = {str((nLast + 1):(nNext - 1))}; %#ok<AGROW>
           end
           nLast = nNext;
         end
@@ -600,7 +600,61 @@ classdef GWData < handle
       %plot(tx, [x, xz], ty, [y, yz, polyval(pf, ty)])
       %pause
     end
+  
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Global Variable Save/Restore
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    % These functions need to import global variables into their own
+    % workspace.  So they stash their own local variables in Matlab's
+    % appdata, to avoid colliding with the global variable names.
+
+    function globals = save_globals()
+      globals = struct();
+      vars = who('global');
+      for n = 1:numel(vars)
+        locals = struct();
+        locals.n = n;
+        locals.vars = vars;
+        locals.globals = globals;
+        setappdata(0, 'GWData_sg_locals', locals);
+        setappdata(0, 'GWData_sg_var', vars{n});
+        eval(['global ' vars{n}]);
+        setappdata(0, 'GWData_sg_val', eval(getappdata(0, 'GWData_sg_var')));
+        locals = getappdata(0, 'GWData_sg_locals');
+        n = locals.n; %#ok<FXSET>
+        vars = locals.vars;
+        globals = locals.globals;
+        globals.(vars{n}) = getappdata(0, 'GWData_sg_val');
+      end
+      rmappdata(0, 'GWData_sg_locals');
+      rmappdata(0, 'GWData_sg_var');
+      rmappdata(0, 'GWData_sg_val');
+    end
+    
+    function restore_globals(globals)
+      vars = fieldnames(globals);
+      for n = 1:numel(vars)
+        locals = struct();
+        locals.n = n;
+        locals.vars = vars;
+        locals.globals = globals;
+        setappdata(0, 'GWData_rg_locals', locals);
+        setappdata(0, 'GWData_rg_var', vars{n});
+        setappdata(0, 'GWData_rg_val', globals.(vars{n}));
+        eval(['global ' vars{n}]);
+        eval([getappdata(0, 'GWData_rg_var') '= getappdata(0, ''GWData_rg_val'');']);
+        locals = getappdata(0, 'GWData_rg_locals');
+        n = locals.n; %#ok<FXSET>
+        vars = locals.vars;
+        globals = locals.globals;
+      end
+      rmappdata(0, 'GWData_rg_locals');
+      rmappdata(0, 'GWData_rg_var');
+      rmappdata(0, 'GWData_rg_val');
+    end
   end
+
   
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Public Methods
@@ -786,12 +840,21 @@ classdef GWData < handle
           if ~status
             path = deblank(output);
             disp(['Found nds2-client library in ' path]);
+            % javaaddpath is evil: it clears global variables and many
+            % other aspects of the environment. So warn the user, and try
+            % to save and restore the globals.
+            warning(['Trying to update the java path to include nds2-client' char(10) ...
+                'This can have unintended effects on your Matlab environment (clears persistent variables, breakpoints, etc.)' char(10) ...
+                'To avoid these side effects, please add nds2-client to your predefined java path.' char(10)...
+                'Put the following line in the file ' prefdir filesep 'javaclasspath.txt:' char(10) path]);
+            globals = GWData.save_globals();
             javaaddpath(path);
+            GWData.restore_globals(globals);
             break;
           end
         end
         if ~exist('nds2.connection', 'class')
-          error('Can''t find nds2-client (use "help GWData.fetch for more info)');
+          error('Can''t find nds2-client (use "help GWData.fetch" for more info)');
         end
       end
 
@@ -976,6 +1039,7 @@ classdef GWData < handle
       clear cleanup_conn;
       if h_win
           clear cleanup_window;
+          drawnow;
       end
 
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
