@@ -12,7 +12,7 @@ cacheSize = getappdata(0, 'functionCacheSize');
 if isempty(functionCache)
     functionCache = {};
 end
-if isempty(functionCacheSize)
+if isempty(cacheSize)
     cacheSize = 100;
 end
 
