@@ -7,7 +7,7 @@ function data = getGWData(chanList, start, duration)
 %
 %   Description:
 %
-%   getNdsData(CHANLIST, START, DURATION) uses the GWData library to obtain
+%   getGWData(CHANLIST, START, DURATION) uses the GWData library to obtain
 %   data from an NDS1 or NDS2 server.  Or it calls getVirgoData for V1
 %   channels.
 %
