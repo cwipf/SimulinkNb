@@ -14,6 +14,26 @@ classdef GWData < handle
   %  - Static Methods for Kerberos Authentication:
   %     <a href="matlab:help GWdata.make_kerberos_ready">make_kerberos_ready</a> - check Kerberos ticket status (with is_kerberos_ready) and call kinit if needed
   %
+  % How to install:
+  %  - GWData requires the nds2-client library. Downloads and instructions
+  %    for setting up nds2-client are found here:
+  %    <a href="https://trac.ligo.caltech.edu/nds2">https://trac.ligo.caltech.edu/nds2</a>
+  %
+  %  - After you have nds2-client, add it to Matlab's java path:
+  %    * Run this command in a terminal window to find out where
+  %      nds2-client's java component was installed:
+  %      $ nds-client-config --javaclasspath
+  %
+  %    * Then create (or edit) the file "javaclasspath.txt" in your Matlab
+  %      startup folder. Paste the nds2-client path as a line in the file.
+  %
+  %  - Note: if nds2-client is found but not in the path, GWData tries to
+  %    update the path to include it. This lets you use GWData, but it may
+  %    have unintended effects on your Matlab environment, such as clearing
+  %    persistent variables, breakpoints, etc. (See "doc javaaddpath" for
+  %    more details.) Adding nds2-client to the predefined java path avoids
+  %    these side effects.
+  %
   % by Matthew Evans and Chris Wipf, January 2015
   
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -841,12 +861,11 @@ classdef GWData < handle
             path = deblank(output);
             disp(['Found nds2-client library in ' path]);
             % javaaddpath is evil: it clears global variables and many
-            % other aspects of the environment. So warn the user, and try
-            % to save and restore the globals.
-            warning(['Trying to update the java path to include nds2-client' char(10) ...
-                'This can have unintended effects on your Matlab environment (clears persistent variables, breakpoints, etc.)' char(10) ...
-                'To avoid these side effects, please add nds2-client to your predefined java path.' char(10)...
-                'Put the following line in the file ' prefdir filesep 'javaclasspath.txt:' char(10) path]);
+            % other aspects of the environment. So try to save and restore
+            % the globals, and ask the user to install nds2-client in the
+            % static java path.
+            warning(['nds2-client library was found in ' path ', which is not in Matlab''s java path.' char(10) ...
+                'Please see "help GWData" for instructions to complete the installation.']);
             globals = GWData.save_globals();
             javaaddpath(path);
             GWData.restore_globals(globals);
