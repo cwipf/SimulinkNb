@@ -1,4 +1,4 @@
-function filters = downloadFilterFile(model, gps)
+function [filters, gpsWhenLoaded] = downloadFilterFile(model, gps)
 
 %% Define location of DAQ SVN and temporary file to hold filters
 
@@ -19,17 +19,32 @@ rev = ['{' char(dateFormatter.format(javaDate)) 'T' char(timeFormatter.format(ja
 
 %% Set up Kerberos, fetch the filter file, and parse it
 
+disp(['Downloading filter file ' model '.txt for GPS ' num2str(gps)]);
 gwd.make_kerberos_ready();
-system(['svn export -r' rev ' ' daqsvn model '.txt ' tmpName]);
-if ~exist(tmpName, 'file')
+statusBad = system(['svn export -q -r' rev ' ' daqsvn model '.txt ' tmpName]);
+if statusBad || ~exist(tmpName, 'file')
     error(['Unable to download filter file ' model '.txt from the DAQ SVN for GPS time ' num2str(gps)]);
 end
 cleanupFile = onCleanup(@() delete(tmpName));
 filters = readFilterFile(tmpName);
 filters.fileName = [model '.txt'];
-
-%% Cleanup
-
 clear cleanupFile;
+
+%% Find out when the file was loaded
+
+[statusBad, cmdOut] = system(['svn info --xml -r' rev ' ' daqsvn model '.txt']);
+if statusBad
+    error(['Unable to get svn info on filter file ' model '.txt from the DAQ SVN for GPS time ' num2str(gps)]);
+end
+
+fid = fopen(tmpName, 'w');
+cleanupFile = onCleanup(@() delete(tmpName));
+fprintf(fid, cmdOut);
+fclose(fid);
+dom = xmlread(tmpName);
+clear cleanupFile;
+
+dateWhenLoaded = char(dom.getElementsByTagName('commit').item(0).getElementsByTagName('date').item(0).getFirstChild().getData());
+gpsWhenLoaded = GWData.gps_time([dateWhenLoaded(1:10) ' ' dateWhenLoaded(12:19) ' UTC']);
 
 end

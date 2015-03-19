@@ -153,9 +153,8 @@ switch blkType
                 filters = readFilterFile(ff);
             else
                 % read DAQ SVN from offsite
-                filters = cacheFunction(@downloadFilterFile, model, start);
-                filters2 = cacheFunction(@downloadFilterFile, model, start + duration);
-                if ~isequaln(filters, filters2)
+                [filters, gpsWhenLoaded] = cacheFunction(@downloadFilterFile, model, start + duration);
+                if gpsWhenLoaded > start
                     warning([model '.txt is not constant during the segment']);
                 end
             end
