@@ -1,17 +1,16 @@
 function saveFunctionCache(varargin)
-    % saves functionCache global variable to disk
-    
+    % saves functionCache variable to disk
+
     if numel(varargin) < 1
-        FILENAME = 'functionCache.mat';
+        fileName = 'functionCache.mat';
     else
-        FILENAME = varargin{1};
-        if ~ischar(FILENAME)
+        fileName = varargin{1};
+        if ~ischar(fileName)
             error('cacheFunction:badArg','argument is not a valid filename');
         end
     end
-    
-    global functionCache; %#ok<NUSED>
-    
-    save(FILENAME,'functionCache')
+
+    functionCache = getappdata(0, 'functionCache'); %#ok<NASGU>
+    save(fileName, 'functionCache');
 
 end

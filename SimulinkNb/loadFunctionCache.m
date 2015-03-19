@@ -1,5 +1,5 @@
 function loadFunctionCache(varargin)
-    % loads functionCache global variable from disk if it doesn't exist
+    % loads functionCache variable from disk if it doesn't exist
     
     if numel(varargin) < 1
         FILENAME = 'functionCache.mat';
@@ -16,13 +16,11 @@ function loadFunctionCache(varargin)
         return
     end
     
-    % declare global
-    global functionCache
     % check if functionCache is empty
-    if isempty(functionCache)
+    if isempty(getappdata(0, 'functionCache'))
         % if so, load from disk
         loaded = load(FILENAME);
-        functionCache = loaded.functionCache;
+        setappdata(0, 'functionCache', loaded.functionCache);
     end
 
 end
