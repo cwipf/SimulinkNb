@@ -14,6 +14,26 @@ classdef GWData < handle
   %  - Static Methods for Kerberos Authentication:
   %     <a href="matlab:help GWdata.make_kerberos_ready">make_kerberos_ready</a> - check Kerberos ticket status (with is_kerberos_ready) and call kinit if needed
   %
+  % How to install:
+  %  - GWData requires the nds2-client library. Downloads and instructions
+  %    for setting up nds2-client are found here:
+  %    <a href="https://trac.ligo.caltech.edu/nds2">https://trac.ligo.caltech.edu/nds2</a>
+  %
+  %  - After you have nds2-client, add it to Matlab's java path:
+  %    * Run this command in a terminal window to find out where
+  %      nds2-client's java component was installed:
+  %      $ nds-client-config --javaclasspath
+  %
+  %    * Then create (or edit) the file "javaclasspath.txt" in your Matlab
+  %      startup folder. Paste the nds2-client path as a line in the file.
+  %
+  %  - Note: if nds2-client is found but not in the path, GWData tries to
+  %    update the path to include it. This lets you use GWData, but it may
+  %    have unintended effects on your Matlab environment, such as clearing
+  %    persistent variables, breakpoints, etc. (See "doc javaaddpath" for
+  %    more details.) Adding nds2-client to the predefined java path avoids
+  %    these side effects.
+  %
   % by Matthew Evans and Chris Wipf, January 2015
   
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -529,7 +549,7 @@ classdef GWData < handle
         for n = 1:numel(nAll)
           nNext = nAll(n);
           if nNext > nLast + 1
-            strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
+            strlist(end + 1) = {str((nLast + 1):(nNext - 1))}; %#ok<AGROW>
           end
           nLast = nNext;
         end
@@ -551,7 +571,7 @@ classdef GWData < handle
         for n = 1:numel(nAll)
           nNext = nAll(n);
           if nNext > nLast + 1
-            strlist(end + 1) = {str((nLast + 1):(nNext - 1))};
+            strlist(end + 1) = {str((nLast + 1):(nNext - 1))}; %#ok<AGROW>
           end
           nLast = nNext;
         end
@@ -600,7 +620,61 @@ classdef GWData < handle
       %plot(tx, [x, xz], ty, [y, yz, polyval(pf, ty)])
       %pause
     end
+  
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Global Variable Save/Restore
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    % These functions need to import global variables into their own
+    % workspace.  So they stash their own local variables in Matlab's
+    % appdata, to avoid colliding with the global variable names.
+
+    function globals = save_globals()
+      globals = struct();
+      vars = who('global');
+      for n = 1:numel(vars)
+        locals = struct();
+        locals.n = n;
+        locals.vars = vars;
+        locals.globals = globals;
+        setappdata(0, 'GWData_sg_locals', locals);
+        setappdata(0, 'GWData_sg_var', vars{n});
+        eval(['global ' vars{n}]);
+        setappdata(0, 'GWData_sg_val', eval(getappdata(0, 'GWData_sg_var')));
+        locals = getappdata(0, 'GWData_sg_locals');
+        n = locals.n; %#ok<FXSET>
+        vars = locals.vars;
+        globals = locals.globals;
+        globals.(vars{n}) = getappdata(0, 'GWData_sg_val');
+      end
+      rmappdata(0, 'GWData_sg_locals');
+      rmappdata(0, 'GWData_sg_var');
+      rmappdata(0, 'GWData_sg_val');
+    end
+    
+    function restore_globals(globals)
+      vars = fieldnames(globals);
+      for n = 1:numel(vars)
+        locals = struct();
+        locals.n = n;
+        locals.vars = vars;
+        locals.globals = globals;
+        setappdata(0, 'GWData_rg_locals', locals);
+        setappdata(0, 'GWData_rg_var', vars{n});
+        setappdata(0, 'GWData_rg_val', globals.(vars{n}));
+        eval(['global ' vars{n}]);
+        eval([getappdata(0, 'GWData_rg_var') '= getappdata(0, ''GWData_rg_val'');']);
+        locals = getappdata(0, 'GWData_rg_locals');
+        n = locals.n; %#ok<FXSET>
+        vars = locals.vars;
+        globals = locals.globals;
+      end
+      rmappdata(0, 'GWData_rg_locals');
+      rmappdata(0, 'GWData_rg_var');
+      rmappdata(0, 'GWData_rg_val');
+    end
   end
+
   
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Public Methods
@@ -786,12 +860,20 @@ classdef GWData < handle
           if ~status
             path = deblank(output);
             disp(['Found nds2-client library in ' path]);
+            % javaaddpath is evil: it clears global variables and many
+            % other aspects of the environment. So try to save and restore
+            % the globals, and ask the user to install nds2-client in the
+            % static java path.
+            warning(['nds2-client library was found in ' path ', which is not in Matlab''s java path.' char(10) ...
+                'Please see "help GWData" for instructions to complete the installation.']);
+            globals = GWData.save_globals();
             javaaddpath(path);
+            GWData.restore_globals(globals);
             break;
           end
         end
         if ~exist('nds2.connection', 'class')
-          error('Can''t find nds2-client (use "help GWData.fetch for more info)');
+          error('Can''t find nds2-client (use "help GWData.fetch" for more info)');
         end
       end
 
@@ -976,6 +1058,7 @@ classdef GWData < handle
       clear cleanup_conn;
       if h_win
           clear cleanup_window;
+          drawnow;
       end
 
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
