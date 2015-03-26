@@ -402,12 +402,13 @@ classdef GWData < handle
       % rewrite the date string in a known format
       date_str = [datestr(date_str, 'dd-mmm-yyyy HH:MM:SS') ' ' tz];
       
-      % invoke datenum to make the conversion
-      if tz(1) == '+' || tz(1) == '-'
-        date_num = datenum(date_str, 'dd-mmm-yyyy HH:MM:SS ZZZ');
-      else
-        date_num = datenum(date_str, 'dd-mmm-yyyy HH:MM:SS zzz');
-      end
+      % use java date libraries to make the conversion
+      % datenum should be able to do this, but it's broken by DST
+      % for example, the following is not zero (replace PDT with your local
+      % time zone):
+      % datenum('24-mar-2015 02:17:00')-datenum('24-mar-2015 02:17:00 PDT', 'dd-mmm-yyyy HH:MM:SS zzz')
+      dateFormatter = java.text.SimpleDateFormat('dd-MMM-yyyy HH:mm:ss z');
+      date_num = GWData.unix_to_datenum(dateFormatter.parse(date_str).getTime/1000);
       
     end
     
