@@ -648,9 +648,11 @@ classdef GWData < handle
         globals = locals.globals;
         globals.(vars{n}) = getappdata(0, 'GWData_sg_val');
       end
-      rmappdata(0, 'GWData_sg_locals');
-      rmappdata(0, 'GWData_sg_var');
-      rmappdata(0, 'GWData_sg_val');
+      if isappdata(0, 'GWData_sg_locals')
+        rmappdata(0, 'GWData_sg_locals');
+        rmappdata(0, 'GWData_sg_var');
+        rmappdata(0, 'GWData_sg_val');
+      end
     end
     
     function restore_globals(globals)
@@ -670,9 +672,11 @@ classdef GWData < handle
         vars = locals.vars;
         globals = locals.globals;
       end
-      rmappdata(0, 'GWData_rg_locals');
-      rmappdata(0, 'GWData_rg_var');
-      rmappdata(0, 'GWData_rg_val');
+      if isappdata(0, 'GWData_rg_locals')
+        rmappdata(0, 'GWData_rg_locals');
+        rmappdata(0, 'GWData_rg_var');
+        rmappdata(0, 'GWData_rg_val');
+      end
     end
   end
 
