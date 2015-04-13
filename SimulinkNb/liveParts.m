@@ -99,6 +99,10 @@ switch blkType
         end
         % note: the liveParams function below depends on the ordering of these suffixes
         fmChanSuffixes = {'_SWSTAT', '_OFFSET', '_GAIN', '_LIMIT'};
+        % sad workaround for 40m IFO which doesn't have SWSTAT channels
+        if strncmp(prefix, 'C1:', 3)
+            fmChanSuffixes = {'_SW1R', '_OFFSET', '_GAIN', '_LIMIT', '_SW2R'};
+        end
         chans = cell(size(fmChanSuffixes));
         for n = 1:numel(fmChanSuffixes)
             chans{n} = [prefix fmChanSuffixes{n}];
@@ -137,6 +141,20 @@ switch blkType
         fmName = blkVars(strcmp({blkVars.Name}, 'fmName')).Value;
         flexTf = blkVars(strcmp({blkVars.Name}, 'flexTf')).Value;
         par.swstat = dataByChan(chans{1});
+        % sad workaround for 40m IFO which doesn't have SWSTAT channels
+        if strncmp(model, 'C1', 2)
+            sw1r = dataByChan(chans{1});
+            sw2r = dataByChan(chans{5});
+            par.swstat = 2^10*bitand(sw1r, 2^2) ... % input switch
+                + 2^11*bitand(sw1r, 2^3) ... % offset switch
+                + 2^0*bitand(sw1r, 2^5) + 2^1*bitand(sw1r, 2^7) ...
+                + 2^2*bitand(sw1r, 2^9) + 2^3*bitand(sw1r, 2^11) ...
+                + 2^4*bitand(sw1r, 2^13) + 2^5*bitand(sw1r, 2^15) ...
+                + 2^6*bitand(sw2r, 2^1) + 2^7*bitand(sw2r, 2^3) ...
+                + 2^8*bitand(sw2r, 2^5) + 2^9*bitand(sw2r, 2^7) ...
+                + 2^13*bitand(sw2r, 2^8) ... % limit switch
+                + 2^12*bitand(sw2r, 2^10); % output switch
+        end
         par.offset = dataByChan(chans{2});
         par.gain = dataByChan(chans{3});
         par.limit = dataByChan(chans{4});
