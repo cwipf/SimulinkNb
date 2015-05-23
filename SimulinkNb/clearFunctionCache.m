@@ -1,8 +1,4 @@
 function clearFunctionCache()
-    % clears functionCache global variable
-    
-    global functionCache;
-    
-    functionCache = [];
-    
+    % clears functionCache appdata
+    setappdata(0, 'functionCache', []);
 end

@@ -1044,7 +1044,7 @@ classdef GWData < handle
       end
       % Define a callback to update the status bar
       function cb(inc)
-        if h_win
+        if h_win ~= 0
           if getappdata(h_win, 'canceling')
             error('GWData:userCancelled', 'NDS data request cancelled')
           end
@@ -1061,7 +1061,7 @@ classdef GWData < handle
       data_buffers = obj.rfetch(conn, channel_list, start_time, end_time, @cb);
 
       clear cleanup_conn;
-      if h_win
+      if h_win ~= 0
           clear cleanup_window;
           drawnow;
       end
