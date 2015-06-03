@@ -421,7 +421,7 @@ classdef GWData < handle
       %   commands.
 
       % locale settings influence the printing of dates by klist
-      env_str = 'LANG=en_US LC_TIME=en_US';
+      env_str = 'LANG=posix LC_TIME=posix';
 
       % special path setting for Mac OS X (forces the use of MacPorts)
       if ismac && (nargin < 1 || isempty(kerb_path))
