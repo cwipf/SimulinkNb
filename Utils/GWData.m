@@ -49,8 +49,8 @@ classdef GWData < handle
     site_list = {};
     
     % Kerberos
-    kerb_path = '/opt/local/bin';   % path to Kerberos (kinit and klist)
-    kerb_srv = 'LIGO.ORG';          % Kerberos service principal
+    kerb_path = '';         % path to Kerberos (kinit and klist)
+    kerb_srv = 'LIGO.ORG';  % Kerberos service principal
   end
   
   properties (SetAccess = protected)
@@ -415,13 +415,40 @@ classdef GWData < handle
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Kerberos Authentication
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    function env_str = kerberos_env(kerb_path)
+      % env_str = kerberos_env(kerb_path)
+      %   set LANG and PATH environment variables needed to invoke Kerberos
+      %   commands.
+
+      % locale settings influence the printing of dates by klist
+      env_str = 'LANG=en_US LC_TIME=en_US';
+
+      % special path setting for Mac OS X (forces the use of MacPorts)
+      if ismac && (nargin < 1 || isempty(kerb_path))
+        kerb_path = '/opt/local/bin';
+      end
+      
+      % apply path setting
+      path_now = getenv('PATH');
+      if ~strncmp(path_now, kerb_path, numel(kerb_path))
+        env_str = [env_str ' PATH=' kerb_path ':' path_now];
+      end
+      
+      % check for kerberos (system returns 0 when ok)
+      [isNotOk, str] = system([env_str ' which kinit']);
+      if isNotOk
+        error('kinit not found.  Unable to setup Kerberos ticket.')
+      elseif ~strncmp(str, kerb_path, numel(kerb_path))
+        warning('using kinit at %s, expect it at %s', str, kerb_path)
+      end
+    end
     function [is_ready, end_time] = make_kerberos_ready(srv, kerb_path)
       % [is_ready, end_time] = make_kerberos_ready(srv, kerb_path)
       %   look for a valid kerberos ticket for a particular service principal
       %   and use kinit to make a new ticket if none is found.
       %
       % srv = Kerberos service principal (default = 'LIGO.ORG')
-      % kerb_path = path for kinit and klist (default = '/opt/local/bin')
+      % kerb_path = path for kinit and klist (default = '/opt/local/bin' for Macs)
       %
       % is_ready = true if a ticket is found or created, false otherwise
       % end_time = matlab date number for end of ticket validity (see datenum)
@@ -431,25 +458,13 @@ classdef GWData < handle
         srv = 'LIGO.ORG';
       end
       
-      % check path
       if nargin < 2
-        kerb_path = '/opt/local/bin';
-      end
-      path_now = getenv('PATH');
-      if ~strncmp(path_now, kerb_path, numel(kerb_path))
-        setenv('PATH', [kerb_path ':' path_now])
+        kerb_path = '';
       end
       
-      % check for kerberos (system returns 0 when ok)
-      [isNotOk, str] = system('which kinit');
-      if isNotOk
-        error('kinit not found.  Unable to setup Kerberos ticket.')
-      elseif ~strncmp(str, kerb_path, numel(kerb_path))
-        warning('using kinit at %s, expect it at %s', ...
-          str(1:end-5), kerb_path)
-      end
-      
-      % intialize kerberos
+      env_str = GWData.kerberos_env(kerb_path);
+
+      % initialize kerberos
       [is_ready, end_time] = GWData.is_kerberos_ready(srv);
       if is_ready
         % we already have a ticket
@@ -458,7 +473,7 @@ classdef GWData < handle
         % we need to get a ticket
         fprintf('== GW Data: Kerberos authentication ==\n')
         username = input([srv ' user name: '], 's');
-        if system(['kinit ' username '@' srv]);
+        if system([env_str ' kinit ' username '@' srv]);
           error('kinit failed.  Bad password?')
         end
         
@@ -466,8 +481,8 @@ classdef GWData < handle
         [is_ready, end_time] = GWData.is_kerberos_ready(srv);
       end
     end
-    function [is_ready, end_time] = is_kerberos_ready(srv)
-      % [is_ready, end_time] = is_kerberos_ready(srv)
+    function [is_ready, end_time] = is_kerberos_ready(srv, kerb_path)
+      % [is_ready, end_time] = is_kerberos_ready(srv, kerb_path)
       % look for a valid kerberos key for a particular service principal
       %   this assumes that the path is set properly (see
       %   make_kerberos_ready)
@@ -483,6 +498,12 @@ classdef GWData < handle
       % 12/09/2014 15:24:34  12/10/2014 15:24:34  krbtgt/LIGO.ORG@LIGO.ORG
       
       
+      if nargin < 2
+        kerb_path = '';
+      end
+      
+      env_str = GWData.kerberos_env(kerb_path);
+
       % first line of ticket info
       first_line = 4;
       
@@ -491,9 +512,9 @@ classdef GWData < handle
       end_time = 0;
       
       % call klist to get list of tickets
-      [exit_status, result] = system('klist');
+      [exit_status, result] = system([env_str ' klist']);
       
-      % klist failed, so we're definiately not ready
+      % klist failed, so we're definitely not ready
       if exit_status ~= 0
         return
       end
@@ -686,6 +707,11 @@ classdef GWData < handle
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   methods
     function obj = GWData()
+      % setup kerberos path
+      if ismac
+        obj.kerb_path = '/opt/local/bin';
+      end
+      
       % setup site info
       obj.site_info(1:3) = obj.site_info;
     
