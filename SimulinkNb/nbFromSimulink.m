@@ -164,6 +164,11 @@ sys.OutputName = nbNoiseSink;
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
 cal = 1/sys(2);
+% Ensure the calibration TF is finite
+if ~all(isfinite(freqresp(cal, 2*pi*freq)))
+    error('Can''t calibrate noises in the model because the TF from the NbNoiseCal block to the NbNoiseSink block can''t be inverted (is it zero?)');
+end
+
 for n = 1:numel(noises)
     nameParts = regexp(noises{n}.name, '(.*)\{\d+\}', 'tokens');
     blk = nameParts{1};
