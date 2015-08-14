@@ -159,7 +159,7 @@ classdef GWData < handle
         isAfter = false;
       end
       if nargin < 2
-        anchorGPS = gps_time;
+        anchorGPS = GWData.gps_time();
       end
       
       % convert all GPS times to scalars
@@ -1131,7 +1131,7 @@ classdef GWData < handle
             data(:, n) = this_data;
           else
             % resample the data
-            data(:, n) = GWData.resample(this_data - offset, ...
+            data(:, n) = GWData.resample(this_data, ...
               num_sample, data_buffers(n).getLength);
           end
         end
