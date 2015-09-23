@@ -301,9 +301,9 @@ classdef GWData < handle
       %  note that leap_gps and leap_unix are timezone independent
       %  while leap_datenum depends on timezone
       
-      % NOTE: execution of this function takes only a few milliseconds!
+      % NOTE: execution of this function takes tens of milliseconds!
       % tic; [leap_gps, leap_unix, leap_datenum] = GWData.leap_seconds(); toc
-      % Elapsed time is 0.005852 seconds.
+      % Elapsed time is 0.070834 seconds.
 
       % leap seconds since 1980 (updated January, 2015)
       leap_date = [...
@@ -333,24 +333,25 @@ classdef GWData < handle
         'Jul 01 2036 GMT'   % estimate
         'Jul 01 2039 GMT']; % estimate (~1ms / day => ~0.33s / year)
       
-      % convert to date numbers
-      leap_datenum = datenum(leap_date, 'mmm dd yyyy zzz');
-      
       % this is the offset between Unix time (started Jan 1, 1970)
       % and GPS time (started Jan 6, 1980)
       gpsOffset = 315964800;
-      
-      % convert to gps times
-      leap_gps = zeros(size(leap_date, 1), 1);
+
+      % convert to unix/gps/date numbers
+      % datenum seems to have DST issues, so use Java functions instead
+      % leap_datenum = datenum(leap_date, 'mmm dd yyyy zzz');
       leap_unix = zeros(size(leap_date, 1), 1);
-      for n = 1:numel(leap_gps)
-        % get UNIX time for each (comes in milliseconds)
-        leap_unix(n) = java.util.Date(leap_date(n, :)).getTime / 1000;
-        
-        % remove gps offset, and add accumulated leap seconds
-        %   (can't use unix_to_gps, since that comes here!)
-        leap_gps(n) = (leap_unix(n) - gpsOffset) + n;
-      end
+      leap_gps = zeros(size(leap_date, 1), 1);
+      leap_datenum = zeros(size(leap_date, 1), 1);
+      dateFormatter = java.text.SimpleDateFormat('MMM dd yyyy z');
+      for n = 1:size(leap_date, 1)
+          % get UNIX time for each (comes in milliseconds)
+          leap_unix(n) = dateFormatter.parse(leap_date(n, :)).getTime/1000;
+          % remove gps offset, and add accumulated leap seconds
+          %   (can't use unix_to_gps, since that comes here!)
+          leap_gps(n) = (leap_unix(n) - gpsOffset) + n;
+          leap_datenum(n) = GWData.unix_to_datenum(leap_unix(n));
+      end      
     end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
