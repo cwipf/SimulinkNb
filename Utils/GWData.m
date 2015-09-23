@@ -423,20 +423,36 @@ classdef GWData < handle
 
       % locale settings influence the printing of dates by klist
       env_str = 'LANG=posix LC_TIME=posix';
+      if ispc
+        env_str = 'set LANG=posix && set LC_TIME=posix &&';
+      end
 
       % special path setting for Mac OS X (forces the use of MacPorts)
       if ismac && (nargin < 1 || isempty(kerb_path))
         kerb_path = '/opt/local/bin';
       end
       
+      % special path setting for Windows (forces the use of MIT Kerberos)
+      if ispc && (nargin < 1 || isempty(kerb_path))
+        kerb_path = 'C:\Program Files\MIT\Kerberos\bin';
+      end
+
       % apply path setting
       path_now = getenv('PATH');
       if ~strncmp(path_now, kerb_path, numel(kerb_path))
-        env_str = [env_str ' PATH=' kerb_path ':' path_now];
+        if ~ispc
+          env_str = [env_str ' PATH=' kerb_path ':' path_now];
+        else
+          env_str = [env_str ' path ' kerb_path ';' path_now ' &&'];
+        end
       end
       
       % check for kerberos (system returns 0 when ok)
-      [isNotOk, str] = system([env_str ' which kinit']);
+      if ~ispc
+        [isNotOk, str] = system([env_str ' which kinit']);
+      else
+        [isNotOk, str] = system([env_str ' where kinit']);
+      end
       if isNotOk
         error('kinit not found.  Unable to setup Kerberos ticket.')
       elseif ~strncmp(str, kerb_path, numel(kerb_path))
@@ -473,9 +489,15 @@ classdef GWData < handle
       else
         % we need to get a ticket
         fprintf('== GW Data: Kerberos authentication ==\n')
-        username = input([srv ' user name: '], 's');
-        if system([env_str ' kinit ' username '@' srv]);
-          error('kinit failed.  Bad password?')
+        if ~ispc
+          username = input([srv ' user name: '], 's');
+          if system([env_str ' kinit ' username '@' srv]);
+            error('kinit failed.  Bad password?')
+          end
+        else
+          if system([env_str ' "MIT Kerberos.exe" -kinit']);
+            error('kinit failed.  Bad password?')
+          end
         end
         
         % now get ticket info
