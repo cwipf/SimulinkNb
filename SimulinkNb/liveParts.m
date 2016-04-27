@@ -40,7 +40,7 @@ for n = 1:numel(data)
     if any(diff(data(n).data) ~= 0)
         warning([data(n).name ' is not constant during the segment']);
     end
-    dataByChan(data(n).name) = mode(double(data(n).data)));
+    dataByChan(data(n).name) = mode(double(data(n).data));
 end
 
 % Validate the results
