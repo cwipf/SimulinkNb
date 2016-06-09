@@ -237,7 +237,12 @@ classdef NoisePlotter < handle
             d.axesProperties.YGrid = 'on';
             d.axesProperties.XScale = 'log';
             d.axesProperties.YScale = 'log';
-            d.axesProperties.ColorOrder = distinguishable_colors(11);
+            %d.axesProperties.ColorOrder = distinguishable_colors(11);
+            % precomputed color vector - avoids depending on the image
+            % processing toolbox
+            d.axesProperties.ColorOrder = [0 0 1; 1 0 0; 0 1 0; 0 0 0.1724; ...
+                1 0.1034 0.7241; 1 0.8276 0; 0 0.3448 0; 0.5172 0.5172 1; ...
+                0.6207 0.3103 0.2759; 0 1 0.7586; 0 0.5172 0.5862];
             d.axesProperties.LineStyleOrder = {'--', '-.', ':'};
             d.axesProperties.NextPlot = 'add';
             d.linesProperties = struct();
