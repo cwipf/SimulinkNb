@@ -1,10 +1,8 @@
 Library {
   Name			  "LiveParts"
   Version		  8.0
-  MdlSubVersion		  0
-  SavedCharacterEncoding  "ISO-8859-1"
   LibraryType		  "BlockLibrary"
-  SaveDefaultBlockParams  on
+  SavedCharacterEncoding  "ISO-8859-1"
   ScopeRefreshTime	  0.035000
   OverrideScopeRefreshTime on
   DisableAllScopes	  off
@@ -19,7 +17,7 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [0.0, 22.0, 1276.0, 778.0]
+      Location		      [0.0, 23.0, 1276.0, 777.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -43,7 +41,7 @@ Library {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[1242.0, 679.0]
+	Extents			[1238.0, 612.0]
 	ZoomFactor		[1.0]
 	Offset			[-446.0625, -256.5]
       }
@@ -55,10 +53,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "ccw"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Sep 18 16:19:40 2014"
-  RTWModifiedTimeStamp	  332957980
-  ModelVersionFormat	  "1.%<AutoIncrement:22>"
-  ConfigurationManager	  "none"
+  LastModifiedDate	  "Wed Jan 31 17:36:48 2018"
+  RTWModifiedTimeStamp	  439321008
+  ModelVersionFormat	  "1.%<AutoIncrement:32>"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
   LibraryLinkDisplay	  "disabled"
@@ -92,7 +89,7 @@ Library {
   CovNameIncrementing	  off
   CovHtmlReporting	  on
   CovForceBlockReductionOff on
-  covSaveCumulativeToWorkspaceVar on
+  CovSaveCumulativeToWorkspaceVar on
   CovSaveSingleToWorkspaceVar on
   CovCumulativeReport	  off
   CovReportOnPause	  on
@@ -125,20 +122,19 @@ Library {
     Type		    "Handle"
     Dimension		    1
     Simulink.ConfigSet {
-      $ObjectID		      6
+      $ObjectID		      7
       Version		      "1.12.1"
       Array {
 	Type			"Handle"
 	Dimension		8
 	Simulink.SolverCC {
-	  $ObjectID		  7
+	  $ObjectID		  8
 	  Version		  "1.12.1"
 	  StartTime		  "0.0"
 	  StopTime		  "10.0"
 	  AbsTol		  "auto"
 	  FixedStep		  "auto"
 	  InitialStep		  "auto"
-	  MaxNumMinSteps	  "-1"
 	  MaxOrder		  5
 	  ZcThreshold		  "auto"
 	  ConsecutiveZCsStepRelTol "10*128*eps"
@@ -166,7 +162,7 @@ Library {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  8
+	  $ObjectID		  9
 	  Version		  "1.12.1"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -198,7 +194,7 @@ Library {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  9
+	  $ObjectID		  10
 	  Version		  "1.12.1"
 	  Array {
 	    Type		    "Cell"
@@ -232,13 +228,10 @@ Library {
 	  MemcpyThreshold	  64
 	  PassReuseOutputArgsAs	  "Structure reference"
 	  ExpressionDepthLimit	  2147483647
-	  FoldNonRolledExpr	  on
 	  LocalBlockOutputs	  on
 	  RollThreshold		  5
-	  SystemCodeInlineAuto	  off
 	  StateBitsets		  off
 	  DataBitsets		  off
-	  UseTempVars		  off
 	  ZeroExternalMemoryAtStartup on
 	  ZeroInternalMemoryAtStartup on
 	  InitFltsAndDblsToZero	  off
@@ -251,10 +244,9 @@ Library {
 	  BufferReusableBoundary  on
 	  SimCompilerOptimization "Off"
 	  AccelVerboseBuild	  off
-	  ParallelExecutionInRapidAccelerator on
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  10
+	  $ObjectID		  11
 	  Version		  "1.12.1"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -282,7 +274,6 @@ Library {
 	  IgnoredZcDiagnostic	  "warning"
 	  SolverPrmCheckMsg	  "warning"
 	  InheritedTsInSrcMsg	  "warning"
-	  DiscreteInheritContinuousMsg "warning"
 	  MultiTaskDSMMsg	  "error"
 	  MultiTaskCondExecSysMsg "error"
 	  MultiTaskRateTransMsg	  "error"
@@ -310,17 +301,15 @@ Library {
 	  UnconnectedOutputMsg	  "warning"
 	  UnconnectedLineMsg	  "warning"
 	  SFcnCompatibilityMsg	  "none"
-	  FrameProcessingCompatibilityMsg "warning"
+	  FrameProcessingCompatibilityMsg "error"
 	  UniqueDataStoreMsg	  "none"
 	  BusObjectLabelMismatch  "warning"
 	  RootOutportRequireBusObject "warning"
 	  AssertControl		  "UseLocalSettings"
-	  EnableOverflowDetection off
 	  ModelReferenceIOMsg	  "none"
 	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
 	  ModelReferenceVersionMismatchMessage "none"
 	  ModelReferenceIOMismatchMessage "none"
-	  ModelReferenceCSMismatchMessage "none"
 	  UnknownTsInhSupMsg	  "warning"
 	  ModelReferenceDataLoggingMessage "warning"
 	  ModelReferenceSymbolNameMessage "warning"
@@ -332,7 +321,6 @@ Library {
 	  StrictBusMsg		  "ErrorLevel1"
 	  BusNameAdapt		  "WarnAndRepair"
 	  NonBusSignalsTreatedAsBus "none"
-	  LoggingUnavailableSignals "error"
 	  BlockIODiagnostic	  "none"
 	  SFUnusedDataAndEventsDiag "warning"
 	  SFUnexpectedBacktrackingDiag "warning"
@@ -342,9 +330,10 @@ Library {
 	  SFUnconditionalTransitionShadowingDiag "warning"
 	  SFUndirectedBroadcastEventsDiag "warning"
 	  SFTransitionActionBeforeConditionDiag	"warning"
+	  ModelReferenceCSMismatchMessage "none"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  11
+	  $ObjectID		  12
 	  Version		  "1.12.1"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -373,7 +362,6 @@ Library {
 	  TargetIntDivRoundTo	  "Undefined"
 	  TargetEndianess	  "Unspecified"
 	  TargetWordSize	  32
-	  TargetTypeEmulationWarnSuppressLevel 0
 	  TargetPreprocMaxBitsSint 32
 	  TargetPreprocMaxBitsUint 32
 	  TargetHWDeviceType	  "Specified"
@@ -381,7 +369,7 @@ Library {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  12
+	  $ObjectID		  13
 	  Version		  "1.12.1"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -396,14 +384,10 @@ Library {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  13
+	  $ObjectID		  14
 	  Version		  "1.12.1"
-	  SFSimEnableDebug	  on
-	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
-	  SimBlas		  on
 	  SimCtrlC		  on
-	  SimExtrinsic		  on
 	  SimIntegrity		  on
 	  SimUseLocalCustomCode	  off
 	  SimParseCustomCode	  on
@@ -411,11 +395,11 @@ Library {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  14
+	  $ObjectID		  15
 	  Version		  "1.12.1"
 	  Array {
 	    Type		    "Cell"
-	    Dimension		    15
+	    Dimension		    16
 	    Cell		    "IncludeHyperlinkInReport"
 	    Cell		    "GenerateTraceInfo"
 	    Cell		    "GenerateTraceReport"
@@ -431,6 +415,7 @@ Library {
 	    Cell		    "CodeExecutionProfiling"
 	    Cell		    "CodeProfilingSaveOptions"
 	    Cell		    "CodeProfilingInstrumentation"
+	    Cell		    "GenerateMissedCodeReplacementReport"
 	    PropName		    "DisabledProps"
 	  }
 	  SystemTargetFile	  "grt.tlc"
@@ -439,10 +424,8 @@ Library {
 	  MakeCommand		  "make_rtw"
 	  GenerateMakefile	  on
 	  PackageGeneratedCodeAndArtifacts off
-	  PackageName		  ""
 	  TemplateMakefile	  "grt_default_tmf"
 	  PostCodeGenCommand	  ""
-	  Description		  ""
 	  GenerateReport	  off
 	  SaveLog		  off
 	  RTWVerbose		  on
@@ -451,23 +434,12 @@ Library {
 	  TLCDebug		  off
 	  TLCCoverage		  off
 	  TLCAssert		  off
-	  ProcessScriptMode	  "Default"
-	  ConfigurationMode	  "Optimized"
-	  ProcessScript		  ""
-	  ConfigurationScript	  ""
-	  ConfigAtBuild		  off
 	  RTWUseLocalCustomCode	  off
 	  RTWUseSimCustomCode	  off
-	  CustomSourceCode	  ""
-	  CustomHeaderCode	  ""
-	  CustomInclude		  ""
-	  CustomSource		  ""
-	  CustomLibrary		  ""
-	  CustomInitializer	  ""
-	  CustomTerminator	  ""
 	  IncludeHyperlinkInReport off
 	  LaunchReport		  off
 	  PortableWordSizes	  off
+	  GenerateErtSFunction	  off
 	  CreateSILPILBlock	  "None"
 	  CodeExecutionProfiling  off
 	  CodeExecutionProfileVariable "executionProfile"
@@ -475,30 +447,26 @@ Library {
 	  CodeProfilingInstrumentation off
 	  TargetLang		  "C"
 	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
-	  IncludeERTFirstTime	  off
 	  GenerateTraceInfo	  off
 	  GenerateTraceReport	  off
 	  GenerateTraceReportSl	  off
 	  GenerateTraceReportSf	  off
 	  GenerateTraceReportEml  off
-	  GenerateCodeInfo	  off
 	  GenerateWebview	  off
 	  GenerateCodeMetricsReport off
 	  GenerateCodeReplacementReport	off
 	  RTWCompilerOptimization "Off"
 	  RTWCustomCompilerOptimizations ""
 	  CheckMdlBeforeBuild	  "Off"
-	  CustomRebuildMode	  "OnUpdate"
-	  DataInitializer	  ""
 	  Array {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      15
+	      $ObjectID		      16
 	      Version		      "1.12.1"
 	      Array {
 		Type			"Cell"
-		Dimension		22
+		Dimension		27
 		Cell			"IgnoreCustomStorageClasses"
 		Cell			"IgnoreTestpoints"
 		Cell			"InsertBlockDesc"
@@ -521,23 +489,25 @@ Library {
 		Cell			"CustomSymbolStrTmpVar"
 		Cell			"CustomSymbolStrMacro"
 		Cell			"ReqsInCode"
+		Cell			"CustomSymbolStrModelFcn"
+		Cell			"CustomSymbolStrUtil"
+		Cell			"CustomUserTokenString"
+		Cell			"CustomSymbolStrEmxType"
+		Cell			"CustomSymbolStrEmxFcn"
 		PropName		"DisabledProps"
 	      }
 	      ForceParamTrailComments off
 	      GenerateComments	      on
 	      IgnoreCustomStorageClasses on
 	      IgnoreTestpoints	      off
-	      IncHierarchyInIds	      off
 	      MaxIdLength	      31
 	      PreserveName	      off
 	      PreserveNameWithParent  off
 	      ShowEliminatedStatement off
 	      OperatorAnnotations     off
-	      IncAutoGenComments      off
 	      SimulinkDataObjDesc     off
 	      SFDataObjDesc	      off
 	      MATLABFcnDesc	      off
-	      IncDataTypeInIds	      off
 	      MangleLength	      1
 	      CustomSymbolStrGlobalVar "$R$N$M"
 	      CustomSymbolStrType     "$N$R$M_T"
@@ -562,14 +532,14 @@ Library {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      16
+	      $ObjectID		      17
 	      Version		      "1.12.1"
 	      Array {
 		Type			"Cell"
-		Dimension		15
+		Dimension		17
 		Cell			"GeneratePreprocessorConditionals"
 		Cell			"IncludeMdlTerminateFcn"
-		Cell			"CombineOutputUpdateFcns"
+		Cell			"MultiInstanceERTCode"
 		Cell			"SuppressErrorStatus"
 		Cell			"ERTCustomFileBanners"
 		Cell			"GenerateSampleERTMain"
@@ -581,7 +551,9 @@ Library {
 		Cell			"SupportComplex"
 		Cell			"SupportAbsoluteTime"
 		Cell			"SupportContinuousTime"
-		Cell			"MultiInstanceERTCode"
+		Cell			"ExistingSharedCode"
+		Cell			"RemoveDisableFunc"
+		Cell			"RemoveResetFunc"
 		PropName		"DisabledProps"
 	      }
 	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
@@ -590,7 +562,6 @@ Library {
 	      CodeReplacementLibrary  "None"
 	      UtilityFuncGeneration   "Auto"
 	      ERTMultiwordTypeDef     "System defined"
-	      ERTMultiwordLength      256
 	      MultiwordLength	      2048
 	      GenerateFullHeader      on
 	      GenerateSampleERTMain   off
@@ -604,7 +575,6 @@ Library {
 	      CombineOutputUpdateFcns on
 	      CombineSignalStateStructs	off
 	      SuppressErrorStatus     off
-	      ERTFirstTimeCompliant   off
 	      IncludeFileDelimiter    "Auto"
 	      ERTCustomFileBanners    off
 	      SupportAbsoluteTime     on
@@ -617,7 +587,6 @@ Library {
 	      SupportContinuousTime   on
 	      SupportNonInlinedSFcns  on
 	      SupportVariableSizeSignals off
-	      EnableShiftOperators    on
 	      ParenthesesLevel	      "Nominal"
 	      ModelStepFunctionPrototypeControlCompliant off
 	      CPPClassGenCompliant    on
@@ -639,13 +608,12 @@ Library {
 	    }
 	    PropName		    "Components"
 	  }
-	  GenerateErtSFunction	  off
 	}
 	PropName		"Components"
       }
       Name		      "Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition    [ 2120, 405, 3000, 1035 ]  
+      ConfigPrmDlgPosition    [ 2120, 405, 3000, 1035 ]
     }
     PropName		    "ConfigurationSets"
   }
@@ -766,6 +734,7 @@ Library {
       SourceOfInitialOutputValue "Dialog"
       OutputWhenDisabled      "held"
       InitialOutput	      "[]"
+      OutputWhenUnConnected   off
     }
     Block {
       BlockType		      Saturate
@@ -788,7 +757,6 @@ Library {
       Permissions	      "ReadWrite"
       PermitHierarchicalResolution "All"
       TreatAsAtomicUnit	      off
-      CheckFcnCallInpInsideContextMsg off
       SystemSampleTime	      "-1"
       RTWFcnNameOpts	      "Auto"
       RTWFileNameOpts	      "Auto"
@@ -802,7 +770,6 @@ Library {
       DataTypeOverrideAppliesTo	"AllNumericTypes"
       MinMaxOverflowLogging   "UseLocalSettings"
       SFBlockType	      "NONE"
-      Variant		      off
       GeneratePreprocessorConditionals off
     }
     Block {
@@ -847,7 +814,7 @@ Library {
   }
   System {
     Name		    "LiveParts"
-    Location		    [0, 22, 1276, 800]
+    Location		    [0, 23, 1276, 800]
     Open		    off
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -861,7 +828,7 @@ Library {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "57"
+    SIDHighWatermark	    "104"
     Block {
       BlockType		      SubSystem
       Name		      "LiveConstant"
@@ -874,27 +841,37 @@ Library {
       AttributesFormatString  "%<Tag>"
       ShowPortLabels	      "none"
       RequestExecContextInheritance off
+      Variant		      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		17
+	$ObjectID		19
 	$ClassName		"Simulink.Mask"
+	Type			"LiveConstant"
+	Description		"Output the constant specified by the 'Constant value' parameter.\n\n'Constant value' should be set to a"
+	" variable in the workspace (not a literal value).\n\nThe 'live' value is read from the data channel named in the 'Cha"
+	"nnel' parameter, and assigned to the workspace variable."
 	Display			"disp(K)"
 	Array {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  2
 	  Object {
-	    $ObjectID		    18
-	    Type		    "edit"
+	    $ObjectID		    20
+	    Type		    "promote"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      1
+	      Cell		      "Constant/Value"
+	      PropName		      "TypeOptions"
+	    }
 	    Name		    "K"
-	    Prompt		    "Constant"
+	    Prompt		    "Simulink:blkprm_prompts:ConstConstValue"
 	    Value		    "unspecifiedConstant"
-	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    19
+	    $ObjectID		    21
 	    Type		    "edit"
 	    Name		    "chan"
-	    Prompt		    "Channel"
+	    Prompt		    "Channel:"
 	    Value		    "'unspecifiedChannel'"
 	    Tunable		    "off"
 	  }
@@ -903,7 +880,7 @@ Library {
       }
       System {
 	Name			"LiveConstant"
-	Location		[1456, 174, 2258, 703]
+	Location		[0, 23, 1276, 800]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -958,77 +935,61 @@ Library {
       AttributesFormatString  "%<Tag>"
       ShowPortLabels	      "none"
       RequestExecContextInheritance off
+      Variant		      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		20
+	$ObjectID		22
 	$ClassName		"Simulink.Mask"
-	Initialization		"if flexTf\n    set_param([gcb '/FM1'], 'Description', ['FlexTf: par.fm1frd']);\n    set_param([gcb '"
-	"/FM2'], 'Description', ['FlexTf: par.fm2frd']);\n    set_param([gcb '/FM3'], 'Description', ['FlexTf: par.fm3frd']);\n"
-	"    set_param([gcb '/FM4'], 'Description', ['FlexTf: par.fm4frd']);\n    set_param([gcb '/FM5'], 'Description', ['Fle"
-	"xTf: par.fm5frd']);\n    set_param([gcb '/FM6'], 'Description', ['FlexTf: par.fm6frd']);\n    set_param([gcb '/FM7'],"
-	" 'Description', ['FlexTf: par.fm7frd']);\n    set_param([gcb '/FM8'], 'Description', ['FlexTf: par.fm8frd']);\n    se"
-	"t_param([gcb '/FM9'], 'Description', ['FlexTf: par.fm9frd']);\n    set_param([gcb '/FM10'], 'Description', ['FlexTf: "
-	"par.fm10frd']);\nelse\n    set_param([gcb '/FM1'], 'Description', '');\n    set_param([gcb '/FM2'], 'Description', ''"
-	");\n    set_param([gcb '/FM3'], 'Description', '');\n    set_param([gcb '/FM4'], 'Description', '');\n    set_param(["
-	"gcb '/FM5'], 'Description', '');\n    set_param([gcb '/FM6'], 'Description', '');\n    set_param([gcb '/FM7'], 'Descr"
-	"iption', '');\n    set_param([gcb '/FM8'], 'Description', '');\n    set_param([gcb '/FM9'], 'Description', '');\n    "
-	"set_param([gcb '/FM10'], 'Description', '');\nend"
-	SelfModifiable		"on"
-	Display			"if isstruct(par) && isfield(par, 'fm1')\n    if flexTf\n        disp([get_param(gcb, 'par') char(10) 'Flex"
-	"Tf']);\n    else\n        disp(get_param(gcb, 'par'));\n    end\nelse\n    disp('???')\nend"
+	Type			"LiveFilter"
+	Description		"CDS standard filter module.\n\n'FM parameter struct' should be set to a variable from the workspace (no"
+	"t a literal value).\n\nThe 'live' settings and filters are read from data channels and the filter file specified by '"
+	"Channel prefix', 'Site', 'FE model name', and 'FM name' parameters."
+	Display			"disp(get_param(gcb, 'par'));"
 	Array {
 	  Type			  "Simulink.MaskParameter"
-	  Dimension		  7
-	  Object {
-	    $ObjectID		    21
-	    Type		    "edit"
-	    Name		    "par"
-	    Prompt		    "FM parameter struct"
-	    Value		    "unspecifiedPar"
-	    Tunable		    "off"
-	  }
-	  Object {
-	    $ObjectID		    22
-	    Type		    "edit"
-	    Name		    "prefix"
-	    Prompt		    "Channel prefix"
-	    Value		    "'unspecifiedChannel'"
-	    Tunable		    "off"
-	  }
+	  Dimension		  6
 	  Object {
 	    $ObjectID		    23
 	    Type		    "edit"
-	    Name		    "site"
-	    Prompt		    "Site"
-	    Value		    "'unspecifiedSite'"
+	    Name		    "par"
+	    Prompt		    "FM parameter struct:"
+	    Value		    "unspecifiedPar"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    24
 	    Type		    "edit"
-	    Name		    "feModel"
-	    Prompt		    "FE model name"
-	    Value		    "'unspecifiedModel'"
+	    Name		    "prefix"
+	    Prompt		    "Channel prefix:"
+	    Value		    "'unspecifiedChannel'"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    25
 	    Type		    "edit"
-	    Name		    "fmName"
-	    Prompt		    "FM name"
-	    Value		    "'unspecifiedName'"
+	    Name		    "site"
+	    Prompt		    "Site:"
+	    Value		    "'unspecifiedSite'"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    26
-	    Type		    "checkbox"
-	    Name		    "flexTf"
-	    Prompt		    "Use FlexTf"
-	    Value		    "off"
+	    Type		    "edit"
+	    Name		    "feModel"
+	    Prompt		    "FE model name:"
+	    Value		    "'unspecifiedModel'"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    27
+	    Type		    "edit"
+	    Name		    "fmName"
+	    Prompt		    "FM name:"
+	    Value		    "'unspecifiedName'"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    28
 	    Type		    "checkbox"
 	    Name		    "viewGui"
 	    Prompt		    "Click to view/edit config"
@@ -1041,7 +1002,7 @@ Library {
       }
       System {
 	Name			"LiveFilter"
-	Location		[0, 22, 1276, 800]
+	Location		[0, 23, 1276, 800]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1054,11 +1015,10 @@ Library {
 	TiledPageScale		1
 	ShowPageBoundaries	off
 	ZoomFactor		"100"
-	SIDHighWatermark	"255"
 	Block {
 	  BlockType		  Inport
 	  Name			  "IN1"
-	  SID			  "10:11"
+	  SID			  "58"
 	  Position		  [830, 193, 860, 207]
 	  ZOrder		  13
 	  BackgroundColor	  "yellow"
@@ -1068,10 +1028,18 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM1"
-	  SID			  "10:199"
+	  SID			  "59"
 	  Position		  [1145, 197, 1205, 233]
 	  ZOrder		  48
 	  NamePlacement		  "alternate"
+	  SCDEnableBlockLinearizationSpecification on
+	  List {
+	    ListType		    SCDBlockLinearizationSpecification
+	    Specification	    "FlexTF(par.fm1frd)"
+	    Type		    "Expression"
+	    ParameterNames	    ""
+	    ParameterValues	    ""
+	  }
 	  Zeros			  "par.fm1.z{1}"
 	  Poles			  "par.fm1.p{1}"
 	  Gain			  "par.fm1.k"
@@ -1079,7 +1047,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM10"
-	  SID			  "10:208"
+	  SID			  "60"
+	  Description		  "FlexTf: par.fm10frd"
 	  Position		  [1470, 582, 1530, 618]
 	  ZOrder		  57
 	  NamePlacement		  "alternate"
@@ -1090,7 +1059,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM10SW"
-	  SID			  "10:51"
+	  SID			  "61"
 	  Position		  [1555, 607, 1680, 623]
 	  ZOrder		  42
 	  ShowName		  off
@@ -1099,7 +1068,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM1SW"
-	  SID			  "10:31"
+	  SID			  "62"
 	  Position		  [1230, 222, 1355, 238]
 	  ZOrder		  21
 	  ShowName		  off
@@ -1108,7 +1077,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM2"
-	  SID			  "10:200"
+	  SID			  "63"
+	  Description		  "FlexTf: par.fm2frd"
 	  Position		  [1470, 197, 1530, 233]
 	  ZOrder		  49
 	  NamePlacement		  "alternate"
@@ -1119,7 +1089,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM2SW"
-	  SID			  "10:32"
+	  SID			  "64"
 	  Position		  [1555, 222, 1680, 238]
 	  ZOrder		  23
 	  ShowName		  off
@@ -1128,7 +1098,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM3"
-	  SID			  "10:201"
+	  SID			  "65"
+	  Description		  "FlexTf: par.fm3frd"
 	  Position		  [1145, 292, 1205, 328]
 	  ZOrder		  50
 	  NamePlacement		  "alternate"
@@ -1139,7 +1110,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM3SW"
-	  SID			  "10:37"
+	  SID			  "66"
 	  Position		  [1230, 317, 1355, 333]
 	  ZOrder		  28
 	  ShowName		  off
@@ -1148,7 +1119,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM4"
-	  SID			  "10:202"
+	  SID			  "67"
+	  Description		  "FlexTf: par.fm4frd"
 	  Position		  [1470, 292, 1530, 328]
 	  ZOrder		  51
 	  NamePlacement		  "alternate"
@@ -1159,7 +1131,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM4SW"
-	  SID			  "10:39"
+	  SID			  "68"
 	  Position		  [1555, 317, 1680, 333]
 	  ZOrder		  30
 	  ShowName		  off
@@ -1168,7 +1140,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM5"
-	  SID			  "10:203"
+	  SID			  "69"
+	  Description		  "FlexTf: par.fm5frd"
 	  Position		  [1145, 387, 1205, 423]
 	  ZOrder		  52
 	  NamePlacement		  "alternate"
@@ -1179,7 +1152,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM5SW"
-	  SID			  "10:41"
+	  SID			  "70"
 	  Position		  [1230, 412, 1355, 428]
 	  ZOrder		  32
 	  ShowName		  off
@@ -1188,7 +1161,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM6"
-	  SID			  "10:204"
+	  SID			  "71"
+	  Description		  "FlexTf: par.fm6frd"
 	  Position		  [1470, 387, 1530, 423]
 	  ZOrder		  53
 	  NamePlacement		  "alternate"
@@ -1199,7 +1173,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM6SW"
-	  SID			  "10:43"
+	  SID			  "72"
 	  Position		  [1555, 412, 1680, 428]
 	  ZOrder		  34
 	  ShowName		  off
@@ -1208,7 +1182,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM7"
-	  SID			  "10:205"
+	  SID			  "73"
+	  Description		  "FlexTf: par.fm7frd"
 	  Position		  [1145, 482, 1205, 518]
 	  ZOrder		  54
 	  NamePlacement		  "alternate"
@@ -1219,7 +1194,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM7SW"
-	  SID			  "10:45"
+	  SID			  "74"
 	  Position		  [1230, 507, 1355, 523]
 	  ZOrder		  36
 	  ShowName		  off
@@ -1228,7 +1203,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM8"
-	  SID			  "10:206"
+	  SID			  "75"
+	  Description		  "FlexTf: par.fm8frd"
 	  Position		  [1470, 482, 1530, 518]
 	  ZOrder		  55
 	  NamePlacement		  "alternate"
@@ -1239,7 +1215,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM8SW"
-	  SID			  "10:47"
+	  SID			  "76"
 	  Position		  [1555, 507, 1680, 523]
 	  ZOrder		  38
 	  ShowName		  off
@@ -1248,7 +1224,8 @@ Library {
 	Block {
 	  BlockType		  ZeroPole
 	  Name			  "FM9"
-	  SID			  "10:207"
+	  SID			  "77"
+	  Description		  "FlexTf: par.fm9frd"
 	  Position		  [1145, 582, 1205, 618]
 	  ZOrder		  56
 	  NamePlacement		  "alternate"
@@ -1259,7 +1236,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "FM9SW"
-	  SID			  "10:49"
+	  SID			  "78"
 	  Position		  [1230, 607, 1355, 623]
 	  ZOrder		  40
 	  ShowName		  off
@@ -1268,7 +1245,7 @@ Library {
 	Block {
 	  BlockType		  Gain
 	  Name			  "GAIN"
-	  SID			  "10:22"
+	  SID			  "79"
 	  Position		  [1775, 564, 1835, 636]
 	  ZOrder		  2
 	  NamePlacement		  "alternate"
@@ -1280,7 +1257,7 @@ Library {
 	Block {
 	  BlockType		  Ground
 	  Name			  "Ground"
-	  SID			  "10:28"
+	  SID			  "80"
 	  Position		  [840, 300, 860, 320]
 	  ZOrder		  18
 	  ShowName		  off
@@ -1288,7 +1265,7 @@ Library {
 	Block {
 	  BlockType		  Ground
 	  Name			  "Ground1"
-	  SID			  "10:36"
+	  SID			  "81"
 	  Position		  [840, 220, 860, 240]
 	  ZOrder		  26
 	  ShowName		  off
@@ -1296,7 +1273,7 @@ Library {
 	Block {
 	  BlockType		  Ground
 	  Name			  "Ground2"
-	  SID			  "10:55"
+	  SID			  "82"
 	  Position		  [2125, 620, 2145, 640]
 	  ZOrder		  47
 	  ShowName		  off
@@ -1304,7 +1281,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "INPUTSW"
-	  SID			  "10:35"
+	  SID			  "83"
 	  Position		  [870, 207, 990, 223]
 	  ZOrder		  25
 	  ShowName		  off
@@ -1313,7 +1290,7 @@ Library {
 	Block {
 	  BlockType		  Saturate
 	  Name			  "LIMIT"
-	  SID			  "10:26"
+	  SID			  "84"
 	  Ports			  [1, 1]
 	  Position		  [1870, 585, 1900, 615]
 	  ZOrder		  16
@@ -1325,7 +1302,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "LIMITSW"
-	  SID			  "10:53"
+	  SID			  "85"
 	  Position		  [1920, 607, 2045, 623]
 	  ZOrder		  44
 	  ShowName		  off
@@ -1334,7 +1311,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "OFFSET"
-	  SID			  "10:24"
+	  SID			  "86"
 	  Position		  [815, 270, 860, 290]
 	  ZOrder		  14
 	  NamePlacement		  "alternate"
@@ -1343,7 +1320,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "OFFSETSW"
-	  SID			  "10:29"
+	  SID			  "87"
 	  Position		  [870, 287, 990, 303]
 	  ZOrder		  19
 	  ShowName		  off
@@ -1352,7 +1329,7 @@ Library {
 	Block {
 	  BlockType		  Constant
 	  Name			  "OUTPUTSW"
-	  SID			  "10:56"
+	  SID			  "88"
 	  Position		  [2155, 607, 2275, 623]
 	  ZOrder		  46
 	  ShowName		  off
@@ -1361,7 +1338,7 @@ Library {
 	Block {
 	  BlockType		  Sum
 	  Name			  "Sum"
-	  SID			  "10:25"
+	  SID			  "89"
 	  Ports			  [2, 1]
 	  Position		  [1080, 205, 1100, 225]
 	  ZOrder		  15
@@ -1375,7 +1352,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch"
-	  SID			  "10:27"
+	  SID			  "90"
 	  Position		  [1005, 275, 1055, 315]
 	  ZOrder		  17
 	  ShowName		  off
@@ -1386,7 +1363,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch1"
-	  SID			  "10:30"
+	  SID			  "91"
 	  Position		  [1370, 210, 1420, 250]
 	  ZOrder		  20
 	  ShowName		  off
@@ -1397,7 +1374,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch10"
-	  SID			  "10:50"
+	  SID			  "92"
 	  Position		  [1370, 595, 1420, 635]
 	  ZOrder		  39
 	  ShowName		  off
@@ -1408,7 +1385,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch11"
-	  SID			  "10:52"
+	  SID			  "93"
 	  Position		  [1695, 595, 1745, 635]
 	  ZOrder		  41
 	  ShowName		  off
@@ -1419,7 +1396,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch12"
-	  SID			  "10:54"
+	  SID			  "94"
 	  Position		  [2060, 595, 2110, 635]
 	  ZOrder		  43
 	  ShowName		  off
@@ -1430,7 +1407,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch13"
-	  SID			  "10:57"
+	  SID			  "95"
 	  Position		  [2290, 595, 2340, 635]
 	  ZOrder		  45
 	  ShowName		  off
@@ -1441,7 +1418,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch2"
-	  SID			  "10:33"
+	  SID			  "96"
 	  Position		  [1695, 210, 1745, 250]
 	  ZOrder		  22
 	  ShowName		  off
@@ -1452,7 +1429,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch3"
-	  SID			  "10:34"
+	  SID			  "97"
 	  Position		  [1005, 195, 1055, 235]
 	  ZOrder		  24
 	  ShowName		  off
@@ -1463,7 +1440,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch4"
-	  SID			  "10:38"
+	  SID			  "98"
 	  Position		  [1370, 305, 1420, 345]
 	  ZOrder		  27
 	  ShowName		  off
@@ -1474,7 +1451,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch5"
-	  SID			  "10:40"
+	  SID			  "99"
 	  Position		  [1695, 305, 1745, 345]
 	  ZOrder		  29
 	  ShowName		  off
@@ -1485,7 +1462,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch6"
-	  SID			  "10:42"
+	  SID			  "100"
 	  Position		  [1370, 400, 1420, 440]
 	  ZOrder		  31
 	  ShowName		  off
@@ -1496,7 +1473,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch7"
-	  SID			  "10:44"
+	  SID			  "101"
 	  Position		  [1695, 400, 1745, 440]
 	  ZOrder		  33
 	  ShowName		  off
@@ -1507,7 +1484,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch8"
-	  SID			  "10:46"
+	  SID			  "102"
 	  Position		  [1370, 495, 1420, 535]
 	  ZOrder		  35
 	  ShowName		  off
@@ -1518,7 +1495,7 @@ Library {
 	Block {
 	  BlockType		  Switch
 	  Name			  "Switch9"
-	  SID			  "10:48"
+	  SID			  "103"
 	  Position		  [1695, 495, 1745, 535]
 	  ZOrder		  37
 	  ShowName		  off
@@ -1529,7 +1506,7 @@ Library {
 	Block {
 	  BlockType		  Outport
 	  Name			  "OUT"
-	  SID			  "10:23"
+	  SID			  "104"
 	  Position		  [2370, 608, 2400, 622]
 	  ZOrder		  1
 	  BackgroundColor	  "orange"
@@ -1927,59 +1904,63 @@ Library {
       AttributesFormatString  "%<Tag>"
       ShowPortLabels	      "none"
       RequestExecContextInheritance off
+      Variant		      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		28
+	$ObjectID		29
 	$ClassName		"Simulink.Mask"
+	Type			"LiveMatrix"
+	Description		"Matrix gain (y = M*u).\n\n'Gain' should be set to a variable in the workspace (not a literal value).\n\n"
+	"The 'live' value is read from data channels specified by 'Channel prefix' and row/col parameters, and assigned to the"
+	" workspace variable."
 	Display			"disp([get_param(gcb, 'M') '*u']);"
 	Array {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  6
 	  Object {
-	    $ObjectID		    29
-	    Type		    "edit"
-	    Name		    "M"
-	    Prompt		    "Matrix"
-	    Value		    "unspecifiedMatrix"
-	    Tunable		    "off"
-	  }
-	  Object {
 	    $ObjectID		    30
 	    Type		    "edit"
-	    Name		    "prefix"
-	    Prompt		    "Channel prefix"
-	    Value		    "'unspecifiedChannel'"
-	    Tunable		    "off"
+	    Name		    "M"
+	    Prompt		    "Gain:"
+	    Value		    "unspecifiedMatrix"
 	  }
 	  Object {
 	    $ObjectID		    31
 	    Type		    "edit"
-	    Name		    "firstRow"
-	    Prompt		    "First row"
-	    Value		    "1"
+	    Name		    "prefix"
+	    Prompt		    "Channel prefix:"
+	    Value		    "'unspecifiedChannel'"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    32
 	    Type		    "edit"
-	    Name		    "firstCol"
-	    Prompt		    "First column"
+	    Name		    "firstRow"
+	    Prompt		    "First row:"
 	    Value		    "1"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    33
 	    Type		    "edit"
-	    Name		    "lastRow"
-	    Prompt		    "Last row"
+	    Name		    "firstCol"
+	    Prompt		    "First column:"
 	    Value		    "1"
 	    Tunable		    "off"
 	  }
 	  Object {
 	    $ObjectID		    34
 	    Type		    "edit"
+	    Name		    "lastRow"
+	    Prompt		    "Last row:"
+	    Value		    "1"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    35
+	    Type		    "edit"
 	    Name		    "lastCol"
-	    Prompt		    "Last column"
+	    Prompt		    "Last column:"
 	    Value		    "1"
 	    Tunable		    "off"
 	  }
@@ -1988,7 +1969,7 @@ Library {
       }
       System {
 	Name			"LiveMatrix"
-	Location		[1457, 116, 2259, 645]
+	Location		[0, 23, 1276, 800]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200

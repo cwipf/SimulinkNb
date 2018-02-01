@@ -32,15 +32,11 @@ clear cleanupFile;
 
 %% Find out when the file was loaded
 
-[statusBad, cmdOut] = system(['svn info --xml -r' rev ' ' daqsvn model '.txt']);
+statusBad = system(['svn info --xml -r' rev ' ' daqsvn model '.txt > ' tmpName]);
 if statusBad
     error(['Unable to get svn info on filter file ' model '.txt from the DAQ SVN for GPS time ' num2str(gps)]);
 end
-
-fid = fopen(tmpName, 'w');
 cleanupFile = onCleanup(@() delete(tmpName));
-fprintf(fid, cmdOut);
-fclose(fid);
 dom = xmlread(tmpName);
 clear cleanupFile;
 

@@ -1,0 +1,1869 @@
+Model {
+  Name			  "exampleNB"
+  Version		  8.0
+  GraphicalInterface {
+    NumRootInports	    0
+    NumRootOutports	    0
+    ParameterArgumentNames  ""
+    ComputedModelVersion    "1.226"
+    NumModelReferences	    0
+    NumTestPointedSignals   0
+  }
+  SavedCharacterEncoding  "ISO-8859-1"
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  DataTypeOverride	  "UseLocalSettings"
+  DataTypeOverrideAppliesTo "AllNumericTypes"
+  MinMaxOverflowLogging	  "UseLocalSettings"
+  MinMaxOverflowArchiveMode "Overwrite"
+  FPTRunName		  "Run 1"
+  MaxMDLFileLineLength	  120
+  Object {
+    $PropName		    "BdWindowsInfo"
+    $ObjectID		    1
+    $ClassName		    "Simulink.BDWindowsInfo"
+    Object {
+      $PropName		      "WindowsInfo"
+      $ObjectID		      2
+      $ClassName	      "Simulink.WindowInfo"
+      IsActive		      [1]
+      Location		      [0.0, 22.0, 1280.0, 778.0]
+      Object {
+	$PropName		"ModelBrowserInfo"
+	$ObjectID		3
+	$ClassName		"Simulink.ModelBrowserInfo"
+	Visible			[0]
+	DockPosition		"Left"
+	Width			[50]
+	Height			[50]
+	Filter			[9]
+      }
+      Object {
+	$PropName		"ExplorerBarInfo"
+	$ObjectID		4
+	$ClassName		"Simulink.ExplorerBarInfo"
+	Visible			[1]
+      }
+      Object {
+	$PropName		"EditorsInfo"
+	$ObjectID		5
+	$ClassName		"Simulink.EditorInfo"
+	IsActive		[1]
+	ViewObjType		"SimulinkTopLevel"
+	LoadSaveID		"0"
+	Extents			[1242.0, 602.0]
+	ZoomFactor		[0.77254374158815609]
+	Offset			[-170.33797909407667, 108.8780487804878]
+      }
+    }
+  }
+  Created		  "Wed Sep 04 11:18:03 2013"
+  Creator		  "nicolas"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "ccw"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Thu Feb 01 03:18:43 2018"
+  RTWModifiedTimeStamp	  439355923
+  ModelVersionFormat	  "1.%<AutoIncrement:226>"
+  SampleTimeColors	  off
+  SampleTimeAnnotations	  off
+  LibraryLinkDisplay	  "disabled"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowDesignRanges	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  AccelSystemTargetFile	  "accel.tlc"
+  AccelTemplateMakefile	  "accel_default_tmf"
+  AccelMakeCommand	  "make_rtw"
+  TryForcingSFcnDF	  off
+  Object {
+    $PropName		    "DataLoggingOverride"
+    $ObjectID		    7
+    $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
+    model_		    "exampleNB"
+    signals_		    []
+    overrideMode_	    [0.0]
+    Array {
+      Type		      "Cell"
+      Dimension		      1
+      Cell		      "exampleNB"
+      PropName		      "logAsSpecifiedByModels_"
+    }
+    Array {
+      Type		      "Cell"
+      Dimension		      1
+      Cell		      []
+      PropName		      "logAsSpecifiedByModelsSSIDs_"
+    }
+  }
+  RecordCoverage	  off
+  CovPath		  "/"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  CovForceBlockReductionOff on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeVarName	  "covCumulativeData"
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  CovExternalEMLEnable	  off
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock on
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  Array {
+    Type		    "Handle"
+    Dimension		    1
+    Simulink.ConfigSet {
+      $ObjectID		      8
+      Version		      "1.12.1"
+      Array {
+	Type			"Handle"
+	Dimension		8
+	Simulink.SolverCC {
+	  $ObjectID		  9
+	  Version		  "1.12.1"
+	  StartTime		  "0.0"
+	  StopTime		  "10.0"
+	  AbsTol		  "auto"
+	  FixedStep		  "auto"
+	  InitialStep		  "auto"
+	  MaxOrder		  5
+	  ZcThreshold		  "auto"
+	  ConsecutiveZCsStepRelTol "10*128*eps"
+	  MaxConsecutiveZCs	  "1000"
+	  ExtrapolationOrder	  4
+	  NumberNewtonIterations  1
+	  MaxStep		  "auto"
+	  MinStep		  "auto"
+	  MaxConsecutiveMinStep	  "1"
+	  RelTol		  "1e-3"
+	  SolverMode		  "Auto"
+	  EnableConcurrentExecution off
+	  ConcurrentTasks	  off
+	  Solver		  "ode45"
+	  SolverName		  "ode45"
+	  SolverJacobianMethodControl "auto"
+	  ShapePreserveControl	  "DisableAll"
+	  ZeroCrossControl	  "UseLocalSettings"
+	  ZeroCrossAlgorithm	  "Nonadaptive"
+	  AlgebraicLoopSolver	  "TrustRegion"
+	  SolverResetMethod	  "Fast"
+	  PositivePriorityOrder	  off
+	  AutoInsertRateTranBlk	  off
+	  SampleTimeConstraint	  "Unconstrained"
+	  InsertRTBMode		  "Whenever possible"
+	}
+	Simulink.DataIOCC {
+	  $ObjectID		  10
+	  Version		  "1.12.1"
+	  Decimation		  "1"
+	  ExternalInput		  "[t, u]"
+	  FinalStateName	  "xFinal"
+	  InitialState		  "xInitial"
+	  LimitDataPoints	  on
+	  MaxDataPoints		  "1000"
+	  LoadExternalInput	  off
+	  LoadInitialState	  off
+	  SaveFinalState	  off
+	  SaveCompleteFinalSimState off
+	  SaveFormat		  "Array"
+	  SignalLoggingSaveFormat "ModelDataLogs"
+	  SaveOutput		  on
+	  SaveState		  off
+	  SignalLogging		  on
+	  DSMLogging		  on
+	  InspectSignalLogs	  off
+	  SaveTime		  on
+	  ReturnWorkspaceOutputs  off
+	  StateSaveName		  "xout"
+	  TimeSaveName		  "tout"
+	  OutputSaveName	  "yout"
+	  SignalLoggingName	  "logsout"
+	  DSMLoggingName	  "dsmout"
+	  OutputOption		  "RefineOutputTimes"
+	  OutputTimes		  "[]"
+	  ReturnWorkspaceOutputsName "out"
+	  Refine		  "1"
+	}
+	Simulink.OptimizationCC {
+	  $ObjectID		  11
+	  Version		  "1.12.1"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    8
+	    Cell		    "BooleansAsBitfields"
+	    Cell		    "PassReuseOutputArgsAs"
+	    Cell		    "PassReuseOutputArgsThreshold"
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "OptimizeModelRefInitCode"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    Cell		    "UseSpecifiedMinMax"
+	    PropName		    "DisabledProps"
+	  }
+	  BlockReduction	  on
+	  BooleanDataType	  on
+	  ConditionallyExecuteInputs on
+	  InlineParams		  off
+	  UseIntDivNetSlope	  off
+	  UseFloatMulNetSlope	  off
+	  UseSpecifiedMinMax	  off
+	  InlineInvariantSignals  off
+	  OptimizeBlockIOStorage  on
+	  BufferReuse		  on
+	  EnhancedBackFolding	  off
+	  StrengthReduction	  off
+	  ExpressionFolding	  on
+	  BooleansAsBitfields	  off
+	  BitfieldContainerType	  "uint_T"
+	  EnableMemcpy		  on
+	  MemcpyThreshold	  64
+	  PassReuseOutputArgsAs	  "Structure reference"
+	  ExpressionDepthLimit	  2147483647
+	  LocalBlockOutputs	  on
+	  RollThreshold		  5
+	  StateBitsets		  off
+	  DataBitsets		  off
+	  ZeroExternalMemoryAtStartup on
+	  ZeroInternalMemoryAtStartup on
+	  InitFltsAndDblsToZero	  off
+	  NoFixptDivByZeroProtection off
+	  EfficientFloat2IntCast  off
+	  EfficientMapNaN2IntZero on
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
+	  MaxStackSize		  "Inherit from target"
+	  BufferReusableBoundary  on
+	  SimCompilerOptimization "Off"
+	  AccelVerboseBuild	  off
+	}
+	Simulink.DebuggingCC {
+	  $ObjectID		  12
+	  Version		  "1.12.1"
+	  RTPrefix		  "error"
+	  ConsistencyChecking	  "none"
+	  ArrayBoundsChecking	  "none"
+	  SignalInfNanChecking	  "none"
+	  SignalRangeChecking	  "none"
+	  ReadBeforeWriteMsg	  "UseLocalSettings"
+	  WriteAfterWriteMsg	  "UseLocalSettings"
+	  WriteAfterReadMsg	  "UseLocalSettings"
+	  AlgebraicLoopMsg	  "warning"
+	  ArtificialAlgebraicLoopMsg "warning"
+	  SaveWithDisabledLinksMsg "warning"
+	  SaveWithParameterizedLinksMsg	"warning"
+	  CheckSSInitialOutputMsg on
+	  UnderspecifiedInitializationDetection	"Classic"
+	  MergeDetectMultiDrivingBlocksExec "none"
+	  CheckExecutionContextPreStartOutputMsg off
+	  CheckExecutionContextRuntimeOutputMsg	off
+	  SignalResolutionControl "UseLocalSettings"
+	  BlockPriorityViolationMsg "warning"
+	  MinStepSizeMsg	  "warning"
+	  TimeAdjustmentMsg	  "none"
+	  MaxConsecutiveZCsMsg	  "error"
+	  MaskedZcDiagnostic	  "warning"
+	  IgnoredZcDiagnostic	  "warning"
+	  SolverPrmCheckMsg	  "warning"
+	  InheritedTsInSrcMsg	  "warning"
+	  MultiTaskDSMMsg	  "error"
+	  MultiTaskCondExecSysMsg "error"
+	  MultiTaskRateTransMsg	  "error"
+	  SingleTaskRateTransMsg  "none"
+	  TasksWithSamePriorityMsg "warning"
+	  SigSpecEnsureSampleTimeMsg "warning"
+	  CheckMatrixSingularityMsg "none"
+	  IntegerOverflowMsg	  "warning"
+	  Int32ToFloatConvMsg	  "warning"
+	  ParameterDowncastMsg	  "error"
+	  ParameterOverflowMsg	  "error"
+	  ParameterUnderflowMsg	  "none"
+	  ParameterPrecisionLossMsg "warning"
+	  ParameterTunabilityLossMsg "warning"
+	  FixptConstUnderflowMsg  "none"
+	  FixptConstOverflowMsg	  "none"
+	  FixptConstPrecisionLossMsg "none"
+	  UnderSpecifiedDataTypeMsg "none"
+	  UnnecessaryDatatypeConvMsg "none"
+	  VectorMatrixConversionMsg "none"
+	  InvalidFcnCallConnMsg	  "error"
+	  FcnCallInpInsideContextMsg "EnableAllAsWarning"
+	  SignalLabelMismatchMsg  "none"
+	  UnconnectedInputMsg	  "warning"
+	  UnconnectedOutputMsg	  "warning"
+	  UnconnectedLineMsg	  "warning"
+	  SFcnCompatibilityMsg	  "none"
+	  FrameProcessingCompatibilityMsg "error"
+	  UniqueDataStoreMsg	  "none"
+	  BusObjectLabelMismatch  "warning"
+	  RootOutportRequireBusObject "warning"
+	  AssertControl		  "UseLocalSettings"
+	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
+	  ModelReferenceVersionMismatchMessage "none"
+	  ModelReferenceIOMismatchMessage "none"
+	  UnknownTsInhSupMsg	  "warning"
+	  ModelReferenceDataLoggingMessage "warning"
+	  ModelReferenceSymbolNameMessage "warning"
+	  ModelReferenceExtraNoncontSigs "error"
+	  StateNameClashWarn	  "warning"
+	  SimStateInterfaceChecksumMismatchMsg "warning"
+	  SimStateOlderReleaseMsg "error"
+	  InitInArrayFormatMsg	  "warning"
+	  StrictBusMsg		  "ErrorLevel1"
+	  BusNameAdapt		  "WarnAndRepair"
+	  NonBusSignalsTreatedAsBus "none"
+	  BlockIODiagnostic	  "none"
+	  SFUnusedDataAndEventsDiag "warning"
+	  SFUnexpectedBacktrackingDiag "warning"
+	  SFInvalidInputDataAccessInChartInitDiag "warning"
+	  SFNoUnconditionalDefaultTransitionDiag "warning"
+	  SFTransitionOutsideNaturalParentDiag "warning"
+	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUndirectedBroadcastEventsDiag "warning"
+	  SFTransitionActionBeforeConditionDiag	"warning"
+	  ModelReferenceCSMismatchMessage "none"
+	}
+	Simulink.HardwareCC {
+	  $ObjectID		  13
+	  Version		  "1.12.1"
+	  ProdBitPerChar	  8
+	  ProdBitPerShort	  16
+	  ProdBitPerInt		  32
+	  ProdBitPerLong	  32
+	  ProdBitPerFloat	  32
+	  ProdBitPerDouble	  64
+	  ProdBitPerPointer	  32
+	  ProdLargestAtomicInteger "Char"
+	  ProdLargestAtomicFloat  "None"
+	  ProdIntDivRoundTo	  "Undefined"
+	  ProdEndianess		  "Unspecified"
+	  ProdWordSize		  32
+	  ProdShiftRightIntArith  on
+	  ProdHWDeviceType	  "32-bit Generic"
+	  TargetBitPerChar	  8
+	  TargetBitPerShort	  16
+	  TargetBitPerInt	  32
+	  TargetBitPerLong	  32
+	  TargetBitPerFloat	  32
+	  TargetBitPerDouble	  64
+	  TargetBitPerPointer	  32
+	  TargetLargestAtomicInteger "Char"
+	  TargetLargestAtomicFloat "None"
+	  TargetShiftRightIntArith on
+	  TargetIntDivRoundTo	  "Undefined"
+	  TargetEndianess	  "Unspecified"
+	  TargetWordSize	  32
+	  TargetPreprocMaxBitsSint 32
+	  TargetPreprocMaxBitsUint 32
+	  TargetHWDeviceType	  "Specified"
+	  TargetUnknown		  off
+	  ProdEqTarget		  on
+	}
+	Simulink.ModelReferenceCC {
+	  $ObjectID		  14
+	  Version		  "1.12.1"
+	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  CheckModelReferenceTargetMessage "error"
+	  EnableParallelModelReferenceBuilds off
+	  ParallelModelReferenceErrorOnInvalidPool on
+	  ParallelModelReferenceMATLABWorkerInit "None"
+	  ModelReferenceNumInstancesAllowed "Multi"
+	  PropagateVarSize	  "Infer from blocks in model"
+	  ModelReferencePassRootInputsByReference on
+	  ModelReferenceMinAlgLoopOccurrences off
+	  PropagateSignalLabelsOutOfModel off
+	  SupportModelReferenceSimTargetCustomCode off
+	}
+	Simulink.SFSimCC {
+	  $ObjectID		  15
+	  Version		  "1.12.1"
+	  SFSimEcho		  on
+	  SimCtrlC		  on
+	  SimIntegrity		  on
+	  SimUseLocalCustomCode	  off
+	  SimParseCustomCode	  on
+	  SimBuildMode		  "sf_incremental_build"
+	}
+	Simulink.RTWCC {
+	  $BackupClass		  "Simulink.RTWCC"
+	  $ObjectID		  16
+	  Version		  "1.12.1"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    13
+	    Cell		    "IncludeHyperlinkInReport"
+	    Cell		    "GenerateTraceInfo"
+	    Cell		    "GenerateTraceReport"
+	    Cell		    "GenerateTraceReportSl"
+	    Cell		    "GenerateTraceReportSf"
+	    Cell		    "GenerateTraceReportEml"
+	    Cell		    "GenerateWebview"
+	    Cell		    "GenerateCodeMetricsReport"
+	    Cell		    "GenerateCodeReplacementReport"
+	    Cell		    "PortableWordSizes"
+	    Cell		    "GenerateMissedCodeReplacementReport"
+	    Cell		    "GenerateErtSFunction"
+	    Cell		    "CreateSILPILBlock"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
+	  TLCOptions		  ""
+	  GenCodeOnly		  off
+	  MakeCommand		  "make_rtw"
+	  GenerateMakefile	  on
+	  PackageGeneratedCodeAndArtifacts off
+	  TemplateMakefile	  "grt_default_tmf"
+	  PostCodeGenCommand	  ""
+	  GenerateReport	  off
+	  SaveLog		  off
+	  RTWVerbose		  on
+	  RetainRTWFile		  off
+	  ProfileTLC		  off
+	  TLCDebug		  off
+	  TLCCoverage		  off
+	  TLCAssert		  off
+	  RTWUseLocalCustomCode	  off
+	  RTWUseSimCustomCode	  off
+	  IncludeHyperlinkInReport off
+	  LaunchReport		  off
+	  PortableWordSizes	  off
+	  GenerateErtSFunction	  off
+	  CreateSILPILBlock	  "None"
+	  CodeExecutionProfiling  off
+	  CodeExecutionProfileVariable "executionProfile"
+	  CodeProfilingSaveOptions "SummaryOnly"
+	  CodeProfilingInstrumentation off
+	  TargetLang		  "C"
+	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
+	  GenerateTraceInfo	  off
+	  GenerateTraceReport	  off
+	  GenerateTraceReportSl	  off
+	  GenerateTraceReportSf	  off
+	  GenerateTraceReportEml  off
+	  GenerateWebview	  off
+	  GenerateCodeMetricsReport off
+	  GenerateCodeReplacementReport	off
+	  RTWCompilerOptimization "Off"
+	  RTWCustomCompilerOptimizations ""
+	  CheckMdlBeforeBuild	  "Off"
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    Simulink.CodeAppCC {
+	      $ObjectID		      17
+	      Version		      "1.12.1"
+	      Array {
+		Type			"Cell"
+		Dimension		27
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"IgnoreTestpoints"
+		Cell			"InsertBlockDesc"
+		Cell			"InsertPolySpaceComments"
+		Cell			"SFDataObjDesc"
+		Cell			"MATLABFcnDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrFcnArg"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		Cell			"ReqsInCode"
+		Cell			"InternalIdentifier"
+		Cell			"CustomSymbolStrModelFcn"
+		Cell			"CustomSymbolStrUtil"
+		Cell			"CustomSymbolStrEmxType"
+		Cell			"CustomSymbolStrEmxFcn"
+		Cell			"CustomUserTokenString"
+		PropName		"DisabledProps"
+	      }
+	      ForceParamTrailComments off
+	      GenerateComments	      on
+	      IgnoreCustomStorageClasses on
+	      IgnoreTestpoints	      off
+	      MaxIdLength	      31
+	      PreserveName	      off
+	      PreserveNameWithParent  off
+	      ShowEliminatedStatement off
+	      OperatorAnnotations     off
+	      SimulinkDataObjDesc     off
+	      SFDataObjDesc	      off
+	      MATLABFcnDesc	      off
+	      MangleLength	      1
+	      CustomSymbolStrGlobalVar "$R$N$M"
+	      CustomSymbolStrType     "$N$R$M_T"
+	      CustomSymbolStrField    "$N$M"
+	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrFcnArg   "rt$I$N$M"
+	      CustomSymbolStrBlkIO    "rtb_$N$M"
+	      CustomSymbolStrTmpVar   "$N$M"
+	      CustomSymbolStrMacro    "$R$N$M"
+	      DefineNamingRule	      "None"
+	      ParamNamingRule	      "None"
+	      SignalNamingRule	      "None"
+	      InsertBlockDesc	      off
+	      InsertPolySpaceComments off
+	      SimulinkBlockComments   on
+	      MATLABSourceComments    off
+	      EnableCustomComments    off
+	      InternalIdentifier      Classic
+	      InlinedPrmAccess	      "Literals"
+	      ReqsInCode	      off
+	      UseSimReservedNames     off
+	    }
+	    Simulink.GRTTargetCC {
+	      $BackupClass	      "Simulink.TargetCC"
+	      $ObjectID		      18
+	      Version		      "1.12.1"
+	      Array {
+		Type			"Cell"
+		Dimension		19
+		Cell			"GeneratePreprocessorConditionals"
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"RemoveResetFunc"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"RemoveDisableFunc"
+		Cell			"PortableWordSizes"
+		Cell			"PurelyIntegerCode"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		Cell			"SupportNonInlinedSFcns"
+		Cell			"MultiInstanceERTCode"
+		Cell			"ExistingSharedCode"
+		Cell			"CPPClassGenCompliant"
+		Cell			"CombineOutputUpdateFcns"
+		PropName		"DisabledProps"
+	      }
+	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
+	      TargetLibSuffix	      ""
+	      TargetPreCompLibLocation ""
+	      CodeReplacementLibrary  "C89/C90 (ANSI)"
+	      UtilityFuncGeneration   "Auto"
+	      ERTMultiwordTypeDef     "System defined"
+	      MultiwordLength	      2048
+	      GenerateFullHeader      on
+	      GenerateSampleERTMain   off
+	      GenerateTestInterfaces  off
+	      ModelReferenceCompliant on
+	      ParMdlRefBuildCompliant on
+	      CompOptLevelCompliant   on
+	      ConcurrentExecutionCompliant on
+	      IncludeMdlTerminateFcn  on
+	      GeneratePreprocessorConditionals "Disable all"
+	      CombineOutputUpdateFcns on
+	      CombineSignalStateStructs	off
+	      SuppressErrorStatus     off
+	      IncludeFileDelimiter    "Auto"
+	      ERTCustomFileBanners    off
+	      SupportAbsoluteTime     on
+	      LogVarNameModifier      "rt_"
+	      MatFileLogging	      on
+	      MultiInstanceERTCode    off
+	      SupportNonFinite	      on
+	      SupportComplex	      on
+	      PurelyIntegerCode	      off
+	      SupportContinuousTime   on
+	      SupportNonInlinedSFcns  on
+	      SupportVariableSizeSignals off
+	      ParenthesesLevel	      "Nominal"
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    off
+	      AutosarCompliant	      off
+	      GRTInterface	      off
+	      UseMalloc		      off
+	      ExtMode		      off
+	      ExtModeStaticAlloc      off
+	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
+	      ExtModeMexFile	      "ext_comm"
+	      ExtModeIntrfLevel	      "Level1"
+	      RTWCAPISignals	      off
+	      RTWCAPIParams	      off
+	      RTWCAPIStates	      off
+	      RTWCAPIRootIO	      off
+	      GenerateASAP2	      off
+	    }
+	    PropName		    "Components"
+	  }
+	}
+	PropName		"Components"
+      }
+      Name		      "Configuration"
+      CurrentDlgPage	      "Solver"
+      ConfigPrmDlgPosition    [ 1480, 285, 2360, 915 ]
+    }
+    PropName		    "ConfigurationSets"
+  }
+  Simulink.ConfigSet {
+    $PropName		    "ActiveConfigurationSet"
+    $ObjectID		    8
+  }
+  Object {
+    $PropName		    "DataTransfer"
+    $ObjectID		    20
+    $ClassName		    "Simulink.GlobalDataTransfer"
+    DefaultTransitionBetweenSyncTasks "Ensure deterministic transfer (maximum delay)"
+    DefaultTransitionBetweenAsyncTasks "Ensure data integrity only"
+    DefaultTransitionBetweenContTasks "Ensure deterministic transfer (minimum delay)"
+    DefaultExtrapolationMethodBetweenContTasks "None"
+    AutoInsertRateTranBlk   [0]
+  }
+  ExplicitPartitioning	  off
+  BlockDefaults {
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+    BlockRotation	    0
+    BlockMirror		    off
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  MaskDefaults {
+    SelfModifiable	    "off"
+    IconFrame		    "on"
+    IconOpaque		    "on"
+    RunInitForIconRedraw    "off"
+    IconRotate		    "none"
+    PortRotate		    "default"
+    IconUnits		    "autoscale"
+  }
+  MaskParameterDefaults {
+    Evaluate		    "on"
+    Tunable		    "on"
+    NeverSave		    "off"
+    Internal		    "off"
+    ReadOnly		    "off"
+    Enabled		    "on"
+    Visible		    "on"
+    ToolTip		    "on"
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      OutputFunctionCall      off
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchInputForFeedbackSignals off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Integrator
+      ExternalReset	      "none"
+      InitialConditionSource  "internal"
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+      IgnoreLimit	      off
+      ZeroCross		      on
+      ContinuousStateAttributes	"''"
+    }
+    Block {
+      BlockType		      Mux
+      Inputs		      "4"
+      DisplayOption	      "none"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      NonVirtualBus	      off
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      SourceOfInitialOutputValue "Dialog"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+      OutputWhenUnConnected   off
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      DataTypeOverrideAppliesTo	"AllNumericTypes"
+      MinMaxOverflowLogging   "UseLocalSettings"
+      SFBlockType	      "NONE"
+      GeneratePreprocessorConditionals off
+    }
+    Block {
+      BlockType		      Sum
+      IconShape		      "rectangular"
+      Inputs		      "++"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      AccumDataTypeStr	      "Inherit: Inherit via internal rule"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+  }
+  System {
+    Name		    "exampleNB"
+    Location		    [0, 22, 1280, 800]
+    Open		    off
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "77"
+    ReportName		    "simulink-default.rpt"
+    SIDHighWatermark	    "1539"
+    Block {
+      BlockType		      Reference
+      Name		      "Cal"
+      SID		      "36"
+      Tag		      "NbNoiseCal"
+      Ports		      [0, 1]
+      Position		      [275, 532, 300, 548]
+      ZOrder		      64
+      BackgroundColor	      "orange"
+      AttributesFormatString  "%<Tag>"
+      LibraryVersion	      "1.37"
+      SourceBlock	      "NbLibrary/NbNoiseCal"
+      SourceType	      ""
+      dof		      "'REFLI'"
+      unit		      "'m/rt(Hz)'"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "FrequencyNoise"
+      SID		      "209"
+      Tag		      "NbNoiseSource"
+      Ports		      [0, 1]
+      Position		      [215, 192, 240, 208]
+      ZOrder		      76
+      BackgroundColor	      "orange"
+      AttributesFormatString  "%<Tag>"
+      LibraryVersion	      "1.37"
+      SourceBlock	      "NbLibrary/NbNoiseSource"
+      SourceType	      ""
+      asd		      "1e-7"
+      chan		      "''"
+      groupNest		      "1"
+      group		      "'Laser Frequency'"
+      subgroup		      "''"
+      subsubgroup	      "''"
+      subsubsubgroup	      "''"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator"
+      SID		      "1051"
+      Ports		      [1, 1]
+      Position		      [330, 185, 360, 215]
+      ZOrder		      157
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator1"
+      SID		      "1052"
+      Ports		      [1, 1]
+      Position		      [340, 840, 370, 870]
+      ZOrder		      158
+      BlockMirror	      on
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "OptickleModel"
+      SID		      "1493"
+      Description	      "Autogenerated using OptickleFlexTF.buildSys('exampleOpt','f','00')"
+      Ports		      [7, 7]
+      Position		      [455, 163, 755, 747]
+      ZOrder		      170
+      BackgroundColor	      "purple"
+      AttributesFormatString  "%<Description>"
+      RequestExecContextInheritance off
+      Variant		      off
+      System {
+	Name			"OptickleModel"
+	Location		[0, 22, 1280, 800]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"84"
+	Block {
+	  BlockType		  Inport
+	  Name			  "AM.drive"
+	  SID			  "1494"
+	  Position		  [20, 50, 50, 70]
+	  ZOrder		  2
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "PM.drive"
+	  SID			  "1495"
+	  Position		  [20, 150, 50, 170]
+	  ZOrder		  3
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "Mod1.amp"
+	  SID			  "1496"
+	  Position		  [20, 250, 50, 270]
+	  ZOrder		  4
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "Mod1.phase"
+	  SID			  "1497"
+	  Position		  [20, 350, 50, 370]
+	  ZOrder		  5
+	  Port			  "4"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "IX.pos"
+	  SID			  "1498"
+	  Position		  [20, 450, 50, 470]
+	  ZOrder		  6
+	  Port			  "5"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "EX.pos"
+	  SID			  "1499"
+	  Position		  [20, 550, 50, 570]
+	  ZOrder		  7
+	  Port			  "6"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "TRANS_SMIR.pos"
+	  SID			  "1500"
+	  Position		  [20, 650, 50, 670]
+	  ZOrder		  8
+	  Port			  "7"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "EX_DC_Noise"
+	  SID			  "1501"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 600, 680, 620]
+	  ZOrder		  28
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','EX_DC',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.drive','"
+	  "PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'EX_DC'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "IX_DC_Noise"
+	  SID			  "1502"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 500, 680, 520]
+	  ZOrder		  25
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','IX_DC',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.drive','"
+	  "PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'IX_DC'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "REFL_DC_Noise"
+	  SID			  "1503"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 0, 680, 20]
+	  ZOrder		  10
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','REFL_DC',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.drive'"
+	  ",'PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'REFL_DC'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "REFL_I_Noise"
+	  SID			  "1504"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 100, 680, 120]
+	  ZOrder		  13
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','REFL_I',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.drive',"
+	  "'PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'REFL_I'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "REFL_Q_Noise"
+	  SID			  "1505"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 200, 680, 220]
+	  ZOrder		  16
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','REFL_Q',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.drive',"
+	  "'PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'REFL_Q'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum1"
+	  SID			  "1506"
+	  Ports			  [2, 1]
+	  Position		  [700, 50, 720, 70]
+	  ZOrder		  11
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum2"
+	  SID			  "1507"
+	  Ports			  [2, 1]
+	  Position		  [700, 150, 720, 170]
+	  ZOrder		  14
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum3"
+	  SID			  "1508"
+	  Ports			  [2, 1]
+	  Position		  [700, 250, 720, 270]
+	  ZOrder		  17
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum4"
+	  SID			  "1509"
+	  Ports			  [2, 1]
+	  Position		  [700, 350, 720, 370]
+	  ZOrder		  20
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum5"
+	  SID			  "1510"
+	  Ports			  [2, 1]
+	  Position		  [700, 450, 720, 470]
+	  ZOrder		  23
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum6"
+	  SID			  "1511"
+	  Ports			  [2, 1]
+	  Position		  [700, 550, 720, 570]
+	  ZOrder		  26
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum7"
+	  SID			  "1512"
+	  Ports			  [2, 1]
+	  Position		  [700, 650, 720, 670]
+	  ZOrder		  29
+	  IconShape		  "round"
+	  Inputs		  "++|"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "TRANSa_DC_Noise"
+	  SID			  "1513"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 300, 680, 320]
+	  ZOrder		  19
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','TRANSa_DC',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.driv"
+	  "e','PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'TRANSa_DC'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "TRANSb_DC_Noise"
+	  SID			  "1514"
+	  Tag			  "NbNoiseSource"
+	  Ports			  [0, 1]
+	  Position		  [650, 400, 680, 420]
+	  ZOrder		  22
+	  BackgroundColor	  "orange"
+	  AttributesFormatString  "%<Tag>"
+	  LibraryVersion	  "1.37"
+	  SourceBlock		  "NbLibrary/NbNoiseSource"
+	  SourceType		  ""
+	  asd			  "OptickleFlexTF.noiseBlock(exampleOpt,f,'00','TRANSb_DC',OptickleFlexTF.makeDriveIndex(exampleOpt,{'AM.driv"
+	  "e','PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','TRANS_SMIR.pos'}))"
+	  chan			  "''"
+	  groupNest		  "2"
+	  group			  "'Quantum Vacuum'"
+	  subgroup		  "'TRANSb_DC'"
+	  subsubgroup		  "''"
+	  subsubsubgroup	  "''"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "exampleOpt"
+	  SID			  "1515"
+	  Description		  "OptickleFlexTF(exampleOpt,f,'00',{'AM.drive','PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.pos','"
+	  "TRANS_SMIR.pos'},{'REFL_DC','REFL_I','REFL_Q','TRANSa_DC','TRANSb_DC','IX_DC','EX_DC'})"
+	  Ports			  [7, 7]
+	  Position		  [200, 28, 500, 612]
+	  ZOrder		  1
+	  AttributesFormatString  "%<Description>"
+	  SCDEnableBlockLinearizationSpecification on
+	  List {
+	    ListType		    SCDBlockLinearizationSpecification
+	    Specification	    "OptickleFlexTF(exampleOpt,f,'00',{'AM.drive','PM.drive','Mod1.amp','Mod1.phase','IX.pos','EX.p"
+	    "os','TRANS_SMIR.pos'},{'REFL_DC','REFL_I','REFL_Q','TRANSa_DC','TRANSb_DC','IX_DC','EX_DC'})"
+	    Type		    "Expression"
+	    ParameterNames	    ""
+	    ParameterValues	    ""
+	  }
+	  RequestExecContextInheritance	off
+	  Variant		  off
+	  System {
+	    Name		    "exampleOpt"
+	    Location		    [100, 100, 600, 900]
+	    Open		    off
+	    ModelBrowserVisibility  off
+	    ModelBrowserWidth	    200
+	    ScreenColor		    "white"
+	    PaperOrientation	    "landscape"
+	    PaperPositionMode	    "auto"
+	    PaperType		    "usletter"
+	    PaperUnits		    "inches"
+	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+	    TiledPageScale	    1
+	    ShowPageBoundaries	    off
+	    ZoomFactor		    "100"
+	    Block {
+	      BlockType		      Inport
+	      Name		      "AM.drive"
+	      SID		      "1516"
+	      Position		      [20, 50, 50, 70]
+	      ZOrder		      4
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "PM.drive"
+	      SID		      "1517"
+	      Position		      [20, 150, 50, 170]
+	      ZOrder		      5
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "Mod1.amp"
+	      SID		      "1518"
+	      Position		      [20, 250, 50, 270]
+	      ZOrder		      6
+	      Port		      "3"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "Mod1.phase"
+	      SID		      "1519"
+	      Position		      [20, 350, 50, 370]
+	      ZOrder		      7
+	      Port		      "4"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "IX.pos"
+	      SID		      "1520"
+	      Position		      [20, 450, 50, 470]
+	      ZOrder		      8
+	      Port		      "5"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "EX.pos"
+	      SID		      "1521"
+	      Position		      [20, 550, 50, 570]
+	      ZOrder		      9
+	      Port		      "6"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "TRANS_SMIR.pos"
+	      SID		      "1522"
+	      Position		      [20, 650, 50, 670]
+	      ZOrder		      10
+	      Port		      "7"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Demux
+	      Name		      "demux"
+	      SID		      "1523"
+	      Ports		      [1, 7]
+	      Position		      [500, 25, 525, 425]
+	      ZOrder		      3
+	      Outputs		      "7"
+	    }
+	    Block {
+	      BlockType		      Mux
+	      Name		      "mux"
+	      SID		      "1524"
+	      Ports		      [7, 1]
+	      Position		      [275, 25, 300, 425]
+	      ZOrder		      2
+	      Inputs		      "7"
+	    }
+	    Block {
+	      BlockType		      Reference
+	      Name		      "opticalSystem"
+	      SID		      "1525"
+	      Ports		      [1, 1]
+	      Position		      [350, 200, 450, 250]
+	      ZOrder		      1
+	      LibraryVersion	      "1.338"
+	      SourceBlock	      "cstblocks/LTI System"
+	      SourceType	      "LTI Block"
+	      sys		      "repmat(tf(1),[7,7])"
+	      IC		      "[]"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "REFL_DC"
+	      SID		      "1526"
+	      Position		      [800, 50, 830, 70]
+	      ZOrder		      11
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "REFL_I"
+	      SID		      "1527"
+	      Position		      [800, 150, 830, 170]
+	      ZOrder		      12
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "REFL_Q"
+	      SID		      "1528"
+	      Position		      [800, 250, 830, 270]
+	      ZOrder		      13
+	      Port		      "3"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "TRANSa_DC"
+	      SID		      "1529"
+	      Position		      [800, 350, 830, 370]
+	      ZOrder		      14
+	      Port		      "4"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "TRANSb_DC"
+	      SID		      "1530"
+	      Position		      [800, 450, 830, 470]
+	      ZOrder		      15
+	      Port		      "5"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "IX_DC"
+	      SID		      "1531"
+	      Position		      [800, 550, 830, 570]
+	      ZOrder		      16
+	      Port		      "6"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "EX_DC"
+	      SID		      "1532"
+	      Position		      [800, 650, 830, 670]
+	      ZOrder		      17
+	      Port		      "7"
+	      IconDisplay	      "Port number"
+	    }
+	    Line {
+	      SrcBlock		      "mux"
+	      SrcPort		      1
+	      DstBlock		      "opticalSystem"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "opticalSystem"
+	      SrcPort		      1
+	      DstBlock		      "demux"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "AM.drive"
+	      SrcPort		      1
+	      DstBlock		      "mux"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "PM.drive"
+	      SrcPort		      1
+	      Points		      [100, 0; 0, -45]
+	      DstBlock		      "mux"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Mod1.amp"
+	      SrcPort		      1
+	      Points		      [100, 0; 0, -90]
+	      DstBlock		      "mux"
+	      DstPort		      3
+	    }
+	    Line {
+	      SrcBlock		      "Mod1.phase"
+	      SrcPort		      1
+	      Points		      [205, 0]
+	      DstBlock		      "mux"
+	      DstPort		      4
+	    }
+	    Line {
+	      SrcBlock		      "IX.pos"
+	      SrcPort		      1
+	      Points		      [205, 0]
+	      DstBlock		      "mux"
+	      DstPort		      5
+	    }
+	    Line {
+	      SrcBlock		      "EX.pos"
+	      SrcPort		      1
+	      Points		      [205, 0]
+	      DstBlock		      "mux"
+	      DstPort		      6
+	    }
+	    Line {
+	      SrcBlock		      "TRANS_SMIR.pos"
+	      SrcPort		      1
+	      Points		      [205, 0]
+	      DstBlock		      "mux"
+	      DstPort		      7
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      1
+	      DstBlock		      "REFL_DC"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      2
+	      Points		      [125, 0; 0, 45]
+	      DstBlock		      "REFL_I"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      3
+	      Points		      [125, 0; 0, 90]
+	      DstBlock		      "REFL_Q"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      4
+	      Points		      [115, 0; 0, 135]
+	      DstBlock		      "TRANSa_DC"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      5
+	      Points		      [105, 0; 0, 180]
+	      DstBlock		      "TRANSb_DC"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      6
+	      Points		      [95, 0; 0, 225]
+	      DstBlock		      "IX_DC"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "demux"
+	      SrcPort		      7
+	      Points		      [85, 0; 0, 270]
+	      DstBlock		      "EX_DC"
+	      DstPort		      1
+	    }
+	  }
+	  RTWSystemCode		  "Auto"
+	  MinAlgLoopOccurrences	  off
+	  PropExecContextOutsideSubsystem off
+	  FunctionWithSeparateData off
+	  Opaque		  off
+	  MaskHideContents	  off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "REFL_DC"
+	  SID			  "1533"
+	  Position		  [800, 50, 830, 70]
+	  ZOrder		  9
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "REFL_I"
+	  SID			  "1534"
+	  Position		  [800, 150, 830, 170]
+	  ZOrder		  12
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "REFL_Q"
+	  SID			  "1535"
+	  Position		  [800, 250, 830, 270]
+	  ZOrder		  15
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "TRANSa_DC"
+	  SID			  "1536"
+	  Position		  [800, 350, 830, 370]
+	  ZOrder		  18
+	  Port			  "4"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "TRANSb_DC"
+	  SID			  "1537"
+	  Position		  [800, 450, 830, 470]
+	  ZOrder		  21
+	  Port			  "5"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "IX_DC"
+	  SID			  "1538"
+	  Position		  [800, 550, 830, 570]
+	  ZOrder		  24
+	  Port			  "6"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "EX_DC"
+	  SID			  "1539"
+	  Position		  [800, 650, 830, 670]
+	  ZOrder		  27
+	  Port			  "7"
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "AM.drive"
+	  SrcPort		  1
+	  Points		  [65, 0; 0, 5]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "PM.drive"
+	  SrcPort		  1
+	  Points		  [55, 0; 0, -10]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Mod1.amp"
+	  SrcPort		  1
+	  Points		  [45, 0; 0, -25]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Mod1.phase"
+	  SrcPort		  1
+	  Points		  [35, 0; 0, -40]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  4
+	}
+	Line {
+	  SrcBlock		  "IX.pos"
+	  SrcPort		  1
+	  Points		  [130, 0]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  5
+	}
+	Line {
+	  SrcBlock		  "EX.pos"
+	  SrcPort		  1
+	  Points		  [65, 0; 0, -70]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  6
+	}
+	Line {
+	  SrcBlock		  "TRANS_SMIR.pos"
+	  SrcPort		  1
+	  Points		  [65, 0; 0, -85]
+	  DstBlock		  "exampleOpt"
+	  DstPort		  7
+	}
+	Line {
+	  SrcBlock		  "REFL_DC_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  1
+	  Points		  [90, 0; 0, -5]
+	  DstBlock		  "Sum1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum1"
+	  SrcPort		  1
+	  DstBlock		  "REFL_DC"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "REFL_I_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  2
+	  Points		  [180, 0]
+	  DstBlock		  "Sum2"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum2"
+	  SrcPort		  1
+	  DstBlock		  "REFL_I"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "REFL_Q_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  3
+	  Points		  [180, 0]
+	  DstBlock		  "Sum3"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum3"
+	  SrcPort		  1
+	  DstBlock		  "REFL_Q"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "TRANSa_DC_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum4"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  4
+	  Points		  [180, 0]
+	  DstBlock		  "Sum4"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum4"
+	  SrcPort		  1
+	  DstBlock		  "TRANSa_DC"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "TRANSb_DC_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum5"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  5
+	  Points		  [90, 0; 0, 55]
+	  DstBlock		  "Sum5"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum5"
+	  SrcPort		  1
+	  DstBlock		  "TRANSb_DC"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "IX_DC_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum6"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  6
+	  Points		  [0, 70]
+	  DstBlock		  "Sum6"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum6"
+	  SrcPort		  1
+	  DstBlock		  "IX_DC"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "EX_DC_Noise"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  DstBlock		  "Sum7"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "exampleOpt"
+	  SrcPort		  7
+	  Points		  [90, 0; 0, 85]
+	  DstBlock		  "Sum7"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Sum7"
+	  SrcPort		  1
+	  DstBlock		  "EX_DC"
+	  DstPort		  1
+	}
+      }
+      RTWSystemCode	      "Auto"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      FunctionWithSeparateData off
+      Opaque		      off
+      MaskHideContents	      off
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "REFL"
+      SID		      "38"
+      Tag		      "NbNoiseSink"
+      Ports		      [1, 1]
+      Position		      [965, 192, 990, 208]
+      ZOrder		      142
+      BackgroundColor	      "orange"
+      AttributesFormatString  "%<Tag>"
+      LibraryVersion	      "1.37"
+      SourceBlock	      "NbLibrary/NbNoiseSink"
+      SourceType	      ""
+      dof		      "'REFLI'"
+      asd		      "''"
+      chan		      "''"
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator"
+      SID		      "1053"
+      Position		      [1065, 190, 1085, 210]
+      ZOrder		      159
+    }
+    Line {
+      SrcBlock		      "Cal"
+      SrcPort		      1
+      DstBlock		      "OptickleModel"
+      DstPort		      5
+    }
+    Line {
+      SrcBlock		      "FrequencyNoise"
+      SrcPort		      1
+      DstBlock		      "Integrator"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "OptickleModel"
+      SrcPort		      1
+      Points		      [50, 0]
+      Branch {
+	Points			[0, 655]
+	DstBlock		"Integrator1"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"REFL"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Integrator"
+      SrcPort		      1
+      DstBlock		      "OptickleModel"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Integrator1"
+      SrcPort		      1
+      Points		      [-144, 0; 0, -400]
+      DstBlock		      "OptickleModel"
+      DstPort		      4
+    }
+    Line {
+      SrcBlock		      "REFL"
+      SrcPort		      1
+      DstBlock		      "Terminator"
+      DstPort		      1
+    }
+    Annotation {
+      SID		      "1056"
+      Name		      "optical plant from 'optFP' model"
+      Position		      [534, 127]
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+    }
+    Annotation {
+      SID		      "1055"
+      Name		      "this is a silly feedback filter"
+      Position		      [289, 810]
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+    }
+    Annotation {
+      SID		      "1054"
+      Name		      "super low noise laser"
+      Position		      [182, 147]
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+    }
+  }
+}

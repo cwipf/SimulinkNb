@@ -5,18 +5,19 @@
 %% Add paths
 clear all
 close all
-svnDir = '/ligo/svncommon/NbSVN/aligonoisebudget/trunk/';
-addpath([svnDir 'Common/Utils/SimulinkNb'])
-addpath([svnDir 'Common/Utils/NoiseModel/'])
-addpath([svnDir 'Common/Utils/'])
-addpath(genpath([svnDir 'Dev/Utils/']))
+%svnDir = '/ligo/svncommon/NbSVN/aligonoisebudget/trunk/';
+%addpath([svnDir 'Common/Utils/SimulinkNb'])
+%addpath([svnDir 'Common/Utils/NoiseModel/'])
+%addpath([svnDir 'Common/Utils/'])
+%addpath(genpath([svnDir 'Dev/Utils/']))
 
 
 %% Define some filters and plot expected OLTF
-Sen = 5e3;
+K = 1;
+Sen = 1e3;
 Filt = zpk(-2*pi*10,-2*pi*100,10);
 Act = zpk([],[-2*pi*(0.1+0.995*i) -2*pi*(0.1-0.995*i)],10);
-Gol = Sen*Filt*Act;
+Gol = K*Sen*Filt*Act;
 figure(100)
 bode(Gol)
 grid on
@@ -25,14 +26,10 @@ grid on
 freq = logspace(-2,2,1000);
 liveModel = 'TEST_Live';
 dof = 'TST';    % name of DOF to plot NB
-startTime = 1078250000;   % start GPS time
-durationTime = 512;
-IFO = 'H1';
-site = 'LHO';
-
-% Try setting different NDS server if you couldn't get data
-% setenv('LIGONDSIP','h1nds1:8088');
-% mdv_config;
+startTime = 1189322466;   % start GPS time
+durationTime = 1;
+IFO = 'L1';
+site = 'LLO';
 
 % load cached outputs
 loadFunctionCache()
@@ -62,10 +59,10 @@ ylim([1e-6,1e1])
 
 %% plot expected curve from calculation
 
-[mag,ph]=bode((1+Gol)/(Filt*Sen),2*pi*freq);
-loglog(freq,squeeze(mag),'b.')
+mag=bode((1+Gol)/(K*Filt*Sen),2*pi*freq);
+loglog(freq,squeeze(mag),'g:', 'LineWidth', 3)
 hold on
 
-[mag,ph]=bode(1/Sen,2*pi*freq);
-loglog(freq,freq./freq/Sen,'r.')
+mag=bode(tf(1)/K/Sen,2*pi*freq);
+loglog(freq,squeeze(mag),'k:', 'LineWidth', 3)
 

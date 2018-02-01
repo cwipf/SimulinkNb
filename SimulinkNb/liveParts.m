@@ -1,4 +1,4 @@
-function liveParts(mdl, start, duration, freq)
+function liveParts(mdl, start, duration, ~)
 
 %% Form channel list
 load_system(mdl);
@@ -56,7 +56,7 @@ end
 
 filterCache = containers.Map();
 for n = 1:numel(liveParts)
-    filterCache = liveParams(liveParts{n}, chans{n}, dataByChan, start, duration, freq, filterCache);
+    filterCache = liveParams(mdl, liveParts{n}, chans{n}, dataByChan, start, duration, filterCache);
 end
 
 end
@@ -112,7 +112,7 @@ end
         
 end
 
-function filterCache = liveParams(blk, chans, dataByChan, start, duration, freq, filterCache)
+function filterCache = liveParams(mdl, blk, chans, dataByChan, start, duration, filterCache)
 
 blkType = get_param(blk, 'Tag');
 blkVars = get_param(blk, 'MaskWSVariables');
@@ -120,8 +120,7 @@ blkVars = get_param(blk, 'MaskWSVariables');
 switch blkType
     case 'LiveConstant'
         K = dataByChan(chans{1});
-        kVar = resolveLibraryParam(get_param(blk, 'K'), blk);
-        assignInBase(kVar, K);
+        sdo.setValueInModel(mdl, get_param(blk, 'K'), K);
 
     case 'LiveMatrix'
         [rows, cols] = size(chans);
@@ -132,14 +131,12 @@ switch blkType
                 M(row, col) = dataByChan(chans{row, col});
             end
         end
-        mVar = resolveLibraryParam(get_param(blk, 'M'), blk);
-        assignInBase(mVar, M);
+        sdo.setValueInModel(mdl, get_param(blk, 'M'), M);
 
     case 'LiveFilter'
         site = blkVars(strcmp({blkVars.Name}, 'site')).Value;
         model = blkVars(strcmp({blkVars.Name}, 'feModel')).Value;
         fmName = blkVars(strcmp({blkVars.Name}, 'fmName')).Value;
-        flexTf = blkVars(strcmp({blkVars.Name}, 'flexTf')).Value;
         par.swstat = dataByChan(chans{1});
         % sad workaround for 40m IFO which doesn't have SWSTAT channels
         if strncmp(model, 'C1', 2)
@@ -186,12 +183,8 @@ switch blkType
         for n = 1:10
             [z, p, k] = sos2zp(par.fm(n).soscoef);
             par.(['fm' num2str(n)]) = d2c(zpk(z, p, k, 1/par.fm(n).fs), 'tustin');
-            if flexTf
-                par.(['fm' num2str(n) 'frd']) = frd(par.(['fm' num2str(n)]), freq, 'Units', 'Hz');
-            end
         end
-        parVar = resolveLibraryParam(get_param(blk, 'par'), blk);
-        assignInBase(parVar, par);
+        sdo.setValueInModel(mdl, get_param(blk, 'par'), par);
 end
 
 end

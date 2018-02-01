@@ -11,12 +11,7 @@ set_param(blk, 'viewGui', 'off');
 blkVars = get_param(blk, 'MaskWSVariables');
 name = blkVars(strcmp({blkVars.Name}, 'fmName')).Value;
 
-parVar = get_param(blk, 'par');
-% If parVar is inside a library block, then its name probably refers to a
-% library parameter (mask variable), which has to be resolved before
-% evaluating
-parVar = resolveLibraryParam(parVar, blk);
-par = evalin('base', parVar);
+par = sdo.getValueFromModel(bdroot(blk), get_param(blk, 'par'));
 
 pLog.(name).OFFSET = par.offset;
 pLog.(name).GAIN = par.gain;
@@ -65,7 +60,6 @@ swstat = swstat + sum(bitset(0, 11:12, bitget(SW1R, 3:4)));
 swstat = swstat + sum(bitset(0, 13:14, bitget(SW2R, [10 9])));
 par.swstat = swstat;
 
-parVar = resolveLibraryParam(get_param(blk, 'par'), blk);
-assignInBase(parVar, par);
+sdo.setValueInModel(bdroot(blk), get_param(blk, 'par'), par);
 
 end

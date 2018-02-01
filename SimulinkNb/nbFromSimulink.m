@@ -28,7 +28,7 @@ function [noises, sys] = nbFromSimulink(mdl, freq, varargin)
 %   signal that you actually measure (for example, digitized photodetector
 %   output).
 %
-%   NBFROMSIMULINK linearizes the model (using LINFLEXTF) to obtain
+%   NBFROMSIMULINK linearizes the model (using LINEARIZE) to obtain
 %   transfer functions from each source, and the cal block, to the sink
 %   (with the loop opened after the sink).  These TFs are used to determine
 %   each source's contribution to the total calibrated noise.
@@ -48,8 +48,6 @@ function [noises, sys] = nbFromSimulink(mdl, freq, varargin)
 %   noise structs.
 %
 %   SYS -- the linearized Simulink model containing the calibration TFs.
-%
-%   See also: LINFLEXTF
 
 %% Parse the arguments
 
@@ -63,6 +61,8 @@ end
 % Parse parameter-value pairs in varargin
 parser = inputParser();
 parser.addParamValue('dof', '', @ischar);
+parser.addParamValue('openLoop', true, @islogical);
+parser.addParamValue('freeRunningCalibration', true, @islogical);
 parser.parse(varargin{:});
 opt = parser.Results;
 
@@ -127,16 +127,20 @@ end
 %% Evaluate each NbNoiseSource block's ASD, and set up noise/calibration TFs
 
 noises = {};
-% Set numerator for noise/calibration TFs, and open the loop
-% (also sets denominator for open loop gain around the sink)
-ioSink = linio(nbNoiseSink, 1, 'outin', 'on');
+% Set numerator for noise/calibration TFs, and open the loop if desired
+% (also sets denominator for loop gain around the sink)
+if opt.openLoop
+    ioSink = linio(nbNoiseSink, 1, 'outin', 'on');
+else
+    ioSink = linio(nbNoiseSink, 1, 'outin', 'off');
+end
 % Set denominator for calibration TF (cal to sink)
 ioCal = linio(nbNoiseCal, 1, 'in');
 for n = 1:numel(nbNoiseSources)
     blk = nbNoiseSources{n};
     % Set denominator for noise TF (source to sink)
     ioSource(n) = linio(blk, 1, 'in'); %#ok<AGROW>
-    % getBlockNoise() is a local function defined below
+    % getBlockNoises() is a local function defined below
     noises = [noises getBlockNoises(blk, freq)]; %#ok<AGROW>
 end
 io = [ioSink ioCal ioSource];
@@ -145,16 +149,14 @@ io = [ioSink ioCal ioSource];
 
 % Don't abbreviate I/O block names (it's faster that way)
 linOpt = linoptions('UseFullBlockNameLabels', 'on');
-[sys, flexTfs] = linFlexTf(mdl, io, linOpt);
+sys = linearize(mdl, io, linOpt);
 % Attempt to improve numerical accuracy with prescale
 minPosFreq = min(freq(freq>0));
 maxPosFreq = max(freq(freq>0));
 if ~isempty(minPosFreq) && ~isempty(maxPosFreq)
-    sys = prescale(sys, {2*pi*minPosFreq, 2*pi*maxPosFreq});
+    sys = FlexTF.prescale(sys, {2*pi*minPosFreq, 2*pi*maxPosFreq});
 end
-sys = linFlexTfFold(sys, flexTfs);
-% Ensure sys gets converted to frequency response data
-sys = frd(sys, freq, 'Units', 'Hz');
+sys = FlexTF.replaceBlocks(sys);
 
 % Set sys input/output names to meaningful values
 % (UseFullBlockNameLabels appends signal names to the block names)
@@ -163,7 +165,11 @@ sys.OutputName = nbNoiseSink;
 
 %% Apply noise/calibration TFs to each NbNoiseSource's spectrum
 
-cal = 1/sys(2);
+if opt.freeRunningCalibration
+    cal = 1/sys(2);
+else
+    cal = 1;
+end
 % Ensure the calibration TF is finite
 if ~all(isfinite(freqresp(cal, 2*pi*freq)))
     error('Can''t calibrate noises in the model because the TF from the NbNoiseCal block to the NbNoiseSink block can''t be inverted (is it zero?)');
@@ -223,29 +229,18 @@ end
 function [ noises ] = getBlockNoises(blk, freq)
 
 tag = get_param(blk, 'Tag');
-expr = get_param(blk, 'asd');
-% If expr is inside a library block, then its name probably refers to a
-% library parameter (mask variable), which has to be resolved before
-% evaluating
-expr = resolveLibraryParam(expr, blk);
+asdVar = get_param(blk, 'asd');
+blkVars = get_param(blk, 'MaskWSVariables');
+blkVars = containers.Map({blkVars.Name}, {blkVars.Value});
+asds = blkVars('asd');
 % Permit NbNoiseSink block to have an empty ASD
 if strcmp(tag, 'NbNoiseSink')
-    if isempty(expr) || strcmp(expr, '''''') || strcmp(expr, '[]')
+    if isempty(asds)
         noises = {struct('name', [blk '{1}'], 'f', freq, 'asd', [])};
         return;
     end
 end
-disp(['    ' blk ' :: ' expr]);
-% Update the current block.  This is to allow clever ASD functions
-% to use gcb to figure out which block invoked them.
-scb(blk);
-% Evaluate the noise ASD
-% Note: evaluation is done in the base workspace (any variables set in
-% the model workspace are ignored).  The NbNoiseSource block mask is
-% set to NOT evaluate anything automatically.  This way, the noise
-% budget spectra don't have to be defined when the model is used for
-% purposes other than making a noise budget.
-asds = evalin('base', expr);
+disp(['    ' blk ' :: ' asdVar]);
 
 if ~iscell(asds)
     asds = {asds};
@@ -258,10 +253,10 @@ for n = 1:numel(asds)
     % Sanity checks on the ASD
     if ~isreal(asd) || min(size(asd)) > 1
         error(['Invalid ' tag ' block ' blk char(10) ...
-            'ASD #' num2str(n) ' (from ' expr ') is not a real-valued 1D array']);
+            'ASD #' num2str(n) ' (from ' asdVar ') is not a real-valued 1D array']);
     elseif numel(asd) ~= 1 && numel(asd) ~= numel(freq)
     error(['Invalid ' tag ' block ' blk char(10) ...
-        'Length of ASD #' num2str(n) ' (from ' expr ') doesn''t match the frequency vector' char(10) ...
+        'Length of ASD #' num2str(n) ' (from ' asdVar ') doesn''t match the frequency vector' char(10) ...
         '(ASD''s length is ' num2str(numel(asd)) ...
         ' and frequency vector''s length is ' num2str(numel(freq)) ')']);
     end
